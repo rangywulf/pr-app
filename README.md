@@ -39,5 +39,4 @@ project/
 ├── src/
 ├── tests/
 ├── .gitignore
-├── LICENSE
 └── README.md
