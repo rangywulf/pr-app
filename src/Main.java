@@ -5,7 +5,7 @@ public class Main {
     public static void main(String[] args) {
         /* Program Setup */
         // Create the rep 2D array
-        String[][] repData = new String[100][6];
+        String[][] repData = new String[100][7];
 
         // Create the post data parallel arrays
         int[] postRepIndex = new int[100];
@@ -162,5 +162,8 @@ public class Main {
         System.out.println("PR Rep added successfully.");
         return true;
     }
+
+    /** Log posts made by the PR rep */
+    
 }
 
