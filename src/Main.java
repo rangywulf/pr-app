@@ -55,9 +55,12 @@ public class Main {
                         break;
                     case 2:
                         System.out.println("Opening 'Log a Post'...");
-                        boolean logCreated = logPost(repData, repCount, postRepIndex, postPlatform, postLink, postCount, input);
+                        boolean logCreated = logPost(repData, repCount, postRepIndex, postPlatform, postLink, 
+                            postCount, input, POINTS_PER_POST, pointHistoryRepIndex, pointHistoryAmount, 
+                            pointHistoryReason, pointHistoryCount);
                         if (logCreated) {
                             postCount++;
+                            pointHistoryCount++;
                         }
                         break;
                     case 3:
@@ -161,6 +164,8 @@ public class Main {
         repData[repCount][2] = email;
         repData[repCount][3] = discountCode;
         repData[repCount][4] = personalCode;
+        repData[repCount][5] = "0";
+        repData[repCount][6] = "0";
 
         // Display information added
         System.out.println("PR Rep added successfully.");
@@ -169,7 +174,8 @@ public class Main {
 
     /** Log posts made by the PR rep */
     public static boolean logPost(String[][] repData, int repCount, int[] postRepIndex, 
-    String[] postPlatform, String[] postLink, int postCount, Scanner input) {
+    String[] postPlatform, String[] postLink, int postCount, Scanner input, int pointsPerPost, 
+    int[] pointHistoryRepIndex, int[] pointHistoryAmount, String[] pointHistoryReason, int pointHistoryCount) {
         // Declare variables
         int choice;
         int repIndex = -1;
@@ -281,7 +287,33 @@ public class Main {
         postPlatform[postCount] = platform;
         postLink[postCount] = url;
 
+        int pointsEarned = calculatePostPoints(pointsPerPost); // Calculate how many points this post earns
+        int currentPostCount = Integer.parseInt(repData[repIndex][5]); // Read the rep's current post count and convert to number
+        currentPostCount = currentPostCount + 1; // add 1 for this new post
+        repData[repIndex][5] = String.valueOf(currentPostCount); // Convert back to text and store the updated post count
+
+        // Log this point change and update the rep's running point total
+        pointHistory(repData, pointHistoryRepIndex, pointHistoryAmount, pointHistoryReason, pointHistoryCount, 
+            repIndex, pointsEarned, "Post logged");
+
         return true;
+    }
+
+    // Calculate points from posts
+    public static int calculatePostPoints(int pointsAwarded) {
+
+        return pointsAwarded;
+    }
+
+    
+    /** Calculate points and log the history */
+    public static void pointHistory(String[][] repData, int[] pointHistoryRepIndex, int[] pointHistoryAmount, 
+        String[] pointHistoryReason, int pointHistoryCount, int repIndex, int amount, String reason) {
+            // add amount to rep's running point total
+            // Store repIndex in pointHistoryRepIndex[pointHistoryCount]
+            // Store amount in pointHistoryAmount[pointHistoryCount]
+            // Store reason in pointHistoryReason[pointHistoryCount]
+            // pointHistoryCount itself gets incremented back in main, same pattern as repcount/postCount
     }
 }
 
