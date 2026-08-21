@@ -55,6 +55,10 @@ public class Main {
                         break;
                     case 2:
                         System.out.println("Opening 'Log a Post'...");
+                        boolean logCreated = logPost(repData, repCount, postRepIndex, postPlatform, postLink, postCount, input);
+                        if (logCreated) {
+                            postCount++;
+                        }
                         break;
                     case 3:
                         System.out.println("Opening PR Dashboard...");
@@ -164,6 +168,78 @@ public class Main {
     }
 
     /** Log posts made by the PR rep */
-    
+    public static boolean logPost(String[][] repData, int repCount, int[] postRepIndex, 
+    String[] postPlatform, String[] postLink, int postCount, Scanner input) {
+        // Declare variables
+        int choice;
+        int repIndex;
+
+        // Loop through reps to determine if they have been entered
+        if (repCount == 0) {
+            System.out.println("No PR Reps found. Please add a PR rep before logging posts.");
+            return false; // return to main
+        }
+ 
+        // Display all rep names and their repID number
+        for (int i = 0; i < repCount; i++) {
+            System.out.println(repData[i][0] + ". " + repData[i][1]);
+        }
+        System.out.println("0. Return to main menu");
+
+        // Prompt user to select a rep by number
+        System.out.print("Please select a PR Rep: ");
+        choice = input.nextInt();
+        input.nextLine();
+        while (choice == 0) { // user types 0
+            System.out.println("Returning to main menu.");
+            return false; // return to main menu
+        }
+
+        // Loop until the user picks a valid, existing rep ID
+        boolean validChoice = false;
+        while (!validChoice) {
+            // check the typed choice against every existing rep's ID
+            for (int i = 0; i < repCount; i++) {
+                if (String.valueOf(choice).equals(repData[i][0])) {
+                    validChoice = true; // found a match, this repID exists
+                    repIndex = i;
+                }
+            }
+
+            // If no rep matched after checking the whole list, ask again
+            if (validChoice == false) {
+                System.out.println("Invalid Choice");
+                System.out.print("Please select a PR rep: ");
+                choice = input.nextInt();
+                input.nextLine(); // Clear leftover newline from nextInt()
+            }
+        }
+
+        // Prompt user for platform
+        System.out.println("1. Facebook");
+        System.out.println("2. Instagram");
+        System.out.println("3. Substack");
+        System.out.println("4. YouTube");
+        System.out.println("5. TikTok");
+        System.out.println("0. Return to main menu");
+        System.out.print("Please select a platform: ");
+        choice = input.nextInt();
+        input.nextLine();
+
+        while (choice == 0) { // User enters 0
+            System.out.println("Returning to main menu.");
+            return false; // Returns to main menu
+        }
+
+        while (!(choice >= 1 && choice <=5)) { // user enters an invalid number or character
+            System.out.println("Invalid choice");
+            System.out.print("Please select a platform: ");
+            choice = input.nextInt(); // users correct input
+            input.nextLine(); // Clear leftover newline from nextInt()
+        }
+
+
+        return true;
+    }
 }
 
