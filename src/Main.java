@@ -172,7 +172,9 @@ public class Main {
     String[] postPlatform, String[] postLink, int postCount, Scanner input) {
         // Declare variables
         int choice;
-        int repIndex;
+        int repIndex = -1;
+        String url;
+        String platform = "";
 
         // Loop through reps to determine if they have been entered
         if (repCount == 0) {
@@ -238,6 +240,46 @@ public class Main {
             input.nextLine(); // Clear leftover newline from nextInt()
         }
 
+        // Prompt user for URL
+        System.out.print("Please enter the URL for the post: ");
+        url = input.nextLine();
+
+        while (url.equals("0")) {
+            System.out.println("Returning to main menu.");
+            return false;
+        }
+        
+        while (!url.contains("https://")) { // Validate URL
+            System.out.println("Invalid url");
+            System.out.print("Please enter the URL for the post: ");
+            url = input.nextLine();
+        }
+
+        System.out.println("Log created, returning to main menu");
+
+        // Convert number choices for platform to strings
+        switch (choice) {
+            case 1:
+                platform = "Facebook";
+                break;
+            case 2:
+                platform = "Instagram";
+                break;
+            case 3:
+                platform = "Substack";
+                break;
+            case 4:
+                platform = "YouTube";
+                break;
+            case 5:
+                platform = "TikTok";
+                break;
+        }
+
+        // assign where data goes in the array
+        postRepIndex[postCount] = repIndex;
+        postPlatform[postCount] = platform;
+        postLink[postCount] = url;
 
         return true;
     }
