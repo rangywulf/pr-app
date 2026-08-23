@@ -8,14 +8,14 @@ public class Main {
         String[][] repData = new String[100][7];
 
         // Create the post data parallel arrays
-        int[] postRepIndex = new int[100];
-        String[] postPlatform = new String[100];
-        String[] postLink = new String[100];
+        int[] postRepIndex = new int[500];
+        String[] postPlatform = new String[500];
+        String[] postLink = new String[500];
 
         // Create the point history parallel arrays
-        int[] pointHistoryRepIndex = new int[100];
-        int[] pointHistoryAmount = new int[100];
-        String[] pointHistoryReason = new String[100];
+        int[] pointHistoryRepIndex = new int[1000];
+        int[] pointHistoryAmount = new int[1000];
+        String[] pointHistoryReason = new String[1000];
 
         // Create variables for rep count, post count, and point history count
         int repCount = 0;
@@ -24,6 +24,11 @@ public class Main {
 
         // Create the temporary points-per-post constant
         final int POINTS_PER_POST = 10;
+
+        // Create Max capacity for arrays
+        final int MAX_CAPACITY = 100; // addRep cap
+        final int POST_CAP = 500; // postRep
+        final int HISTORY_CAP = 1000; // pointHistory
 
         /* Display */
         // Create scanner
@@ -48,14 +53,14 @@ public class Main {
                 switch (choice) {
                     case 1:
                         System.out.println("Opening 'Add a PR Rep'...");
-                        boolean repAdded = addRep(repData, repCount, input);
+                        boolean repAdded = addRep(repData, repCount, MAX_CAPACITY, input);
                         if (repAdded) {
                             repCount++;
                         }
                         break;
                     case 2:
                         System.out.println("Opening 'Log a Post'...");
-                        boolean logCreated = logPost(repData, repCount, postRepIndex, postPlatform, postLink, 
+                        boolean logCreated = logPost(repData, repCount, HISTORY_CAP, POST_CAP, postRepIndex, postPlatform, postLink, 
                             postCount, input, POINTS_PER_POST, pointHistoryRepIndex, pointHistoryAmount, 
                             pointHistoryReason, pointHistoryCount);
                         if (logCreated) {
@@ -69,7 +74,7 @@ public class Main {
                         break;
                     case 4:
                         System.out.println("Opening Points Redemption...");
-                        pointHistoryCount = redeemPoints(repData, repCount, pointHistoryRepIndex, pointHistoryAmount, 
+                        pointHistoryCount = redeemPoints(repData, HISTORY_CAP, repCount, pointHistoryRepIndex, pointHistoryAmount, 
                             pointHistoryReason, pointHistoryCount, input);
                         break;
                     case 5:
@@ -90,13 +95,19 @@ public class Main {
     }
 
     /** addRep Method */
-    public static boolean addRep(String[][] repData, int repCount, Scanner input) {
+    public static boolean addRep(String[][] repData, int repCount, int MAX_CAPACITY, Scanner input) {
         // Declare variables
         int repID = repCount + 1;
         String name;
         String email;
         String discountCode;
         String personalCode;
+
+        // Check if array is full
+        if (repCount == MAX_CAPACITY) {
+            System.out.println("Max number of PR reps reached.");
+            return false;
+        }
     
         // Prompt user for rep name
         System.out.print("Name: ");
@@ -277,11 +288,17 @@ public class Main {
     }
 
     /** Log posts made by the PR rep */
-    public static boolean logPost(String[][] repData, int repCount, int[] postRepIndex, 
+    public static boolean logPost(String[][] repData, int repCount, int POST_CAP, int HISTORY_CAP, int[] postRepIndex, 
     String[] postPlatform, String[] postLink, int postCount, Scanner input, int pointsPerPost, 
     int[] pointHistoryRepIndex, int[] pointHistoryAmount, String[] pointHistoryReason, int pointHistoryCount) {
         // Declare variables
         String url;
+
+        // Check if array is full
+        if (postCount == POST_CAP) {
+            System.out.println("Max number of posts reached.");
+            return false;
+        }
 
         // Select PR Rep
         int repIndex = repSelection(repData, repCount, input);
@@ -324,7 +341,7 @@ public class Main {
         repData[repIndex][5] = String.valueOf(currentPostCount); // Convert back to text and store the updated post count
 
         // Log this point change and update the rep's running point total
-        pointHistory(repData, pointHistoryRepIndex, pointHistoryAmount, pointHistoryReason, pointHistoryCount, 
+        pointHistory(repData, HISTORY_CAP, pointHistoryRepIndex, pointHistoryAmount, pointHistoryReason, pointHistoryCount, 
             repIndex, pointsEarned, "Post logged");
 
         return true;
@@ -337,22 +354,28 @@ public class Main {
 
     
     /** Calculate points and log the history */
-    public static void pointHistory(String[][] repData, int[] pointHistoryRepIndex, int[] pointHistoryAmount, 
+    public static void pointHistory(String[][] repData, int HISTORY_CAP, int[] pointHistoryRepIndex, int[] pointHistoryAmount, 
         String[] pointHistoryReason, int pointHistoryCount, int repIndex, int amount, String reason) {
-            // add amount to rep's running point total
-            int currentTotal = Integer.parseInt(repData[repIndex][6]); // Reads the points, and converts from String to int
-            currentTotal = currentTotal + amount; // calculates rep's running total
-            repData[repIndex][6] = String.valueOf(currentTotal); // converts int back to String
-            // Store repIndex in pointHistoryRepIndex[pointHistoryCount]
-            pointHistoryRepIndex[pointHistoryCount] = repIndex;
-            // Store amount in pointHistoryAmount[pointHistoryCount]
-            pointHistoryAmount[pointHistoryCount] = amount;
-            // Store reason in pointHistoryReason[pointHistoryCount]
-            pointHistoryReason[pointHistoryCount] = reason;           
+        // Check if array is full
+        if (pointHistoryCount == HISTORY_CAP) {
+            System.out.println("Max number of history logs reached.");
+            return;
+        }
+
+        // add amount to rep's running point total
+        int currentTotal = Integer.parseInt(repData[repIndex][6]); // Reads the points, and converts from String to int
+        currentTotal = currentTotal + amount; // calculates rep's running total
+        repData[repIndex][6] = String.valueOf(currentTotal); // converts int back to String
+        // Store repIndex in pointHistoryRepIndex[pointHistoryCount]
+        pointHistoryRepIndex[pointHistoryCount] = repIndex;
+        // Store amount in pointHistoryAmount[pointHistoryCount]
+        pointHistoryAmount[pointHistoryCount] = amount;
+        // Store reason in pointHistoryReason[pointHistoryCount]
+        pointHistoryReason[pointHistoryCount] = reason;           
     }
 
     /** Redeem Points */
-    public static int redeemPoints(String[][] repData, int repCount, int[] pointHistoryRepIndex, int[] pointHistoryAmount, 
+    public static int redeemPoints(String[][] repData, int HISTORY_CAP, int repCount, int[] pointHistoryRepIndex, int[] pointHistoryAmount, 
         String[] pointHistoryReason, int pointHistoryCount, Scanner input) {
         // Declare variables
         int pointsRedeemed = 0;
@@ -425,7 +448,7 @@ public class Main {
             }
 
             // log points redeemed to pointHistory
-            pointHistory(repData, pointHistoryRepIndex, pointHistoryAmount, pointHistoryReason, pointHistoryCount, 
+            pointHistory(repData, HISTORY_CAP, pointHistoryRepIndex, pointHistoryAmount, pointHistoryReason, pointHistoryCount, 
                 repIndex, -pointsRedeemed, "Redeem for " + redemption);
             pointHistoryCount++;
         

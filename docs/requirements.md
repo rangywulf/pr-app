@@ -108,7 +108,7 @@ The application must prevent a redemption from causing the representative's poin
 
 If the requested redemption exceeds the available point balance, the application must reject the transaction and prompt the owner to enter a valid amount.
 
-The application must allow the owner to specify whether the redemption is for cash or product. This information must be recorded in the point history entry for that transaction.
+The application must allow the owner to specify whether the redemption is for cash, product, store credit. This information must be recorded in the point history entry for that transaction.
 
 ## 3.8 Sales Tracking
 
