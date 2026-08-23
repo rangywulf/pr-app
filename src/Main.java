@@ -175,22 +175,18 @@ public class Main {
         return true;
     }
 
-    /** Log posts made by the PR rep */
-    public static boolean logPost(String[][] repData, int repCount, int[] postRepIndex, 
-    String[] postPlatform, String[] postLink, int postCount, Scanner input, int pointsPerPost, 
-    int[] pointHistoryRepIndex, int[] pointHistoryAmount, String[] pointHistoryReason, int pointHistoryCount) {
+    /** Create loop for PR Rep selection */
+    public static int repSelection(String[][] repData, int repCount, Scanner input) {
         // Declare variables
         int choice;
-        int repIndex = -1;
-        String url;
-        String platform = "";
+        int repIndex = -1; // the position i in the array where the rep's row lives
 
-        // Loop through reps to determine if they have been entered
+        // determine if reps have been entered
         if (repCount == 0) {
-            System.out.println("No PR Reps found. Please add a PR rep before logging posts.");
-            return false; // return to main
+            System.out.println("No PR Reps found. Please add a PR rep before continuing.");
+            return -1; // return to main
         }
- 
+
         // Display all rep names and their repID number
         for (int i = 0; i < repCount; i++) {
             System.out.println(repData[i][0] + ". " + repData[i][1]);
@@ -203,7 +199,7 @@ public class Main {
         input.nextLine();
         while (choice == 0) { // user types 0
             System.out.println("Returning to main menu.");
-            return false; // return to main menu
+            return -1; // return to main menu
         }
 
         // Loop until the user picks a valid, existing rep ID
@@ -226,6 +222,16 @@ public class Main {
             }
         }
 
+        return repIndex;
+
+    }
+
+    /** Platform Selection */
+    public static String platformSelection(Scanner input) {
+        // Declare variables
+        int choice;
+        String platform = "";
+
         // Prompt user for platform
         System.out.println("1. Facebook");
         System.out.println("2. Instagram");
@@ -239,7 +245,7 @@ public class Main {
 
         while (choice == 0) { // User enters 0
             System.out.println("Returning to main menu.");
-            return false; // Returns to main menu
+            return null; // Returns to main menu
         }
 
         while (!(choice >= 1 && choice <=5)) { // user enters an invalid number or character
@@ -248,23 +254,6 @@ public class Main {
             choice = input.nextInt(); // users correct input
             input.nextLine(); // Clear leftover newline from nextInt()
         }
-
-        // Prompt user for URL
-        System.out.print("Please enter the URL for the post: ");
-        url = input.nextLine();
-
-        while (url.equals("0")) {
-            System.out.println("Returning to main menu.");
-            return false;
-        }
-        
-        while (!url.contains("https://")) { // Validate URL
-            System.out.println("Invalid url");
-            System.out.print("Please enter the URL for the post: ");
-            url = input.nextLine();
-        }
-
-        System.out.println("Log created, returning to main menu");
 
         // Convert number choices for platform to strings
         switch (choice) {
@@ -284,6 +273,45 @@ public class Main {
                 platform = "TikTok";
                 break;
         }
+        return platform;
+    }
+
+    /** Log posts made by the PR rep */
+    public static boolean logPost(String[][] repData, int repCount, int[] postRepIndex, 
+    String[] postPlatform, String[] postLink, int postCount, Scanner input, int pointsPerPost, 
+    int[] pointHistoryRepIndex, int[] pointHistoryAmount, String[] pointHistoryReason, int pointHistoryCount) {
+        // Declare variables
+        String url;
+
+        // Select PR Rep
+        int repIndex = repSelection(repData, repCount, input);
+
+        if (repIndex == -1) { // User enters 0
+            return false; // Returns to main menu
+        }
+
+        // Prompt user for platform
+        String platform = platformSelection(input);
+        if (platform == null) { // User enters 0
+                return false; // Returns to main menu
+            }
+
+        // Prompt user for URL
+        System.out.print("Please enter the URL for the post: ");
+        url = input.nextLine();
+
+        while (url.equals("0")) {
+            System.out.println("Returning to main menu.");
+            return false;
+        }
+        
+        while (!url.contains("https://")) { // Validate URL
+            System.out.println("Invalid url");
+            System.out.print("Please enter the URL for the post: ");
+            url = input.nextLine();
+        }
+
+        System.out.println("Log created, returning to main menu");
 
         // assign where data goes in the array
         postRepIndex[postCount] = repIndex;
@@ -324,57 +352,21 @@ public class Main {
     }
 
     /** Redeem Points */
-    public static int  redeemPoints(String[][] repData, int repCount, int[] pointHistoryRepIndex, int[] pointHistoryAmount, 
+    public static int redeemPoints(String[][] repData, int repCount, int[] pointHistoryRepIndex, int[] pointHistoryAmount, 
         String[] pointHistoryReason, int pointHistoryCount, Scanner input) {
         // Declare variables
-        int choice;
-        int repIndex = -1;
         int pointsRedeemed = 0;
         int redemptionType;
         String redemption = "";
         boolean redeeming = true;
         
         while (redeeming) {
-            // Loop through reps to determine if they have been entered
-            if (repCount == 0) {
-                System.out.println("No PR Reps found to redeem points for.");
-                return pointHistoryCount; // return to main
-            }
             
+            // Select PR rep
             System.out.println("\n=== REDEEM POINTS ===");
-            // Display all rep names and their repID number
-            for (int i = 0; i < repCount; i++) {
-                System.out.println(repData[i][0] + ". " + repData[i][1]);
-            }
-            System.out.println("0. Return to main menu");
-
-            // Prompt user to select a rep by number
-            System.out.print("Please select a PR Rep: ");
-            choice = input.nextInt();
-            input.nextLine();
-            while (choice == 0) { // user types 0
-                System.out.println("Returning to main menu.");
-                return pointHistoryCount; // return to main menu
-            }
-
-            // Loop until the user picks a valid, existing rep ID
-            boolean validChoice = false;
-            while (!validChoice) {
-                // check the typed choice against every existing rep's ID
-                for (int i = 0; i < repCount; i++) {
-                    if (String.valueOf(choice).equals(repData[i][0])) {
-                        validChoice = true; // found a match, this repID exists
-                        repIndex = i;
-                    }
-                }
-
-                // If no rep matched after checking the whole list, ask again
-                if (validChoice == false) {
-                    System.out.println("Invalid Choice");
-                    System.out.print("Please select a PR rep: ");
-                    choice = input.nextInt();
-                    input.nextLine(); // Clear leftover newline from nextInt()
-                }
+            int repIndex = repSelection(repData, repCount, input);
+            if (repIndex == -1) { // User enters 0
+                return pointHistoryCount; // Returns to main menu
             }
 
             // Display the current point balance
@@ -453,12 +445,12 @@ public class Main {
         }
 
         // Display Header
-        System.out.printf("%-8s%-15s%-25s%-15s%-15s%-8s%-8s%n", "Rep ID", "Name", "Email", "Discount Code", "PR Code", "Total Posts", "Total Points");
+        System.out.printf("%-8s%-15s%-40s%-15s%-15s%-8s%-8s%n", "Rep ID", "Name", "Email", "Discount Code", "PR Code", "# Posts", "Total Points");
         System.out.println("-".repeat(94));
 
         // Loop through repData from 0 to repCount
         for (int i = 0; i < repCount; i++) {
-            System.out.printf("%-8s%-15s%-25s%-15s%-15s%-8s%-8s%n", repData[i][0], repData[i][1], repData[i][2], repData[i][3], repData[i][4], repData[i][5], repData[i][6]);
+            System.out.printf("%-8s%-15s%-40s%-15s%-15s%-8s%-8s%n", repData[i][0], repData[i][1], repData[i][2], repData[i][3], repData[i][4], repData[i][5], repData[i][6]);
         }
 
         // Display message how to return to main
