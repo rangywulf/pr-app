@@ -22,7 +22,7 @@ public class Main {
         int postCount = 0;
         int pointHistoryCount = 0;
 
-        // Create the temporary points-per-post contant
+        // Create the temporary points-per-post constant
         final int POINTS_PER_POST = 10;
 
         /* Display */
@@ -68,6 +68,8 @@ public class Main {
                         break;
                     case 4:
                         System.out.println("Opening Points Redemption...");
+                        pointHistoryCount = redeemPoints(repData, repCount, pointHistoryRepIndex, pointHistoryAmount, 
+                            pointHistoryReason, pointHistoryCount, input);
                         break;
                     case 5:
                         System.out.println("Exiting program. Goodbye!");
@@ -299,9 +301,8 @@ public class Main {
         return true;
     }
 
-    // Calculate points from posts
-    public static int calculatePostPoints(int pointsAwarded) {
-
+    /** Calculate points from posts (currently a passthrough, future home for bonus logic) */
+    public static int calculatePostPoints(int pointsAwarded) {    
         return pointsAwarded;
     }
 
@@ -310,10 +311,137 @@ public class Main {
     public static void pointHistory(String[][] repData, int[] pointHistoryRepIndex, int[] pointHistoryAmount, 
         String[] pointHistoryReason, int pointHistoryCount, int repIndex, int amount, String reason) {
             // add amount to rep's running point total
+            int currentTotal = Integer.parseInt(repData[repIndex][6]); // Reads the points, and converts from String to int
+            currentTotal = currentTotal + amount; // calculates rep's running total
+            repData[repIndex][6] = String.valueOf(currentTotal); // converts int back to String
             // Store repIndex in pointHistoryRepIndex[pointHistoryCount]
+            pointHistoryRepIndex[pointHistoryCount] = repIndex;
             // Store amount in pointHistoryAmount[pointHistoryCount]
+            pointHistoryAmount[pointHistoryCount] = amount;
             // Store reason in pointHistoryReason[pointHistoryCount]
-            // pointHistoryCount itself gets incremented back in main, same pattern as repcount/postCount
+            pointHistoryReason[pointHistoryCount] = reason;           
     }
+
+    /** Redeem Points */
+    public static int  redeemPoints(String[][] repData, int repCount, int[] pointHistoryRepIndex, int[] pointHistoryAmount, 
+        String[] pointHistoryReason, int pointHistoryCount, Scanner input) {
+        // Declare variables
+        int choice;
+        int repIndex = -1;
+        int pointsRedeemed = 0;
+        int redemptionType;
+        String redemption = "";
+        boolean redeeming = true;
+        
+        while (redeeming) {
+            // Loop through reps to determine if they have been entered
+            if (repCount == 0) {
+                System.out.println("No PR Reps found. Please add a PR rep before logging posts.");
+                return pointHistoryCount; // return to main
+            }
+            
+            System.out.println("\n=== REDEEM POINTS ===");
+            // Display all rep names and their repID number
+            for (int i = 0; i < repCount; i++) {
+                System.out.println(repData[i][0] + ". " + repData[i][1]);
+            }
+            System.out.println("0. Return to main menu");
+
+            // Prompt user to select a rep by number
+            System.out.print("Please select a PR Rep: ");
+            choice = input.nextInt();
+            input.nextLine();
+            while (choice == 0) { // user types 0
+                System.out.println("Returning to main menu.");
+                return pointHistoryCount; // return to main menu
+            }
+
+            // Loop until the user picks a valid, existing rep ID
+            boolean validChoice = false;
+            while (!validChoice) {
+                // check the typed choice against every existing rep's ID
+                for (int i = 0; i < repCount; i++) {
+                    if (String.valueOf(choice).equals(repData[i][0])) {
+                        validChoice = true; // found a match, this repID exists
+                        repIndex = i;
+                    }
+                }
+
+                // If no rep matched after checking the whole list, ask again
+                if (validChoice == false) {
+                    System.out.println("Invalid Choice");
+                    System.out.print("Please select a PR rep: ");
+                    choice = input.nextInt();
+                    input.nextLine(); // Clear leftover newline from nextInt()
+                }
+            }
+
+            // Display the current point balance
+            System.out.println(repData[repIndex][1] + ": " + repData[repIndex][6]);
+
+            // Prompt user
+            System.out.print("How many points to redeem? Press 0 to return to main menu. ");
+
+            pointsRedeemed = input.nextInt();
+            input.nextLine();
+
+            while (pointsRedeemed == 0) { // User enters 0
+                System.out.println("Returning to main menu.");
+                return pointHistoryCount; // Returns to main menu
+            }
+
+            int currentTotal = Integer.parseInt(repData[repIndex][6]); // Converts string to int
+            while (!(pointsRedeemed > 0 && pointsRedeemed <= currentTotal)) { // while points entered is greater than 0 and less than the currentTotal
+                System.out.println("Invalid amount. Enter a number greater than 0 and no more than your available points.");
+                pointsRedeemed = input.nextInt(); // Users new input
+                input.nextLine(); // Clear leftover newline from nextInt
+            }
+
+            // Prompt for redemption type
+            System.out.println("Choose from the following for how the redemption points are being used:");
+            System.out.println("1. Cash");
+            System.out.println("2. Product");
+            System.out.println("3. Store Credit");
+            System.out.println("0. Return to main menu");
+
+            redemptionType = input.nextInt();
+            input.nextLine();
+
+            while (redemptionType == 0) { // User enters 0
+                System.out.println("Returning to main menu.");
+                return pointHistoryCount; // Returns to main menu
+            }
+
+            while (!(redemptionType >= 1 && redemptionType <= 3)) { // user enters an invalid number or character
+                System.out.println("Invalid choice");
+                System.out.print("Please select a redemption type: ");
+                redemptionType = input.nextInt(); // users correct input
+                input.nextLine(); // Clear leftover newline from nextInt()
+            }
+
+            switch (redemptionType) {
+                case 1:
+                    redemption = "Cash";
+                    break;
+                case 2:
+                    redemption = "Product";
+                    break;
+                case 3:
+                    redemption = "Store Credit";
+                    break;
+            }
+
+            // log points redeemed to pointHistory
+            pointHistory(repData, pointHistoryRepIndex, pointHistoryAmount, pointHistoryReason, pointHistoryCount, 
+                repIndex, -pointsRedeemed, "Redeem for " + redemption);
+            pointHistoryCount++;
+        
+            // Display current balance
+            System.out.println("Total points left to redeem: " + repData[repIndex][6]);
+        }
+
+        return pointHistoryCount;
+    }
+    
 }
 
