@@ -65,6 +65,7 @@ public class Main {
                         break;
                     case 3:
                         System.out.println("Opening PR Dashboard...");
+                        viewDashboard(repData, repCount, input);
                         break;
                     case 4:
                         System.out.println("Opening Points Redemption...");
@@ -336,7 +337,7 @@ public class Main {
         while (redeeming) {
             // Loop through reps to determine if they have been entered
             if (repCount == 0) {
-                System.out.println("No PR Reps found. Please add a PR rep before logging posts.");
+                System.out.println("No PR Reps found to redeem points for.");
                 return pointHistoryCount; // return to main
             }
             
@@ -441,6 +442,29 @@ public class Main {
         }
 
         return pointHistoryCount;
+    }
+
+    /** Dashboard display off all the reps, their posts and points */
+    public static void viewDashboard(String[][] repData, int repCount, Scanner input) {
+        // Loop through reps to determine if they have been entered
+        if (repCount == 0) {
+            System.out.println("No PR Reps found. Nothing to display yet.");
+            return; // return to main
+        }
+
+        // Display Header
+        System.out.printf("%-8s%-15s%-25s%-15s%-15s%-8s%-8s%n", "Rep ID", "Name", "Email", "Discount Code", "PR Code", "Total Posts", "Total Points");
+        System.out.println("-".repeat(94));
+
+        // Loop through repData from 0 to repCount
+        for (int i = 0; i < repCount; i++) {
+            System.out.printf("%-8s%-15s%-25s%-15s%-15s%-8s%-8s%n", repData[i][0], repData[i][1], repData[i][2], repData[i][3], repData[i][4], repData[i][5], repData[i][6]);
+        }
+
+        // Display message how to return to main
+        System.out.print("Press 0 to return to main menu.");
+        input.nextInt();
+        input.nextLine();
     }
     
 }
