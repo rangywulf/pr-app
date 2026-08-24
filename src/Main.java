@@ -94,6 +94,19 @@ public class Main {
         input.close();
     }
 
+    /** Read a validated integer from the user, reprompting on non-numeric input */
+    public static int readInt(Scanner input, String prompt) {
+        System.out.print(prompt);
+        while (!input.hasNextInt()) {
+            System.out.println("Invalid input. Please enter 0.");
+            input.next(); // Clear the invalid input from buffer
+            System.out.print(prompt);
+        }
+        int value = input.nextInt();
+        input.nextLine(); // Clear leftover newline
+        return value;
+    }
+
     /** addRep Method */
     public static boolean addRep(String[][] repData, int repCount, int MAX_CAPACITY, Scanner input) {
         // Declare variables
@@ -205,9 +218,7 @@ public class Main {
         System.out.println("0. Return to main menu");
 
         // Prompt user to select a rep by number
-        System.out.print("Please select a PR Rep: ");
-        choice = input.nextInt();
-        input.nextLine();
+        choice = readInt(input, "Please select a PR Rep: ");
         while (choice == 0) { // user types 0
             System.out.println("Returning to main menu.");
             return -1; // return to main menu
@@ -227,9 +238,7 @@ public class Main {
             // If no rep matched after checking the whole list, ask again
             if (validChoice == false) {
                 System.out.println("Invalid Choice");
-                System.out.print("Please select a PR rep: ");
-                choice = input.nextInt();
-                input.nextLine(); // Clear leftover newline from nextInt()
+                choice = readInt(input, "Please select a PR rep: ");
             }
         }
 
@@ -250,9 +259,7 @@ public class Main {
         System.out.println("4. YouTube");
         System.out.println("5. TikTok");
         System.out.println("0. Return to main menu");
-        System.out.print("Please select a platform: ");
-        choice = input.nextInt();
-        input.nextLine();
+        choice = readInt(input, "Please select a platform: ");
 
         while (choice == 0) { // User enters 0
             System.out.println("Returning to main menu.");
@@ -261,9 +268,7 @@ public class Main {
 
         while (!(choice >= 1 && choice <=5)) { // user enters an invalid number or character
             System.out.println("Invalid choice");
-            System.out.print("Please select a platform: ");
-            choice = input.nextInt(); // users correct input
-            input.nextLine(); // Clear leftover newline from nextInt()
+            choice = readInt(input, "Please select a platform: "); // users correct input
         }
 
         // Convert number choices for platform to strings
@@ -316,13 +321,12 @@ public class Main {
         // Prompt user for URL
         System.out.print("Please enter the URL for the post: ");
         url = input.nextLine();
-
-        while (url.equals("0")) {
-            System.out.println("Returning to main menu.");
-            return -1;
-        }
         
         while (!url.contains("https://")) { // Validate URL
+            if (url.equals("0")) {
+                System.out.println("Returning to main menu.");
+                return -1;
+            }
             System.out.println("Invalid url");
             System.out.print("Please enter the URL for the post: ");
             url = input.nextLine();
@@ -402,10 +406,7 @@ public class Main {
             System.out.println(repData[repIndex][1] + ": " + repData[repIndex][6]);
 
             // Prompt user
-            System.out.print("How many points to redeem? Press 0 to return to main menu. ");
-
-            pointsRedeemed = input.nextInt();
-            input.nextLine();
+            pointsRedeemed = readInt(input, "How many points to redeem? Press 0 to return to main menu. ");
 
             while (pointsRedeemed == 0) { // User enters 0
                 System.out.println("Returning to main menu.");
@@ -415,8 +416,7 @@ public class Main {
             int currentTotal = Integer.parseInt(repData[repIndex][6]); // Converts string to int
             while (!(pointsRedeemed > 0 && pointsRedeemed <= currentTotal)) { // while points entered is greater than 0 and less than the currentTotal
                 System.out.println("Invalid amount. Enter a number greater than 0 and no more than your available points.");
-                pointsRedeemed = input.nextInt(); // Users new input
-                input.nextLine(); // Clear leftover newline from nextInt
+                pointsRedeemed = readInt(input, "How many points to redeem? Press 0 to return to main menu. "); // Users new input
             }
 
             // Prompt for redemption type
@@ -426,8 +426,7 @@ public class Main {
             System.out.println("3. Store Credit");
             System.out.println("0. Return to main menu");
 
-            redemptionType = input.nextInt();
-            input.nextLine();
+            redemptionType = readInt(input, "");
 
             while (redemptionType == 0) { // User enters 0
                 System.out.println("Returning to main menu.");
@@ -436,9 +435,7 @@ public class Main {
 
             while (!(redemptionType >= 1 && redemptionType <= 3)) { // user enters an invalid number or character
                 System.out.println("Invalid choice");
-                System.out.print("Please select a redemption type: ");
-                redemptionType = input.nextInt(); // users correct input
-                input.nextLine(); // Clear leftover newline from nextInt()
+                redemptionType = readInt(input, "Please select a redemption type: "); // users correct input
             }
 
             switch (redemptionType) {
@@ -477,7 +474,7 @@ public class Main {
 
         // Display Header
         System.out.printf("%-8s%-15s%-40s%-15s%-15s%-8s%-8s%n", "Rep ID", "Name", "Email", "Discount Code", "PR Code", "# Posts", "Total Points");
-        System.out.println("-".repeat(94));
+        System.out.println("-".repeat(109));
 
         // Loop through repData from 0 to repCount
         for (int i = 0; i < repCount; i++) {
@@ -485,9 +482,9 @@ public class Main {
         }
 
         // Display message how to return to main
-        System.out.print("Press 0 to return to main menu.");
-        input.nextInt();
-        input.nextLine();
+        System.out.print("Press 0 to return to main menu. ");
+        readInt(input, "");
+        System.out.println("Returning to main menu.");
     }
     
 }
