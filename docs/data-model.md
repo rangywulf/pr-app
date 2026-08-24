@@ -2,53 +2,60 @@
 
 ## PR Representative
 
-Each PR representative will have a unique ID assigned by the application. The representative's email address must also be unique and will be validated when the representative is added.
+Each PR representative has a unique ID assigned by the application. The representative's email address must also be unique and is validated when the representative is added.
 
 ```text
 PR Representative
 ├── ID
 ├── Name
 ├── Email
+├── Discount Code
+├── Personal PR Code
+├── Post Count
 └── Point Balance
 ```
-- ID: Unique identifier assigned by the application
-- Name: Name of the PR rep
-- Email: Unique email address for the PR rep
+- ID: Unique identifier assigned by the application.
+- Name: Name of the PR rep.
+- Email: Unique email address for the PR rep.
+- Discount Code: The rep's shop discount code, shared with their audience.
+- Personal PR Code: The rep's personal PR/referral code.
+- Post Count: Running total of posts logged for this rep.
 - Point Balance: Current number of points available to the PR rep.
+
 ## Post
+
 Each post represents promotional content submitted by a PR rep. In the Phase 1 prototype, the PR rep provides a link to the post rather than uploading the content directly to the application.
+
+A post does not have its own unique ID. It is identified only by its position among the other posts, and does not store the number of points it earned; points earned are recorded separately as a point transaction.
 
 ```text
 Post
-├── ID
 ├── PR Representative ID
 ├── Platform
-├── URL
-└── Points Awarded
+└── URL
 ```
-- ID: Unique identifier assigned to the post.
-- PR Rep ID: Identifies the PR rep who submitted the post.
-- Platform: Social media platform where the post published
-- URL: Link to the promotional post
-- Points awarded: Number of points awarded for the post.
+- PR Representative ID: Identifies the PR rep who submitted the post.
+- Platform: Social media platform where the post was published.
+- URL: Link to the promotional post.
+
 ## Point Transaction
-A Point transaction represents a change to a PR rep's point balance. There are currently two kinds of changes:
+
+A point transaction represents a change to a PR rep's point balance. There are currently two kinds of changes:
 - Points earned from a qualifying post
 - Points redeemed by the PR rep
 
+A point transaction does not have its own unique ID, and it does not store a reference to the specific post that generated it. Instead of a separate transaction type field, the reason for the change is recorded as descriptive text (for example, "Post logged" or "Redeem for Cash").
+
 ```text
 Point Transaction
-├── ID
 ├── PR Representative ID
-├── Post ID
-├── Type
-└── Amount
+├── Amount
+└── Reason
 ```
-- ID: Unique identifier for the transaction
-- PR Rep ID: Identifies which PR's balance was affected
-- Type: Identifies whether the transaction is an earning or redemption
-- Post ID: Identifies the post associated with an earned-point transaction. This field is not used for redemption transactions.
-- Amount: Number of points involved in the transaction.
+- PR Representative ID: Identifies which PR rep's balance was affected.
+- Amount: Number of points involved in the transaction (positive for points earned, negative for points redeemed).
+- Reason: Describes why the change occurred.
+
 ## Relationships
 
 ### PR Representative and Post
@@ -59,24 +66,11 @@ A PR representative can submit multiple posts, while each post belongs to one PR
 PR Representative 1 ──────── * Post
 ```
 This is a one-to-many relationship. The Post stores the PR Representative ID to identify the representative who submitted it.
+
 ### PR Representative and Point Transaction
+
 A PR representative can have multiple point transactions, while each point transaction belongs to one PR representative.
 ```text
 PR Representative 1 ──────── * Point Transaction
 ```
 This is a one-to-many relationship. The Point Transaction stores the PR Representative ID to identify which representative's point balance was affected.
-### Post and Point Transaction
-A post can result in a point transaction when points are awarded for qualifying activity. A point transaction that represents earned points can be associated with the post that generated those points.
-```text
-Post 1 ──────── 0..1 Point Transaction
-```
-A post may have zero or one associated point transaction because a post may not have been awarded points. A point transaction for earned points can reference the Post ID that generated it.
-
-```text
-Point Transaction
-├── ID
-├── PR Representative ID
-├── Post ID
-├── Type
-└── Amount
-```

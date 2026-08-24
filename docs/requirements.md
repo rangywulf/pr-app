@@ -6,7 +6,7 @@
 
 The PR App Core Engine is a Java-based application designed to help small business owners manage their public relations (PR) teams.
 
-In this application, PR representatives promote a shop's products through social media. Instead of receiving traditional monetary compensation, representatives are rewarded through points that can be redeemed for products or shop credit.
+In this application, PR representatives promote a shop's products through social media. Instead of receiving traditional monetary compensation, representatives are rewarded through points that can be redeemed for cash, products, or store credit.
 
 The current version is a Phase 1 prototype focused on the core logic needed to manage PR representatives, track promotional posts, award points, track point history, and process point redemptions.
 
@@ -108,7 +108,7 @@ The application must prevent a redemption from causing the representative's poin
 
 If the requested redemption exceeds the available point balance, the application must reject the transaction and prompt the owner to enter a valid amount.
 
-The application must allow the owner to specify whether the redemption is for cash, product, store credit. This information must be recorded in the point history entry for that transaction.
+The application must allow the owner to specify whether the redemption is for cash, product, or store credit. This information must be recorded in the point history entry for that transaction.
 
 ## 3.8 Sales Tracking
 
@@ -157,15 +157,20 @@ Persistent storage is intentionally outside the scope of this version and will b
 
 # 6. Capacity Requirements
 
-The application must account for the capacity limits of the fixed-size arrays used to store representatives, posts, and point history entries.
+The application accounts for the capacity limits of the fixed-size arrays used to store representatives, posts, and point history entries. This requirement is implemented.
 
-The initial array capacities should be large enough to support normal demonstration and testing of the prototype.
+Each array has a dedicated capacity constant:
 
-When an array reaches capacity, the application must:
+* `MAX_CAPACITY = 100` for the `repData` array, checked in `addRep()`.
+* `POST_CAP = 500` for the post arrays, checked in `logPost()`.
+* `HISTORY_CAP = 1000` for the point history arrays, checked in `pointHistory()`.
 
-1. Detect that no additional space is available.
+In each of `addRep()`, `logPost()`, and `pointHistory()`, the capacity check runs at the top of the method, before any user prompts. When an array is at capacity, the application must:
+
+1. Detect that no additional space is available, before prompting the user for input.
 2. Prevent the application from attempting to store data outside the array.
-3. Display a clear message to the user.
+3. Display a clear "max reached" message to the user.
+4. Return from the method without proceeding further.
 
 # 7. User Interaction Requirements
 
@@ -195,10 +200,10 @@ The following functionality is within the scope of the Phase 1 prototype:
 * Point tracking.
 * Point awarding.
 * Point history tracking.
-* Point redemption with redemption type (cash or product).
+* Point redemption with redemption type (cash, product, or store credit).
 * Input validation.
 * Return to main menu option at every input prompt.
-* Fixed-size array storage.
+* Fixed-size array storage with enforced capacity limits.
 * Menu-driven interaction.
 * Separation of PR activity from sales activity.
 
@@ -233,7 +238,7 @@ The application must perform basic email format validation to catch common entry
 
 ## 10.3 Fixed Array Capacity
 
-The prototype uses fixed-size arrays rather than dynamic collections. This creates a limit on the number of representatives, posts, and point history entries that can be stored during a program session.
+The prototype uses fixed-size arrays rather than dynamic collections. This creates a limit on the number of representatives, posts, and point history entries that can be stored during a program session: 100 representatives, 500 posts, and 1000 point history entries.
 
 ## 10.4 Invalid Input Types
 

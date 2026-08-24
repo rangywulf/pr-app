@@ -60,12 +60,12 @@ public class Main {
                         break;
                     case 2:
                         System.out.println("Opening 'Log a Post'...");
-                        boolean logCreated = logPost(repData, repCount, HISTORY_CAP, POST_CAP, postRepIndex, postPlatform, postLink, 
+                        int updatedHistoryCount = logPost(repData, repCount, HISTORY_CAP, POST_CAP, postRepIndex, postPlatform, postLink, 
                             postCount, input, POINTS_PER_POST, pointHistoryRepIndex, pointHistoryAmount, 
                             pointHistoryReason, pointHistoryCount);
-                        if (logCreated) {
+                        if (updatedHistoryCount != -1) {
                             postCount++;
-                            pointHistoryCount++;
+                            pointHistoryCount = updatedHistoryCount;
                         }
                         break;
                     case 3:
@@ -288,7 +288,7 @@ public class Main {
     }
 
     /** Log posts made by the PR rep */
-    public static boolean logPost(String[][] repData, int repCount, int POST_CAP, int HISTORY_CAP, int[] postRepIndex, 
+    public static int  logPost(String[][] repData, int repCount, int POST_CAP, int HISTORY_CAP, int[] postRepIndex, 
     String[] postPlatform, String[] postLink, int postCount, Scanner input, int pointsPerPost, 
     int[] pointHistoryRepIndex, int[] pointHistoryAmount, String[] pointHistoryReason, int pointHistoryCount) {
         // Declare variables
@@ -297,20 +297,20 @@ public class Main {
         // Check if array is full
         if (postCount == POST_CAP) {
             System.out.println("Max number of posts reached.");
-            return false;
+            return -1;
         }
 
         // Select PR Rep
         int repIndex = repSelection(repData, repCount, input);
 
         if (repIndex == -1) { // User enters 0
-            return false; // Returns to main menu
+            return -1; // Returns to main menu
         }
 
         // Prompt user for platform
         String platform = platformSelection(input);
         if (platform == null) { // User enters 0
-                return false; // Returns to main menu
+                return -1; // Returns to main menu
             }
 
         // Prompt user for URL
@@ -319,7 +319,7 @@ public class Main {
 
         while (url.equals("0")) {
             System.out.println("Returning to main menu.");
-            return false;
+            return -1;
         }
         
         while (!url.contains("https://")) { // Validate URL
@@ -341,10 +341,14 @@ public class Main {
         repData[repIndex][5] = String.valueOf(currentPostCount); // Convert back to text and store the updated post count
 
         // Log this point change and update the rep's running point total
-        pointHistory(repData, HISTORY_CAP, pointHistoryRepIndex, pointHistoryAmount, pointHistoryReason, pointHistoryCount, 
+        boolean historyLogged = pointHistory(repData, HISTORY_CAP, pointHistoryRepIndex, pointHistoryAmount, pointHistoryReason, pointHistoryCount, 
             repIndex, pointsEarned, "Post logged");
+        
+        if (historyLogged) {
+            pointHistoryCount++;
+        }
 
-        return true;
+        return pointHistoryCount;
     }
 
     /** Calculate points from posts (currently a passthrough, future home for bonus logic) */
@@ -354,12 +358,12 @@ public class Main {
 
     
     /** Calculate points and log the history */
-    public static void pointHistory(String[][] repData, int HISTORY_CAP, int[] pointHistoryRepIndex, int[] pointHistoryAmount, 
+    public static boolean pointHistory(String[][] repData, int HISTORY_CAP, int[] pointHistoryRepIndex, int[] pointHistoryAmount, 
         String[] pointHistoryReason, int pointHistoryCount, int repIndex, int amount, String reason) {
         // Check if array is full
         if (pointHistoryCount == HISTORY_CAP) {
             System.out.println("Max number of history logs reached.");
-            return;
+            return false;
         }
 
         // add amount to rep's running point total
@@ -371,7 +375,9 @@ public class Main {
         // Store amount in pointHistoryAmount[pointHistoryCount]
         pointHistoryAmount[pointHistoryCount] = amount;
         // Store reason in pointHistoryReason[pointHistoryCount]
-        pointHistoryReason[pointHistoryCount] = reason;           
+        pointHistoryReason[pointHistoryCount] = reason;
+        
+        return true;
     }
 
     /** Redeem Points */
@@ -448,10 +454,12 @@ public class Main {
             }
 
             // log points redeemed to pointHistory
-            pointHistory(repData, HISTORY_CAP, pointHistoryRepIndex, pointHistoryAmount, pointHistoryReason, pointHistoryCount, 
+            boolean historyLogged = pointHistory(repData, HISTORY_CAP, pointHistoryRepIndex, pointHistoryAmount, pointHistoryReason, pointHistoryCount, 
                 repIndex, -pointsRedeemed, "Redeem for " + redemption);
-            pointHistoryCount++;
-        
+            if (historyLogged){
+                pointHistoryCount++;
+            }
+
             // Display current balance
             System.out.println("Total points left to redeem: " + repData[repIndex][6]);
         }
