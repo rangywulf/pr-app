@@ -60,7 +60,7 @@ public class Main {
                         break;
                     case 2:
                         System.out.println("Opening 'Log a Post'...");
-                        int updatedHistoryCount = logPost(repData, repCount, HISTORY_CAP, POST_CAP, postRepIndex, postPlatform, postLink, 
+                        int updatedHistoryCount = logPost(repData, repCount, POST_CAP, HISTORY_CAP, postRepIndex, postPlatform, postLink, 
                             postCount, input, POINTS_PER_POST, pointHistoryRepIndex, pointHistoryAmount, 
                             pointHistoryReason, pointHistoryCount);
                         if (updatedHistoryCount != -1) {
