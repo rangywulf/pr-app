@@ -1,3 +1,5 @@
+import java.time.LocalDate;
+
 public class PointTransaction {
     private static int nextId = 1;
     private int id;
@@ -5,6 +7,7 @@ public class PointTransaction {
     private int postId;
     private int amount;
     private String reason;
+    private LocalDate date;
 
     public PointTransaction(int repId, int postId, int amount, String reason) {
         this.id = nextId;
@@ -13,6 +16,7 @@ public class PointTransaction {
         this.postId = postId;
         this.amount = amount;
         this.reason = reason;
+        this.date = LocalDate.now();
     }
 
     // get Id
@@ -38,6 +42,11 @@ public class PointTransaction {
     // get reason
     public String getReason() {
         return reason;
+    }
+
+    // get Date
+    public LocalDate getDate() {
+        return date;
     }
 
     @Override 

@@ -1,3 +1,8 @@
+import java.util.Optional;
+
+import javax.swing.table.TableColumn;
+import javax.swing.text.TableView;
+
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
@@ -8,6 +13,9 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import javafx.geometry.Insets;
 import javafx.beans.property.SimpleIntegerProperty;
+import java.util.ArrayList;
+import java.lang.classfile.Label;
+import java.time.LocalDate;
 
 public class Main extends Application {
     private RepManager repManager = new RepManager();
@@ -65,6 +73,7 @@ public class Main extends Application {
         /** Team Tab */
         // Create table
         TableView<Rep> table = new TableView<>();
+        table.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
         // Name Column
         TableColumn<Rep, String> colName = new TableColumn<>("Name");
@@ -137,8 +146,58 @@ public class Main extends Application {
             tfName.clear();
             tfEmail.clear();
             tfDiscount.clear();
-            tfPersonal.clear();
-            
+            tfPersonal.clear();            
+        });
+
+        // View History button
+        btHistory.setOnAction(e -> {
+            ArrayList<Rep> selectedReps = getSelectedReps(table);
+            if (selectedReps == null) {
+                return;
+            }
+            Rep selectedRep = selectedReps.get(0);
+
+            // Create table for Points History
+            ArrayList<PointTransaction> history = pointsManager.getHistory(selectedRep.getId());
+            TableView<PointTransaction> historyTable = new TableView<>();
+            TableColumn<PointTransaction, LocalDate> colDate = new TableColumn<>("Date");
+            colDate.setCellValueFactory(new PropertyValueFactory<>("date"));
+            historyTable.getColumns().add(colDate);
+            TableColumn<PointTransaction, Integer> colAmount = new TableColumn<>("Amount");
+            colAmount.setCellValueFactory(new PropertyValueFactory<>("amount"));
+            historyTable.getColumns().add(colAmount);
+            TableColumn<PointTransaction, String> colReason = new TableColumn<>("Reason");
+            colReason.setCellValueFactory(new PropertyValueFactory<>("reason"));
+            historyTable.getColumns().add(colReason);
+            historyTable.getItems().setAll(history);
+
+            // Create new stage for Points History
+            Stage historyStage = new Stage();
+            Scene historyScene = new Scene(historyTable, 400, 300);
+            historyStage.setTitle(selectedRep.getName()+ " Point History"); // set title for stage
+            historyStage.setScene(historyScene); // Place scene on stage
+            historyStage.show(); // display stage
+
+        });
+
+        // Delete Button
+        btDelete.setOnAction(e -> {
+            ArrayList<Rep> selectedReps = getSelectedReps(table);
+            if (selectedReps == null) {
+                return;
+            }
+
+            Alert confirm = new Alert(Alert.AlertType.CONFIRMATION, "Delete " + selectedReps.size() + 
+                " people? Their posts and point history will be deleted too. This cannot be undone.");
+            Optional<ButtonType> result = confirm.showAndWait();
+
+            if (result.isPresent() && result.get() == ButtonType.OK) {
+                for (Rep rep : selectedReps) {
+                    pointsManager.deleteForRep(rep.getId());
+                    repManager.deleteRep(rep.getId());
+                }
+                table.getItems().setAll(repManager.getReps());
+            }
         });
 
         // put form into addRepTab
@@ -151,6 +210,18 @@ public class Main extends Application {
         primaryStage.show(); // display stage
     }
 
+    // Select Rep
+    private ArrayList<Rep> getSelectedReps(TableView<Rep> table) {
+        ArrayList<Rep> selectedReps = new ArrayList<>(table.getSelectionModel().getSelectedItems());
+
+        if (selectedReps.isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.WARNING, "Please select a rep first");
+            alert.showAndWait();
+            return null;
+        }
+
+        return selectedReps;
+    }
     public static void main(String[] args) {
         launch(args);
     }

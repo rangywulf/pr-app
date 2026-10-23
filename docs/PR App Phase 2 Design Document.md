@@ -33,14 +33,14 @@ There are seven classes, one file each.
 | Post | Holds one post's information | Post.java |
 | PointTransaction | Holds one point change | PointTransaction.java |
 | RepManager | Holds the reps and applies the rep rules | RepManager.java |
-| PostPointsManager | Holds posts and transactions and applies the points rules | PostPointsManager.java |
+| PointsManager | Holds posts and transactions and applies the points rules | PointsManager.java |
 | FileHandler | Saves and loads data | FileHandler.java |
 | Main | Builds the GUI and launches the app | Main.java |
 
 ```text
 Main (GUI and launcher)
  ├── RepManager          holds reps
- ├── PostPointsManager   holds posts and point transactions
+ ├── PointsManager   holds posts and point transactions
  └── FileHandler         saves and loads
 
 Data classes: Rep, Post, PointTransaction
@@ -61,16 +61,16 @@ Main knows about the managers, and the managers know about the data classes. Not
 | - name: String                                   |
 | - email: String                                  |
 | - discountCode: String                           |
-| - personalPrCode: String                         |
+| - personalCode: String                         |
 +--------------------------------------------------+
-| + Rep(name, email, discountCode, personalPrCode) |
+| + Rep(name, email, discountCode, personalCode) |
 | + getId(): int                                   |
 | + getName(): String                              |
 | + getEmail(): String                             |
 | + getDiscountCode(): String                      |
 | + getPersonalPrCode(): String                    |
 | + setName(name: String): void                    |
-| + setPersonalPrCode(code: String): void          |
+| + setPersonalCode(code: String): void          |
 | + toString(): String                             |
 +--------------------------------------------------+
 ```
@@ -139,7 +139,7 @@ Amount is positive for points earned and negative for points redeemed. Reason ho
 +------------------------------------------------------+
 ```
 
-### PostPointsManager
+### PointsManager
 
 ```text
 +------------------------------------------------------+
@@ -182,7 +182,7 @@ The save and load signatures are a rough draft. They will be tightened once file
 |            (extends Application)                     |
 +------------------------------------------------------+
 | - repManager: RepManager                             |
-| - postPointsManager: PostPointsManager               |
+| - pointsManager: PointsManager               |
 | - fileHandler: FileHandler                           |
 +------------------------------------------------------+
 | + start(primaryStage: Stage): void                   |
@@ -201,8 +201,8 @@ Rep, Post, and PointTransaction each keep a static nextId counter. When a new ob
 | Holder | Holds a list of |
 | --- | --- |
 | RepManager | Rep |
-| PostPointsManager | Post and PointTransaction |
-| Main | One RepManager, one PostPointsManager, one FileHandler |
+| pointsManager | Post and PointTransaction |
+| Main | One RepManager, one PointsManager, one FileHandler |
 
 FileHandler holds no data of its own. It reads from and fills the two managers.
 
@@ -244,7 +244,7 @@ Belle's balance    = 10 + 10 - 5 = 15 (sum of her transactions)
 | Point balance | Calculated by summing transactions | Works like a ledger with one source of truth, and history comes built in |
 | Post id | Post gets its own id | Future database primary key, row selection in the GUI, tells duplicate URLs apart |
 | PointTransaction id and postId | Both added, postId is -1 when no post | Lets a later phase show which post earned a transaction |
-| Manager structure | Three classes: RepManager, PostPointsManager, FileHandler | Each class has one job, no box is crowded, and FileHandler is the piece a database replaces later |
+| Manager structure | Three classes: RepManager, PointsManager, FileHandler | Each class has one job, no box is crowded, and FileHandler is the piece a database replaces later |
 | Deleting a rep | Deletes the rep, their posts, and their transactions, after a confirmation | Simple and clean for now |
 | GUI layout | One window with tabs | Fewer clicks than a menu with separate screens |
 | Dashboard drill-down | Select a row, then click View History | Simple to build. A history panel can be added later |
@@ -273,7 +273,7 @@ One JavaFX window with four tabs: Team, Add Rep, Log Post, and Redeem. The plain
 +--------------------------------------------------------------+
 | [ Team ] [ Add Rep ] [ Log Post ] [ Redeem ]                 |
 +--------------------------------------------------------------+
-|  Name    | Email           | Discount | PR Code | Posts | Pts  |
+|  Name    | Email           | Discount | Personal Code | Posts | Pts  |
 |  Belle   | belle@test.com  | BELLE10  | BELLEPR |   2   | 15   |  <- selected
 |  Jacob   | jacob@test.com  | JACOB10  | JACOBPR |   1   | 10   |
 |                                                              |
@@ -358,7 +358,7 @@ Build from the bottom of the class diagram upward, testing as each layer is fini
 | --- | --- | --- |
 | 1 | Rep, Post, PointTransaction | Depend on nothing else |
 | 2 | RepManager | Needs only Rep |
-| 3 | PostPointsManager | Needs Post and PointTransaction |
+| 3 | PointsManager | Needs Post and PointTransaction |
 | 4 | Test steps 1 to 3 with a small throwaway main | Finds rule bugs before any GUI exists |
 | 5 | Main with the Team and Add Rep tabs | First screens that can be seen and clicked |
 | 6 | Log Post and Redeem tabs | Same pattern as Add Rep |
