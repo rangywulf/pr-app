@@ -1,8 +1,5 @@
 import java.util.Optional;
 
-import javax.swing.table.TableColumn;
-import javax.swing.text.TableView;
-
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
@@ -14,7 +11,6 @@ import javafx.stage.Stage;
 import javafx.geometry.Insets;
 import javafx.beans.property.SimpleIntegerProperty;
 import java.util.ArrayList;
-import java.lang.classfile.Label;
 import java.time.LocalDate;
 
 public class Main extends Application {
@@ -27,13 +23,15 @@ public class Main extends Application {
         TabPane tabPane = new TabPane();
         Tab teamTab = new Tab("Team");
         Tab addRepTab = new Tab("Add Rep");
+        Tab logPostTab = new Tab("Log Post");
 
         // Keep tabs from closing
         teamTab.setClosable(false);
         addRepTab.setClosable(false);
+        logPostTab.setClosable(false);
 
         // add tabs to tabPane
-        tabPane.getTabs().addAll(teamTab, addRepTab);
+        tabPane.getTabs().addAll(teamTab, addRepTab, logPostTab);
 
         /** Add Rep Tab */
         // Create a new GridPane
@@ -68,7 +66,42 @@ public class Main extends Application {
         
         // Status label
         Label statusLabel = new Label("");
-        form.add(statusLabel, 1, 5);
+        form.add(statusLabel, 1, 5); 
+
+        /** Log Post Tab */
+        // Create Grid
+        GridPane logPostForm = new GridPane();
+        logPostForm.setPadding(new Insets(20));
+        logPostForm.setHgap(10);
+        logPostForm.setVgap(10);
+
+        // Create labels
+        Label repLabel = new Label("Name: ");
+        ComboBox<Rep> cbRep = new ComboBox<>();
+        Label platformLabel = new Label("Platform: ");
+        ComboBox<String> cbPlatform = new ComboBox<>();
+        cbPlatform.getItems().addAll("YouTube", "TikTok", "Instagram", "Facebook", "Substack");
+        Label urlLabel = new Label("URL of Post: ");
+        TextField tfUrl = new TextField();
+
+        // Create button
+        Button btLogPost = new Button("Add");
+
+        // add label and textfield to form
+        logPostForm.add(repLabel, 0, 0);
+        logPostForm.add(cbRep, 1, 0);
+        logPostForm.add(platformLabel, 0, 1);
+        logPostForm.add(cbPlatform, 1, 1);
+        logPostForm.add(urlLabel, 0, 2);
+        logPostForm.add(tfUrl, 1, 2);
+        logPostForm.add(btLogPost, 1, 3);
+
+        // Create label status
+        Label logStatusLabel = new Label("");
+        logPostForm.add(logStatusLabel, 1, 4);
+
+        // place form in logpost tab
+        logPostTab.setContent(logPostForm);
 
         /** Team Tab */
         // Create table
@@ -137,6 +170,9 @@ public class Main extends Application {
             // add to file
             repManager.addRep(name, email, discount, personalCode);
             table.getItems().setAll(repManager.getReps());
+
+            // Table refresh
+            cbRep.getItems().setAll(repManager.getReps());
             
             // Status label
             statusLabel.setText("PR Rep added successfully.");
@@ -197,11 +233,47 @@ public class Main extends Application {
                     repManager.deleteRep(rep.getId());
                 }
                 table.getItems().setAll(repManager.getReps());
+
+                // refresh table
+                cbRep.getItems().setAll(repManager.getReps());
             }
         });
 
+        // Add button for log post
+            btLogPost.setOnAction(e -> {
+                logStatusLabel.setText("");
+                Rep selectedRep = cbRep.getValue();
+                String platform = cbPlatform.getValue();
+                String url = tfUrl.getText();
+
+                if (selectedRep == null || platform == null) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR, "Please select a rep and a platform");
+                    alert.showAndWait();
+                    return;
+                }
+
+                if (!url.startsWith("https://")) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR, "Invalid URL. Must start with https://");
+                    alert.showAndWait();
+                    return;
+                }
+
+                // Log the post
+                pointsManager.logPost(selectedRep.getId(), platform, url);
+                table.getItems().setAll(repManager.getReps());
+
+                // Display completed
+                logStatusLabel.setText("Post logged successfully");
+                logStatusLabel.setStyle("-fx-text-fill: green;");
+
+                // Clear textfields
+                tfUrl.clear();
+
+            });
+
         // put form into addRepTab
         addRepTab.setContent(form);
+
 
         // Create scene and set stage
         Scene scene = new Scene(tabPane, 800, 500);
