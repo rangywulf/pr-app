@@ -4,15 +4,15 @@ public class Rep {
     private String name;
     private String email;
     private String discountCode;
-    private String personalPrCode;
+    private String personalCode;
 
-    public Rep(String name, String email, String discountCode, String personalPrCode) {
+    public Rep(String name, String email, String discountCode, String personalCode) {
         this.id = nextId;
         nextId++;
         this.name = name;
         this.email = email;
         this.discountCode = discountCode;
-        this.personalPrCode = personalPrCode;
+        this.personalCode = personalCode;
     }
 
     // get id
@@ -36,8 +36,8 @@ public class Rep {
     }
 
     // get personalPrCode
-    public String getPersonalPrCode() {
-        return personalPrCode;
+    public String getPersonalCode() {
+        return personalCode;
     }
 
     // set name
@@ -56,8 +56,8 @@ public class Rep {
     }
 
     // set personalPrCode
-    public void setPersonalPrCode(String personalPrCode) {
-        this.personalPrCode = personalPrCode;
+    public void setPersonalCode(String personalCode) {
+        this.personalCode = personalCode;
     }
 
     @Override
