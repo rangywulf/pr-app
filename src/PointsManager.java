@@ -47,6 +47,16 @@ public class PointsManager {
         return repHistory;
     }
 
+    // get URL
+    public String getPostUrl(int postId) {
+        for (int i = 0; i < posts.size(); i++) {
+            if (posts.get(i).getId() == postId) {
+                return posts.get(i).getUrl();
+            }
+        }
+        return "";
+    }
+
     // log post
     public boolean logPost(int repId, String platform, String url) {
         if (!url.startsWith("https://")) { // if the url does not start with https://
