@@ -24,14 +24,16 @@ public class Main extends Application {
         Tab teamTab = new Tab("Team");
         Tab addRepTab = new Tab("Add Rep");
         Tab logPostTab = new Tab("Log Post");
+        Tab redeemTab = new Tab("Redeem");
 
         // Keep tabs from closing
         teamTab.setClosable(false);
         addRepTab.setClosable(false);
         logPostTab.setClosable(false);
+        redeemTab.setClosable(false);
 
         // add tabs to tabPane
-        tabPane.getTabs().addAll(teamTab, addRepTab, logPostTab);
+        tabPane.getTabs().addAll(teamTab, addRepTab, logPostTab, redeemTab);
 
         /** Add Rep Tab */
         // Create a new GridPane
@@ -103,6 +105,99 @@ public class Main extends Application {
         // place form in logpost tab
         logPostTab.setContent(logPostForm);
 
+        /** Redeem Tab */
+        // Create Grid 
+        GridPane redeemForm = new GridPane();
+        redeemForm.setPadding(new Insets(20));
+        redeemForm.setHgap(10);
+        redeemForm.setVgap(10);
+
+        // Create labels
+        Label redeemRepLabel = new Label("Name: ");
+        ComboBox<Rep> cbRedeemRep = new ComboBox<>();
+        Label currentPointsLabel = new Label("Current points: ");
+        Label pointsValueLabel = new Label("0");
+        Label redeemAmountLabel = new Label("How many points to redeem: ");
+        TextField tfRedeemAmount = new TextField();
+        Label typeLabel = new Label("Type: ");
+        ComboBox<String> cbType = new ComboBox<>();
+        cbType.getItems().addAll("Cash Payout", "Product", "Store Credit");
+        Label redeemStatusLabel = new Label("");
+
+        // Create button
+        Button btRedeem = new Button("Redeem");
+
+        // add label and textfield to form
+        redeemForm.add(redeemRepLabel, 0, 0);
+        redeemForm.add(cbRedeemRep, 1, 0);
+        redeemForm.add(currentPointsLabel, 0, 1);
+        redeemForm.add(pointsValueLabel, 1, 1);
+        redeemForm.add(redeemAmountLabel, 0, 2);
+        redeemForm.add(tfRedeemAmount, 1, 2);
+        redeemForm.add(typeLabel, 0, 3);
+        redeemForm.add(cbType, 1, 3);
+        redeemForm.add(btRedeem, 1, 4);
+        redeemForm.add(redeemStatusLabel, 1, 5);
+
+        // place form in redeem tab
+        redeemTab.setContent(redeemForm);
+
+        // Update Current points
+        cbRedeemRep.setOnAction(e -> {
+            Rep selectedRep = cbRedeemRep.getValue();
+            if (selectedRep == null) {
+                pointsValueLabel.setText("0");
+                return;
+            }
+            pointsValueLabel.setText(String.valueOf(pointsManager.getPoints(selectedRep.getId())));
+        });
+
+        // Redeem Button
+        btRedeem.setOnAction(e -> {
+            redeemStatusLabel.setText("");
+            Rep selectedRep = cbRedeemRep.getValue();
+            String type = cbType.getValue();
+            if (selectedRep == null || type == null) {
+                Alert alert = new Alert(Alert.AlertType.ERROR, "Please select and rep and at type");
+                alert.showAndWait();
+                return;
+            }
+
+            // Create amount
+            int amount;
+
+            // turns points text into a number
+            try {
+                amount = Integer.parseInt(tfRedeemAmount.getText());
+            } catch (NumberFormatException ex) {
+                Alert alert = new Alert(Alert.AlertType.ERROR, "Invalid amount");
+                alert.showAndWait();
+                return;
+            }
+
+            // redeem and reject a bad amount
+            if (!pointsManager.redeemPoints(selectedRep.getId(), amount, type)) {
+                Alert alert = new Alert(Alert.AlertType.ERROR, "Invalid amount");
+                alert.showAndWait();
+                return;
+            }
+
+            // Successful redemption
+            table.getItems().setAll(repManager.getReps());
+            pointsValueLabel.setText(String.valueOf(pointsManager.getPoints(SelectedRep.getId())));
+            redeemStatusLabel.setText("Points redeemed successfully.");
+            redeemStatusLabel.setStyle("-fx-test-fill: green");
+            tfRedeemAmount.clear();
+        });
+
+        // Refresh points 
+        redeemTab.setOnSelectionChanged(e -> {
+            Rep selectedRep = cbRedeemRep.getValue();
+            if (selectedRep != null) {
+                pointsValueLabel.setText(String.valueOf(pointsManager.getPoints(selectedRep.getId())));
+            }
+        });
+
         /** Team Tab */
         // Create table
         TableView<Rep> table = new TableView<>();
@@ -173,6 +268,7 @@ public class Main extends Application {
 
             // Table refresh
             cbRep.getItems().setAll(repManager.getReps());
+            cbRedeemRep.getItems().setAll(repManager.getReps());
             
             // Status label
             statusLabel.setText("PR Rep added successfully.");
@@ -236,6 +332,7 @@ public class Main extends Application {
 
                 // refresh table
                 cbRep.getItems().setAll(repManager.getReps());
+                cbRedeemRep.getItems().setAll(repManager.getReps());
             }
         });
 
