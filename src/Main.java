@@ -513,7 +513,7 @@ public class Main extends Application {
         addRepLayout.setStyle("-fx-background-color: #eee6d7");
         addRepTab.setContent(addRepLayout);
 
-        // Title above tabs
+        // Title, company, and tagline above tabs and styling
         Label appTitle = new Label("Shiver");
         appTitle.setStyle("-fx-font-size: 24; -fx-font-weight: bold; -fx-text-fill: #f5f1ea; -fx-background-color: #124049;");
         appTitle.setMaxWidth(Double.MAX_VALUE);
