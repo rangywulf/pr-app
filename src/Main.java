@@ -3,7 +3,6 @@ import java.util.Optional;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
@@ -13,6 +12,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.geometry.VPos;
 import javafx.geometry.HPos;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -41,6 +41,47 @@ public class Main extends Application {
 
         // add tabs to tabPane
         tabPane.getTabs().addAll(teamTab, addRepTab, logPostTab, redeemTab);
+        
+        // Tab styling
+        tabPane.setStyle("-fx-tab-min-height: 40; -fx-tab-min-width: 100; -fx-focus-color: transparent; -fx-faint-focus-color: transparent;");
+        teamTab.setStyle("-fx-font-size: 14; -fx-font-weight: bold; -fx-background-color: #4FB3BF; -fx-text-base-color: #0B2A3C;");
+        addRepTab.setStyle("-fx-font-size: 14; -fx-font-weight: bold;");
+        logPostTab.setStyle("-fx-font-size: 14; -fx-font-weight: bold;");
+        redeemTab.setStyle("-fx-font-size: 14; -fx-font-weight: bold;");
+
+        // Change color of tab when selected
+        teamTab.setOnSelectionChanged(e -> {
+            if (teamTab.isSelected()) {
+                teamTab.setStyle("-fx-font-size: 14; -fx-font-weight: bold; -fx-background-color: #4FB3BF; -fx-text-base-color: #0B2A3C;");
+            } else {
+                teamTab.setStyle("-fx-font-size: 14; -fx-font-weight: bold;");
+            }
+        });
+
+        addRepTab.setOnSelectionChanged(e -> {
+            if (addRepTab.isSelected()) {
+                addRepTab.setStyle("-fx-font-size: 14; -fx-font-weight: bold; -fx-background-color: #4FB3BF; -fx-text-base-color: #0B2A3C;");
+            } else {
+                addRepTab.setStyle("-fx-font-size: 14; -fx-font-weight: bold;");
+            }
+        });
+
+        logPostTab.setOnSelectionChanged(e -> {
+            if (logPostTab.isSelected()) {
+                logPostTab.setStyle("-fx-font-size: 14; -fx-font-weight: bold; -fx-background-color: #4FB3BF; -fx-text-base-color: #0B2A3C;");
+            } else {
+                logPostTab.setStyle("-fx-font-size: 14; -fx-font-weight: bold;");
+            }
+        });
+
+        redeemTab.setOnSelectionChanged(e -> {
+            if (redeemTab.isSelected()) {
+                redeemTab.setStyle("-fx-font-size: 14; -fx-font-weight: bold; -fx-background-color: #4FB3BF; -fx-text-base-color: #0B2A3C;");
+            } else {
+                redeemTab.setStyle("-fx-font-size: 14; -fx-font-weight: bold;");
+            }
+        });
+
 
         /** Add Rep Tab */
         // Create a new GridPane
@@ -79,14 +120,18 @@ public class Main extends Application {
         
         // Status label
         Label statusLabel = new Label("");
-        form.add(statusLabel, 1, 5); 
+        form.add(statusLabel, 1, 4); 
         statusLabel.managedProperty().bind(statusLabel.textProperty().isNotEmpty());
 
         // Sizing and styling
         GridPane.setHalignment(btAdd, HPos.RIGHT);
+        GridPane.setHalignment(statusLabel, HPos.LEFT);
+        GridPane.setValignment(btAdd, VPos.CENTER);
+        GridPane.setValignment(statusLabel, VPos.CENTER);
         form.setAlignment(Pos.CENTER);
         form.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
         form.setStyle("-fx-border-color: #cccccc; -fx-border-radius: 8; -fx-background-color: white; -fx-background-radius: 8;");
+        btAdd.setStyle("-fx-background-color: #4FB3BF; -fx-text-fill: #0B2A3C; -fx-font-weight: bold; -fx-background-radius: 6;");
 
         /** Log Post Tab */
         // Create Grid
@@ -121,18 +166,26 @@ public class Main extends Application {
 
         // Create label status
         Label logStatusLabel = new Label("");
-        logPostForm.add(logStatusLabel, 1, 4);
+        logPostForm.add(logStatusLabel, 1, 3);
         logStatusLabel.managedProperty().bind(logStatusLabel.textProperty().isNotEmpty());
 
         // Styling and sizing
         GridPane.setHalignment(btLogPost, HPos.RIGHT);
+        GridPane.setHalignment(logStatusLabel, HPos.LEFT);
+        GridPane.setValignment(btLogPost, VPos.CENTER);
+        GridPane.setValignment(logStatusLabel, VPos.CENTER);
         logPostForm.setAlignment(Pos.CENTER);
         logPostForm.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
         logPostForm.setStyle("-fx-border-color: #cccccc; -fx-border-radius: 8; -fx-background-color: white; -fx-background-radius: 8;");
+        btLogPost.setStyle("-fx-background-color: #4FB3BF; -fx-text-fill: #0B2A3C; -fx-font-weight: bold; -fx-background-radius: 6;");
 
         // place form in logpost tab
-        StackPane logPostLayout = new StackPane(logPostForm);
-        logPostLayout.setPadding(new Insets(20));
+        Label logPostTitle = new Label("Log PR Posts");
+        logPostTitle.setStyle("-fx-font-size: 20; -fx-font-weight: bold");
+        VBox logPostLayout = new VBox(15, logPostTitle, logPostForm);
+        logPostLayout.setAlignment(Pos.CENTER);
+        logPostLayout.setStyle("-fx-background-color: #F6EBD9");
+        logPostLayout.setPadding(new Insets(20, 20, 100, 20));
         logPostTab.setContent(logPostLayout);
 
         /** Redeem Tab */
@@ -167,7 +220,7 @@ public class Main extends Application {
         redeemForm.add(typeLabel, 0, 3);
         redeemForm.add(cbType, 1, 3);
         redeemForm.add(btRedeem, 1, 4);
-        redeemForm.add(redeemStatusLabel, 1, 5);
+        redeemForm.add(redeemStatusLabel, 1, 4);
         cbRedeemRep.setPrefWidth(250);
         tfRedeemAmount.setPrefWidth(250);
         cbType.setPrefWidth(250);
@@ -175,13 +228,21 @@ public class Main extends Application {
 
         // Styling and sizing
         GridPane.setHalignment(btRedeem, HPos.RIGHT);
+        GridPane.setHalignment(redeemStatusLabel, HPos.LEFT);
+        GridPane.setValignment(btRedeem, VPos.CENTER);
+        GridPane.setValignment(redeemStatusLabel, VPos.CENTER);
         redeemForm.setAlignment(Pos.CENTER);
         redeemForm.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
         redeemForm.setStyle("-fx-border-color: #cccccc; -fx-border-radius: 8; -fx-background-color: white; -fx-background-radius: 8;");
+        btRedeem.setStyle("-fx-background-color: #4FB3BF; -fx-text-fill: #0B2A3C; -fx-font-weight: bold; -fx-background-radius: 6;");
     
         // place form in redeem tab
-        StackPane redeemLayout = new StackPane(redeemForm);
-        redeemLayout.setPadding(new Insets(20));
+        Label redeemTitle = new Label("Redeem Points");
+        redeemTitle.setStyle("-fx-font-size: 20; -fx-font-weight: bold;");
+        VBox redeemLayout = new VBox(15, redeemTitle, redeemForm);
+        redeemLayout.setAlignment(Pos.CENTER);
+        redeemLayout.setStyle("-fx-background-color: #F6EBD9");
+        redeemLayout.setPadding(new Insets(20, 20, 100, 20));
         redeemTab.setContent(redeemLayout);
 
         // Update Current points
@@ -207,6 +268,7 @@ public class Main extends Application {
         TableView<Rep> table = new TableView<>();
         table.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_ALL_COLUMNS);
+        table.setStyle("-fx-focus-color: transparent; -fx-faint-focus-color: transparent;");
 
         // Name Column
         TableColumn<Rep, String> colName = new TableColumn<>("Name");
@@ -246,7 +308,10 @@ public class Main extends Application {
         VBox teamLayout = new VBox(table, buttonRow);
         VBox.setVgrow(table, Priority.ALWAYS);
         teamLayout.setPadding(new Insets(20));
+        teamLayout.setStyle("-fx-background-color: #F6EBD9");
         buttonRow.setAlignment(Pos.CENTER_RIGHT);
+        btHistory.setStyle("-fx-background-color: #4Fb3BF; -fx-text-fill: #0B2A3C; -fx-font-weight: bold; -fx-background-radius: 6;");
+        btDelete.setStyle("-fx-background-color: #4FB3BF; -fx-text-fill: #0B2A3C; -fx-font-weight: bold; -fx-background-radius: 6;");
         teamTab.setContent(teamLayout);
 
         // setOnAction for btAdd
@@ -280,7 +345,7 @@ public class Main extends Application {
             
             // Status label
             statusLabel.setText("PR Rep added successfully.");
-            statusLabel.setStyle("-fx-text-fill: green;");
+            statusLabel.setStyle("-fx-text-fill: 0B2A3C; -fx-font-weight: bold;");
 
             // clear fields after successfully added
             tfName.clear();
@@ -311,12 +376,25 @@ public class Main extends Application {
             historyTable.getColumns().add(colReason);
             TableColumn<PointTransaction, String> colUrl = new TableColumn<>("URL");
             colUrl.setCellValueFactory(cellData -> new SimpleStringProperty(pointsManager.getPostUrl(cellData.getValue().getPostId())));
+
+            // Styling
             historyTable.getColumns().add(colUrl);
+            historyTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_ALL_COLUMNS);
+            Label historyTitle = new Label(selectedRep.getName() + " Point History");
+            historyTitle.setStyle("-fx-font-size: 20; -fx-font-weight: bold;");
+            VBox historyLayout = new VBox(15, historyTitle, historyTable);
+            VBox.setVgrow(historyTable, Priority.ALWAYS);
+            historyLayout.setPadding(new Insets(20));
+            historyLayout.setStyle("-fx-border-color: #999999; -fx-border-width: 1; -fx-focus-color: transparent; -fx-faint-focus-color: transparent;");
+            btHistory.setStyle("-fx-background-color: #4FB3BF; -fx-text-fill: #0B2A3C; -fx-font-weight: bold; -fx-background-radius: 6;");
+
             historyTable.getItems().setAll(history);
+            historyTable.setMouseTransparent(true);
+            historyTable.setFocusTraversable(false);
 
             // Create new stage for Points History
             Stage historyStage = new Stage();
-            Scene historyScene = new Scene(historyTable, 700, 300);
+            Scene historyScene = new Scene(historyLayout, 700, 300);
             historyStage.setTitle(selectedRep.getName()+ " Point History"); // set title for stage
             historyStage.setScene(historyScene); // Place scene on stage
             historyStage.show(); // display stage
@@ -345,6 +423,8 @@ public class Main extends Application {
                 cbRep.getItems().setAll(repManager.getReps());
                 cbRedeemRep.getItems().setAll(repManager.getReps());
             }
+
+            
         });
 
         // Add button for log post
@@ -372,7 +452,7 @@ public class Main extends Application {
 
                 // Display completed
                 logStatusLabel.setText("Post logged successfully");
-                logStatusLabel.setStyle("-fx-text-fill: green;");
+                logStatusLabel.setStyle("-fx-text-fill: 0B2A3C; -fx-font-weight: bold;");
 
                 // Clear textfields
                 tfUrl.clear();
@@ -413,19 +493,35 @@ public class Main extends Application {
             table.getItems().setAll(repManager.getReps());
             pointsValueLabel.setText(String.valueOf(pointsManager.getPoints(selectedRep.getId())));
             redeemStatusLabel.setText("Points redeemed successfully.");
-            redeemStatusLabel.setStyle("-fx-text-fill: green;");
+            redeemStatusLabel.setStyle("-fx-text-fill: 0B2A3C; -fx-font-weight: bold;");
             tfRedeemAmount.clear();
         });
 
         // put form into addRepTab
-        StackPane addRepLayout = new StackPane(form);
-        addRepLayout.setPadding(new Insets(20));
+        Label addRepTitle = new Label("Add PR Rep");
+        addRepTitle.setStyle("-fx-font-size: 20; -fx-font-weight: bold;");
+        VBox addRepLayout = new VBox(15, addRepTitle, form);
+        addRepLayout.setPadding(new Insets(20, 20, 100, 20));
+        addRepLayout.setAlignment(Pos.CENTER);
+        addRepLayout.setStyle("-fx-background-color: #F6EBD9");
         addRepTab.setContent(addRepLayout);
 
+        // Title above tabs
+        Label appTitle = new Label("Shiver");
+        appTitle.setStyle("-fx-font-size: 24; -fx-font-weight: bold; -fx-text-fill: #F6EBD9; -fx-background-color: #0B2A3C;");
+        appTitle.setMaxWidth(Double.MAX_VALUE);
+        appTitle.setPadding(new Insets(10, 0, 0, 20));
+        Label appTagline = new Label("Your PR team, swimming in sync.");
+        appTagline.setStyle("-fx-font-size: 13; -fx-text-fill: #4FB3BF;");
+        appTagline.setPadding(new Insets(0, 0, 10, 20));
+        VBox banner = new VBox(appTitle, appTagline);
+        banner.setStyle("-fx-background-color: #0B2A3C;");
+        VBox root = new VBox(banner, tabPane);
+        VBox.setVgrow(tabPane, Priority.ALWAYS);
 
         // Create scene and set stage
-        Scene scene = new Scene(tabPane, 800, 500);
-        primaryStage.setTitle("PR App"); // set title for stage
+        Scene scene = new Scene(root, 800, 500);
+        primaryStage.setTitle("Shiver"); // set title for stage
         primaryStage.setScene(scene); // place scene on stage
         primaryStage.show(); // display stage
     }
