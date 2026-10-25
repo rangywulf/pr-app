@@ -15,6 +15,17 @@ public class Rep {
         this.personalCode = personalCode;
     }
 
+    public Rep(int id, String name, String email, String discountCode, String personalCode) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.discountCode = discountCode;
+        this.personalCode = personalCode;
+        if (id >= nextId) {
+            nextId = id + 1;
+        }
+    }
+
     // get id
     public int getId() {
         return id;

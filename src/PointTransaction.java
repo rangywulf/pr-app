@@ -19,6 +19,18 @@ public class PointTransaction {
         this.date = LocalDate.now();
     }
 
+    public PointTransaction(int id, int repId, int postId, int amount, String reason, LocalDate date) {
+        this.id = id;
+        this.repId = repId;
+        this.postId = postId;
+        this.amount = amount;
+        this.reason = reason;
+        this.date = date;
+        if (id >= nextId) {
+            nextId = id + 1;
+        }
+    }
+
     // get Id
     public int getId() {
         return id;

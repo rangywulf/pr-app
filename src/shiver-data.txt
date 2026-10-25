@@ -1,0 +1,4 @@
+REP|2|Bella|bella@forks.com|bella10|bella20
+POST|1|2|TikTok|https://example.com
+TX|1|2|1|10|Post logged|2026-10-25
+TX|2|2|-1|-5|Redeem for Product|2026-10-25

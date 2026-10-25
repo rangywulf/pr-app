@@ -10,6 +10,25 @@ public class PointsManager {
         transactions = new ArrayList<>();
     }
     
+    // Get posts
+    public ArrayList<Post> getPosts() {
+        return posts;
+    }
+
+    // get transactions
+    public ArrayList<PointTransaction> getTransactions() {
+        return transactions;
+    }
+
+    // load posts into the list
+    public void addLoadedPost(Post post) {
+        posts.add(post);
+    }
+
+    // load transactions into the list
+    public void addLoadedTransaction(PointTransaction transaction) {
+        transactions.add(transaction);
+    }
     
     // get postCount
     public int getPostCount(int repId) {

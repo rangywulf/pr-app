@@ -1,3 +1,4 @@
+import java.io.FileNotFoundException;
 import java.util.Optional;
 
 import javafx.application.Application;
@@ -24,9 +25,16 @@ import java.time.LocalDate;
 public class Main extends Application {
     private RepManager repManager = new RepManager();
     private PointsManager pointsManager = new PointsManager();
+    private FileHandler fileHandler = new FileHandler();
 
     @Override // override start method in application class
     public void start(Stage primaryStage) {
+        try {
+            fileHandler.load(repManager, pointsManager);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
         // Create a new TabPane
         TabPane tabPane = new TabPane();
         Tab teamTab = new Tab("Team");
@@ -528,6 +536,20 @@ public class Main extends Application {
         primaryStage.setTitle("Shiver"); // set title for stage
         primaryStage.setScene(scene); // place scene on stage
         primaryStage.show(); // display stage
+
+        // Display the loaded from the file
+        table.getItems().setAll(repManager.getReps());
+        cbRep.getItems().setAll(repManager.getReps());
+        cbRedeemRep.getItems().setAll(repManager.getReps());
+
+        // Save reps, posts, and point transactions to shiver-data.text when app is closed
+        primaryStage.setOnCloseRequest( e -> {
+            try {
+                fileHandler.save(repManager.getReps(), pointsManager.getPosts(), pointsManager.getTransactions());
+            } catch (FileNotFoundException ex) {
+                ex.printStackTrace();
+            }
+        });
 
         // change background color behind tabs
         Node tabHeader = tabPane.lookup(".tab-header-background"); 

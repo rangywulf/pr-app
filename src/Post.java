@@ -13,6 +13,16 @@ public class Post {
         this.url = url;
     }
 
+    public Post(int id, int repId, String platform, String url) {
+        this.id = id;
+        this.repId = repId;
+        this.platform = platform;
+        this.url = url;
+        if (id >= nextId) {
+            nextId = id + 1;
+        }
+    }
+
     // get Id
     public int getId() {
         return id;
