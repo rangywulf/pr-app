@@ -1,4 +1,13 @@
-REP|2|Bella|bella@forks.com|bella10|bella20
-POST|1|2|TikTok|https://example.com
-TX|1|2|1|10|Post logged|2026-10-25
-TX|2|2|-1|-5|Redeem for Product|2026-10-25
+# NEXT IDS: rep|post|transaction
+NEXT|3|2|3
+
+# REPS: id|name|email|discount code|personal code
+REP|1|Brody|brody@test.com|BRODY10|BRODYPR
+REP|2|Quint|quint@test.com|QUINT10|QUINTPR
+
+# POSTS: id|rep id|platform|url
+POST|1|1|Facebook|https://example.com
+
+# TRANSACTIONS: id|rep id|post id|amount|reason|date
+TX|1|1|1|10|Post logged|2026-10-25
+TX|2|1|-1|-5|Redeem for Cash Payout|2026-10-25

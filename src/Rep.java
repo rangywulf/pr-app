@@ -26,6 +26,18 @@ public class Rep {
         }
     }
 
+    // get nextId
+    public static int getNextId() {
+        return nextId;
+    }
+
+    // make nextId persistent
+    public static void setNextId(int newNextId) {
+        if (newNextId > nextId) {
+            nextId = newNextId;
+        }
+    }
+
     // get id
     public int getId() {
         return id;

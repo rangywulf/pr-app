@@ -329,6 +329,13 @@ public class Main extends Application {
             String discount = tfDiscount.getText();
             String personalCode = tfPersonal.getText();
 
+            // invalid character error
+            if (name.contains("|") || email.contains("|") || discount.contains("|") || personalCode.contains("|")) {
+                Alert alert = new Alert(Alert.AlertType.ERROR, "| is an invalid character");
+                alert.showAndWait();
+                return;
+            }
+
             // invalid email check
             if (!RepManager.isValidEmail(email)) {
                 Alert alert = new Alert(Alert.AlertType.ERROR, "Invalid email");
@@ -344,6 +351,7 @@ public class Main extends Application {
             }
             // add to file
             repManager.addRep(name, email, discount, personalCode);
+            saveData();
             table.getItems().setAll(repManager.getReps());
 
             // Table refresh
@@ -424,6 +432,7 @@ public class Main extends Application {
                     pointsManager.deleteForRep(rep.getId());
                     repManager.deleteRep(rep.getId());
                 }
+                saveData();
                 table.getItems().setAll(repManager.getReps());
 
                 // refresh table
@@ -447,6 +456,12 @@ public class Main extends Application {
                     return;
                 }
 
+                if (url.contains("|")) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR, "| is an invalid character");
+                    alert.showAndWait();
+                    return;
+                }
+
                 if (!url.startsWith("https://")) {
                     Alert alert = new Alert(Alert.AlertType.ERROR, "Invalid URL. Must start with https://");
                     alert.showAndWait();
@@ -455,6 +470,7 @@ public class Main extends Application {
 
                 // Log the post
                 pointsManager.logPost(selectedRep.getId(), platform, url);
+                saveData();
                 table.getItems().setAll(repManager.getReps());
 
                 // Display completed
@@ -497,6 +513,7 @@ public class Main extends Application {
             }
 
             // Successful redemption
+            saveData();
             table.getItems().setAll(repManager.getReps());
             pointsValueLabel.setText(String.valueOf(pointsManager.getPoints(selectedRep.getId())));
             redeemStatusLabel.setText("Points redeemed successfully.");
@@ -544,11 +561,7 @@ public class Main extends Application {
 
         // Save reps, posts, and point transactions to shiver-data.text when app is closed
         primaryStage.setOnCloseRequest( e -> {
-            try {
-                fileHandler.save(repManager.getReps(), pointsManager.getPosts(), pointsManager.getTransactions());
-            } catch (FileNotFoundException ex) {
-                ex.printStackTrace();
-            }
+            saveData();
         });
 
         // change background color behind tabs
@@ -569,6 +582,15 @@ public class Main extends Application {
         }
 
         return selectedReps;
+    }
+
+    // Save Data
+    private void saveData() {
+        try {
+            fileHandler.save(repManager.getReps(), pointsManager.getPosts(), pointsManager.getTransactions());
+        } catch (FileNotFoundException ex) {
+            ex.printStackTrace();
+        }
     }
     public static void main(String[] args) {
         launch(args);

@@ -11,18 +11,26 @@ public class FileHandler {
     /** Save to file */
     public void save(ArrayList<Rep> reps, ArrayList<Post> posts, ArrayList<PointTransaction> transactions) throws FileNotFoundException {
         PrintWriter output = new PrintWriter(FILE_NAME); // write to the data file
+        output.println("# NEXT IDS: rep|post|transaction");
+        output.println("NEXT|" + Rep.getNextId() + "|" + Post.getNextId() + "|" + PointTransaction.getNextId()); // making nextId persistent
 
         // save each rep's information as a pipe-separated record
+        output.println("");
+        output.println("# REPS: id|name|email|discount code|personal code");
         for (Rep rep : reps) {
             output.println("REP|" + rep.getId() + "|" + rep.getName() + "|" + rep.getEmail() + "|" + rep.getDiscountCode() + "|" + rep.getPersonalCode());
         }
 
         // save each post's information
+        output.println("");
+        output.println("# POSTS: id|rep id|platform|url");
         for (Post post : posts) {
             output.println("POST|" + post.getId() + "|" + post.getRepId() + "|" + post.getPlatform() + "|" + post.getUrl());
         }
 
         // save each point transaction's information
+        output.println("");
+        output.println("# TRANSACTIONS: id|rep id|post id|amount|reason|date");
         for (PointTransaction transaction : transactions) {
             output.println("TX|" + transaction.getId() + "|" + transaction.getRepId() + "|" + transaction.getPostId() + "|" + transaction.getAmount()
                 + "|" + transaction.getReason() + "|" + transaction.getDate());
@@ -75,6 +83,13 @@ public class FileHandler {
                     // re-create the transaction using the saved information
                     PointTransaction transaction = new PointTransaction(id, repId, postId, amount, reason, date);
                     pointsManager.addLoadedTransaction(transaction); // add the transaction to the points manager
+                    break;
+                }
+                case "NEXT": {
+                    // make nextId persistent
+                    Rep.setNextId(Integer.parseInt(parts[1]));
+                    Post.setNextId(Integer.parseInt(parts[2]));
+                    PointTransaction.setNextId(Integer.parseInt(parts[3]));
                     break;
                 }
             }

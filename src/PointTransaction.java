@@ -31,6 +31,18 @@ public class PointTransaction {
         }
     }
 
+    // get nextId
+    public static int getNextId() {
+        return nextId;
+    }
+
+    // make nextId persistent
+    public static void setNextId(int newNextId) {
+        if (newNextId > nextId)  {
+            nextId = newNextId;
+        }
+    }
+
     // get Id
     public int getId() {
         return id;
