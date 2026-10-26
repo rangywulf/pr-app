@@ -1,100 +1,126 @@
-# PR Rep Tracking App — Demo / Run-Through Guide
+# Shiver Demo and Run-Through Guide
 
-This guide walks through the PR Representative Tracking App's core functionality in a single sitting. It follows the same scenarios documented in `pr-app-test-cases.md`, in a suggested order that builds up program state naturally (add reps first, then log posts, then redeem points, then view results).
+*Phase 2 (TESD 1800) | Shiver by Kelpkin*
 
-**How to run:** Compile and run `Main.java` from the terminal or your IDE's run button. All input happens via the console.
+This guide walks through the Shiver app's core features in one sitting. It follows the same scenarios as `pr-app-phase2-test-cases.md`, in an order that builds up the app's data naturally: add reps, log posts, redeem points, look at the results, delete a rep, and then close and reopen the app to see the saved data come back. The test data uses characters from Jaws.
 
-Expected output is shown for each step so you can confirm behavior without needing to read the source.
+The Phase 1 version of this guide, which walks through the console menu, is in `docs/phase-1/demo-walkthrough.md`.
 
----
+## How to Run
 
-## 1. Main Menu
+1. Make sure JavaFX is set up for the project. It is the only library the app needs.
+2. Compile and run `Main.java` from your IDE or the terminal.
+3. Run the app from the folder that contains `pr-app`, because the data file is saved at `pr-app/src/shiver-data.txt`.
+
+**For a clean start,** close the app, delete `pr-app/src/shiver-data.txt` if it exists, and run the app again. Without a data file, the app opens empty. The expected results in this guide assume a clean start.
+
+## 1. The Window
 
 On launch, you should see:
 
-```
-=== MAIN MENU ===
-1. Add a PR Rep
-2. Log a Post
-3. View PR Dashboard
-4. Redeem Points
-5. Exit
-```
+- A dark teal banner with "Shiver" and "by Kelpkin" on the same row, and the tagline "Your PR team, swimming in sync." below.
+- Four tabs: Team, Add Rep, Log Post, and Redeem. The Team tab is open and shown in aqua.
+- An empty table with the message "No content in table".
 
-**Try an invalid entry first:**
-| Input | Expected Result |
-|---|---|
-| `abc` | "Invalid input. Please enter a number." — reprompts |
-| `9` | "Invalid choice. Please select 1, 2, 3, 4, or 5." — reprompts |
+Click each tab in turn. The open tab turns aqua and the other three stay plain.
 
-## 2. Add a PR Rep (Option 1)
+## 2. Add a PR Rep (Add Rep tab)
 
-Select **1**, then try each of the following in order:
+Open the **Add Rep** tab. Try each of the following, in order:
 
 | Step | Input | Expected Result |
-|---|---|---|
-| Leave name blank | *(press Enter)* | "Name cannot be empty." — reprompts |
-| Enter a name | `Belle` | Proceeds to email prompt |
-| Enter an invalid email | `notanemail.com` | "Invalid email" — reprompts |
-| Enter a valid email | `belle@test.com` | Proceeds to discount code |
-| Enter discount code | `BELLE10` | Proceeds to personal code |
-| Enter personal code | `BELLEPR` | "PR Rep added successfully." |
+| --- | --- | --- |
+| Leave Name blank | Email: `quint@test.com` | An error pop-up: "Name cannot be empty." Nothing is added |
+| Enter an email with no `@` | Name: `Quint`, Email: `notanemail.com` | An error pop-up: "Invalid email" |
+| Enter an email with no dot after the `@` | Email: `quint@testcom` | An error pop-up: "Invalid email" |
+| Type a pipe character | Name: `Qu\|int` | An error pop-up about an invalid character |
+| Enter a valid rep | `Brody`, `brody@test.com`, `BRODY10`, `BRODYPR` | "PR Rep added successfully." appears in dark teal, and the fields clear |
+| Reuse that email | Name: `Quint`, Email: `brody@test.com` | An error pop-up: "Email already exists" |
 
-**Add a second rep** the same way (e.g. `Jacob` / `jacob@test.com` / `JACOB10` / `JACOBPR`) — you'll need two reps for later steps.
+**Add two more reps** the same way:
 
-**Optional edge case:** Try adding a rep with an email that already exists (e.g. `belle@test.com` again) — expect "Email already exists", reprompting.
+| Name | Email | Discount Code | Personal Code |
+| --- | --- | --- | --- |
+| Quint | quint@test.com | QUINT10 | QUINTPR |
+| Hooper | hooper@test.com | HOOPER10 | HOOPERPR |
 
-**Cancel test:** At any prompt in this flow, typing `0` cancels and returns to the main menu without adding a rep.
+Open the **Team** tab. All three reps are in the table, each with 0 posts and 0 points.
 
-## 3. Log a Post (Option 2)
+## 3. Log a Post (Log Post tab)
 
-Select **2**. You'll be shown the list of reps you added.
-
-| Step | Input | Expected Result |
-|---|---|---|
-| Select a rep | `1` | Proceeds to platform selection |
-| Select a platform | `1` (Facebook) | Proceeds to URL prompt |
-| Enter an invalid URL | `example.com` | "Invalid url" — reprompts |
-| Enter a valid URL | `https://example.com` | "Log created, returning to main menu" |
-
-**Cancel test:** Typing `0` at the rep list, the platform list, or the URL prompt returns to the main menu without logging a post.
-
-**Zero-reps case:** If you run this option before adding any reps, expect: "No PR Reps found. Please add a PR rep before continuing."
-
-## 4. View Dashboard (Option 3)
-
-Select **3**. You should see a table of all reps added so far, with columns for Rep ID, Name, Email, Discount Code, PR Code, Post Count, and Total Points, all aligned.
-
-Press any key at the "Press 0 to return to main menu" prompt to return.
-
-**Zero-reps case:** If run with no reps added, expect: "No PR Reps found. Nothing to display yet."
-
-## 5. Redeem Points (Option 4)
-
-A rep needs points before this is meaningful — logging a post earns 10 points, so log 1–2 posts for a rep first if you haven't already.
-
-Select **4**.
+Open the **Log Post** tab. The name dropdown lists the three reps.
 
 | Step | Input | Expected Result |
-|---|---|---|
-| Select a rep | `1` | Shows current point balance |
-| Enter more points than available | *(a number greater than balance)* | "Invalid amount. Enter a number greater than 0 and no more than your available points." — reprompts |
-| Enter a valid amount | `5` | Proceeds to redemption type |
-| Select redemption type | `1` (Cash) | Balance updates, "Total points left to redeem: X" |
+| --- | --- | --- |
+| Click Add with nothing chosen | None | An error pop-up: "Please select a rep and a platform" |
+| Use a link that is not secure | Rep: Brody, Platform: Facebook, URL: `example.com` | An error pop-up: "Invalid URL. Must start with https://" |
+| Log a valid post | Rep: Brody, Platform: Facebook, URL: `https://example.com/amity-beach` | "Post logged successfully" appears, and the URL field clears |
+| Log a second post | Rep: Brody, Platform: TikTok, URL: `https://example.com/orca-hunt` | "Post logged successfully" |
+| Log a post for another rep | Rep: Quint, Platform: YouTube, URL: `https://example.com/quint-boat` | "Post logged successfully" |
 
-After a successful redemption, the program automatically loops back to rep selection, letting you redeem again for the same or a different rep in one session. Type `0` at that point to return to the main menu.
+Each logged post earns 10 points. On the **Team** tab, Brody now shows 2 posts and 20 points, and Quint shows 1 post and 10 points.
 
-**Zero-reps case:** If run with no reps added, expect: "No PR Reps found. Please add a PR rep before continuing."
+## 4. Redeem Points (Redeem tab)
 
-## 6. Exit (Option 5)
+Open the **Redeem** tab. Pick **Brody** from the name dropdown. "Current points" shows 20.
 
-Select **5**. Expect: "Exiting program. Goodbye!" and the program terminates.
+| Step | Input | Expected Result |
+| --- | --- | --- |
+| Enter more than the balance | Points: `100`, Type: Cash Payout | An error pop-up: "Invalid amount", and the balance stays at 20 |
+| Enter zero or a negative number | Points: `0` or `-5` | An error pop-up: "Invalid amount" |
+| Enter text | Points: `abc` | An error pop-up: "Invalid amount" |
+| Leave the type unchosen | Points: `5` | An error pop-up: "Please select a rep and a type" |
+| Redeem a valid amount | Points: `5`, Type: Cash Payout | "Points redeemed successfully.", and "Current points" drops to 15 |
+
+Redeem once more for a different type, such as 5 points for Product. The balance drops to 10.
+
+## 5. The Team Tab and View History
+
+Open the **Team** tab. Brody shows 2 posts and 10 points.
+
+| Step | Do this | Expected Result |
+| --- | --- | --- |
+| Click View History with no row selected | None | A warning pop-up: "Please select a rep first" |
+| Select Brody and click **View History** | Click the Brody row | A window titled "Brody Point History" opens. It lists his two posts at +10 with their links, and his two redemptions at -5, labeled "Redeem for Cash Payout" and "Redeem for Product". Each row has a date |
+
+Close the history window. The history for each rep shows only that rep's transactions.
+
+## 6. Delete a Rep (Team tab)
+
+| Step | Do this | Expected Result |
+| --- | --- | --- |
+| Click Delete with no row selected | None | A warning pop-up: "Please select a rep first" |
+| Select Hooper, click **Delete**, and click Cancel | Click the Hooper row | A confirmation warns that the rep's posts and point history will be deleted too. After Cancel, Hooper is still in the table |
+| Click **Delete** again and confirm | Click the Hooper row | Hooper is removed. Brody and Quint are unchanged |
+
+You can also select several reps at once by holding Ctrl and clicking. The confirmation then shows how many reps will be deleted.
+
+Open the **Log Post** and **Redeem** tabs. Hooper no longer appears in either dropdown.
+
+## 7. Saving and Loading
+
+The app saves after every change, so everything you have done so far is already in the data file.
+
+| Step | Do this | Expected Result |
+| --- | --- | --- |
+| Look at the file | Open `pr-app/src/shiver-data.txt` in your editor | A labeled file with the sections NEXT IDS, REPS, POSTS, and TRANSACTIONS, and one record per line |
+| Close and reopen | Close the window and run the app again | Brody and Quint are back in the Team table with the same posts and points |
+| Check the history | Select Brody and click View History | Both posts and both redemptions are there, each with its original date and not the date of the restart |
+| Add a new rep | Add `Vaughn` (`vaughn@test.com`, `VAUGHN10`, `VAUGHNPR`) | Vaughn is added with a new ID that no earlier rep used |
+
+You can also stop the app with your editor's stop button after making a change. Reopen it, and the change is still there.
+
+## 8. Exit
+
+Close the window. There is no menu to return to. The data was already saved with the last change, and it is saved once more when the window closes.
 
 ---
 
 ## Notes on Known Limitations
 
-- **Fixed-size storage:** reps, posts, and point-history records are stored in fixed-size arrays (capacities of 100 reps / 500 posts / 1000 history entries). This is a deliberate scope constraint for this course phase — no database yet.
-- **History-cap edge case:** if the point-history array ever reaches its cap while logging a post, the post itself is still recorded, but no corresponding history entry is written for it. Documented in `pr-app-test-cases.md` (CAP-03b) as a known, accepted limitation rather than a bug to fix at this stage, since the cap (1000) is unrealistic to reach in normal use.
+- **The pipe character:** the pipe separates the fields in the data file, so it cannot be used in any text field.
+- **Dropdowns:** once a rep, platform, or type is chosen, it cannot be cleared without restarting the app.
+- **File location:** the data file path is relative to the folder the app is launched from, so run the app from the folder that contains `pr-app`.
+- **One computer:** all data is stored in one local file. It is not shared or backed up.
 
-For the full test log behind this walkthrough, including every input/output pair and two bugs found and fixed during testing, see `docs/pr-app-test-cases.md`.
+For the full test log behind this walkthrough, see `docs/pr-app-phase2-test-cases.md`. All 53 cases pass, and one bug, a blank name being accepted, was found and fixed during testing.

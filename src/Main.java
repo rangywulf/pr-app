@@ -336,6 +336,13 @@ public class Main extends Application {
                 return;
             }
 
+            // Blank name box check
+            if (name.trim().isEmpty()) {
+                Alert alert = new Alert(Alert.AlertType.ERROR, "Name cannot be empty.");
+                alert.showAndWait();
+                return;
+            }
+
             // invalid email check
             if (!RepManager.isValidEmail(email)) {
                 Alert alert = new Alert(Alert.AlertType.ERROR, "Invalid email");
