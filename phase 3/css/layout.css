@@ -1,0 +1,98 @@
+/* ==========================================================
+   layout.css
+   PR App, Phase 3: Owner Dashboard
+
+   Purpose:  Page structure. Sets up the main page grid and
+             positions the top bar, sidebar, and main content.
+
+   Depends on: brand.css (all colors, fonts, type sizes, and
+               spacing come from variables defined there).
+               brand.css must be linked before this file.
+
+   Sections:
+     1. Page grid
+     2. Top bar
+     3. Sidebar
+     4. Main content
+   ========================================================== */
+
+/* ==========================================================
+   1.  Page Grid
+   ========================================================== */
+
+/* Two-column, two-row grid that lays out the whole page */
+body {
+    margin: 0;
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    grid-template-rows: auto 1fr;
+    grid-template-areas: "header header"
+                         "nav main";
+    background: var(--color-bg);
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+}
+
+/* ==========================================================
+   2. Top Bar
+   ========================================================== */
+
+/* Put the top bar in the area named "header" (the whole top row) */
+.top-bar {
+    grid-area: header;
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    padding: var(--space-sm) var(--space-md);
+}
+
+/* Caps the logo height so the image doesn't show at full size; width auto keeps its proportions */
+.top-bar .logo {
+    height: 40px;
+    width: auto;
+}
+
+/* Push shop name to the right */
+.top-bar .shop-name {
+    margin-left: auto;
+}
+
+/* ==========================================================
+   3. Sidebar
+   ========================================================== */
+
+/* Put the sidebar in the area named "nav" (bottom left) and stacks the nav links*/
+.sidebar {
+    grid-area: nav;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+    padding: var(--space-md);
+    background: var(--color-sidebar);
+}
+
+/* Turn plain links into menu items with a bigger click area */
+.sidebar .nav-link {
+    text-decoration: none;
+    color: var(--color-primary);
+    padding: var(--space-xs) var(--space-sm);
+    border-radius: 6px;
+}
+
+/* show which page is active */
+.sidebar .nav-link.active {
+    background: var(--color-accent-soft);
+    font-weight: var(--weight-semibold);
+}
+
+/* ==========================================================
+   4. Main Content
+   ========================================================== */
+
+/* Put the main content in the area named "main" (bottom right) */
+.page-content {
+    grid-area: main;
+    padding: var(--space-lg);
+    min-width: 0;
+}
