@@ -1,0 +1,8 @@
+# NEXT IDS: rep|post|transaction
+NEXT|1|1|1
+
+# REPS: id|name|email|discount code|personal code
+
+# POSTS: id|rep id|platform|url
+
+# TRANSACTIONS: id|rep id|post id|amount|reason|date
