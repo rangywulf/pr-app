@@ -1,0 +1,35 @@
+/* This file is for brand values only, no layout or component rules */
+:root {
+    /* Colors */
+    --color-bg: #f5f1ea;
+    --color-surface: #ffffff;
+    --color-sidebar: #eee6d7;
+    --color-primary: #124049;
+    --color-accent-soft: #ccded4;
+    --color-chart-1: #64a29d;
+    --color-chart-2: #85b197;
+    --color-attention: #da7f48;
+
+    /* Font Stacks */
+    --font-heading: Fredoka, sans-serif;
+    --font-body: Inter, sans-serif;
+    --font-mono: monospace;
+
+    /* Type scale */
+    --text-title: 24px;
+    --text-number: 28px;
+    --text-card-title: 16px;
+    --text-body: 14px;
+    --text-small: 12px;
+
+    /* Font weights */
+    --weight-regular: 400;
+    --weight-semibold: 600;
+
+    /* Spacing */
+    --space-xs: 8px;
+    --space-sm: 16px;
+    --space-md: 24px;
+    --space-lg: 32px;
+    --space-xl: 48px;
+}
