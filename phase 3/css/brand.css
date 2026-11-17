@@ -4,11 +4,13 @@
     --color-bg: #f5f1ea;
     --color-surface: #ffffff;
     --color-sidebar: #eee6d7;
+    --color-sand-dark: #c9b994;
     --color-primary: #124049;
     --color-accent-soft: #ccded4;
     --color-chart-1: #64a29d;
     --color-chart-2: #85b197;
     --color-attention: #da7f48;
+    --color-text-muted: #557176;
 
     /* Font Stacks */
     --font-heading: Fredoka, sans-serif;

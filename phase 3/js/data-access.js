@@ -46,3 +46,8 @@ function getHistory(repId) {
     }
     return repHistory;
 }
+
+// Returns every social account for this rep
+function getAccounts(repId) {
+    return socialAccounts.filter(account => account.repId === repId);
+}

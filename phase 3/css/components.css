@@ -1,4 +1,8 @@
-/* Components: cards, tables, badges, modal, toasts */
+/* Components: grouped by where they're used, shared pieces first */
+
+/* ==================== ALL PAGES ==================== */
+
+/* ---------- Page header ---------- */
 
 /* Page header: title on the left, button on the right */
 .page-header {
@@ -8,12 +12,14 @@
     margin-bottom: var(--space-md);
 }
 
-/* Title and "Last 30 days" side by side, letters on the same line */
+/* Title and subtitle side by side, letters on the same line */
 .page-header-text {
     display: flex;
     align-items: baseline;
     gap: var(--space-sm);
 }
+
+/* ---------- Buttons ---------- */
 
 /* Primary button: deep teal box with white text */
 .button-link {
@@ -25,19 +31,102 @@
     font-weight: var(--weight-semibold);
 }
 
-/* Metric cards: 4 equal columns */
-.metric-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: var(--space-sm);
+/* ---------- Tabs ---------- */
+
+/* Pill-style filter tabs */
+/* Row of tabs with a small gap between them */
+.tabs {
+    display: flex;
+    gap: var(--space-xs);
+    margin-bottom: var(--space-md);
 }
 
-/* white box with a thin mint border */
+/* Each tab: plain text button with rounded ends */
+.tab {
+    background-color: transparent;
+    border: none;
+    border-radius: 999px;
+    padding: var(--space-xs) var(--space-sm);
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    color: var(--color-primary);
+    cursor: pointer;
+}
+
+/* Selected tab: soft mint pill, bolder text */
+.tab.active {
+    background-color: var(--color-accent-soft);
+    font-weight: var(--weight-semibold);
+}
+
+/* ---------- Cards ---------- */
+
+/* White box with a thin mint border */
 .metric-card, .panel {
     background-color: var(--color-surface);
     border: 1px solid var(--color-accent-soft);
     border-radius: 10px;
     padding: var(--space-sm);
+}
+
+/* ---------- Tables ---------- */
+
+/* Tables: full width, cells packed together */
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+/* Table cells: left-aligned with a little breathing room */
+.data-table th, .data-table td {
+    text-align: left;
+    padding: var(--space-xs);
+}
+
+/* Divider under the header row */
+.data-table th {
+    border-bottom: 1px solid var(--color-accent-soft);
+}
+
+/* Table zebra stripes */
+.data-table tbody tr:nth-child(even) {
+    background-color: var(--color-bg);
+}
+
+/* ---------- Badges ---------- */
+
+/* Status badges */
+.badge {
+    display: inline-block;
+    padding: 2px var(--space-xs);
+    border: 1px solid transparent;
+    border-radius: 999px;
+    font-size: var(--text-small);
+    color: var(--color-primary);
+    text-transform: capitalize;
+}
+
+.badge-active {
+    background-color: var(--color-accent-soft);
+}
+
+.badge-paused {
+    background-color: var(--color-sidebar);
+    border-color: var(--color-sand-dark);
+}
+
+.badge-invited {
+    background-color: var(--color-surface);
+    border-color: var(--color-chart-1);
+}
+
+/* ==================== OVERVIEW ==================== */
+
+/* Metric cards: 4 equal columns */
+.metric-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-sm);
 }
 
 /* Big number inside each metric card */
@@ -58,19 +147,43 @@
     margin-bottom: var(--space-sm);
 }
 
-/* Tables: full width, calls packed together */
-.data-table {
-    width: 100%;
-    border-collapse: collapse;
+
+/* ==================== REPS ==================== */
+
+/* ---------- Search and sort ---------- */
+/* Row with search on the left, sort on the right */ 
+.toolbar {
+    display: flex;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-md);
 }
 
-/* Table cells: left-aligned with a little breathing room */
-.data-table th, .data-table td {
-    text-align: left;
+/* Shared look for the search box and sort dropdown */
+.search-input, .sort-select {
     padding: var(--space-xs);
+    border: 1px solid var(--color-accent-soft);
+    border-radius: 10px;
+    background-color: var(--color-surface);
+    font-family: var(--font-body);
+    font-size: var(--text-body);
 }
 
-/* Divider under the header row */
-.data-table th {
-    border-bottom: 1px solid var(--color-accent-soft);
+/* Search box fixed width */
+.search-input {
+    width: 280px;
 }
+
+.code {
+    font-family: var(--font-mono);
+}
+
+.code-muted {
+    color: var(--color-text-muted);
+}
+
+/* ---------- Side panel ---------- */
+
+/* Rep side panel */
+
+
+/* ==================== POSTS ==================== */

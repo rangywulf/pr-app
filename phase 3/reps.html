@@ -14,6 +14,13 @@
         <link href="css/brand.css" rel="stylesheet" />
         <link href="css/layout.css" rel="stylesheet" />
         <link href="css/components.css" rel="stylesheet" />
+
+        <!-- Scripts -->
+        <script src="js/data.js" defer></script>
+        <script src="js/data-access.js" defer></script>
+        <script src="js/logic.js" defer></script>
+        <script src="js/reps.js" defer></script>
+
     </head>
     <body>
         <header class="top-bar">
@@ -27,7 +34,49 @@
             <a href="posts.html" class="nav-link">Posts</a>
         </nav>
         <main class="page-content">
+            <header class="page-header">
+                <div class="page-header-text">
+                    <h1>Reps</h1>
+                    <p class="page-subtitle" id="rep-count"></p>
+                </div>
+                <a href="#" class="button-link">Add rep</a>
+            </header>
 
+            <!-- Filter Tabs -->
+            <div class="tabs">
+                <button class="tab active" data-status="all">All</button>
+                <button class="tab" data-status="active">Active</button>
+                <button class="tab" data-status="paused">Paused</button>
+                <button class="tab" data-status="invited">Invited</button>
+            </div>
+
+            <!-- Search and Sort -->
+            <div class="toolbar">
+                <input type="search" id="rep-search" class="search-input" placeholder="Search reps" aria-label="Search reps">
+                <select id="rep-sort" class="sort-select" aria-label="Sort reps">
+                    <option value="name">Sort: Name (A to Z)</option>
+                    <option value="points">Sort: Most points</option>
+                </select>
+            </div>
+            
+            <!-- Reps table -->
+            <div class="panel">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Rep</th>
+                            <th>Discount code</th>
+                            <th>PR code</th>
+                            <th>Points</th>
+                            <th>Sales</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="reps-table-body">
+
+                    </tbody>
+                </table>
+            </div>
         </main>
     </body>
 </html>

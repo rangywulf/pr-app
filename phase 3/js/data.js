@@ -1,30 +1,42 @@
-// Fake data for the owner dashboard: reps, posts, and point transactions
+// Fake data for the owner dashboard: reps, posts, social media handles, and point transactions
 
 const reps = [
     {id: 1, 
      name: "Jay",
      email: "snootchie.bootchies@example.com",
-     status: "active"},
+     status: "active",
+     discountCode: "JAY30",
+     prCode: "JAY10"},
     {id: 2,
      name: "Silent Bob",
      email: "nocomment@example.com",
-     status: "active"},
+     status: "active",
+     discountCode: "BOB30",
+     prCode: "BOB10"},
     {id: 3,
      name: "Dante Hicks",
      email: "notevensupposedtobehere@example.com",
-     status: "active"},
+     status: "active",
+     discountCode: "DANTE30",
+     prCode: "DANTE10"},
     {id: 4,
      name: "Randal Graves",
      email: "videorentalrage@example.com",
-     status: "paused"},
+     status: "paused",
+     discountCode: "RANDAL30",
+     prCode: "RANDAL10"},
     {id: 5,
      name: "Veronica Loughran",
      email: "37andcounting@example.com",
-     status: "active"},
+     status: "active",
+     discountCode: "VERONICA30",
+     prCode: "VERONICA10"},
     {id: 6,
      name: "Caitlin Bree",
      email: "wrongguyinthebathroom@example.com",
-     status: "invited"
+     status: "invited",
+     discountCode: "CAITLIN30",
+     prCode: "CAITLIN10"
     }
 ];
 
@@ -55,4 +67,19 @@ const transactions = [
     {id: 8, repId: 5, postId: 8, amount: 10, reason: "Post logged", date: "2026-11-10"},
     {id: 9, repId: 3, postId: -1, amount: -25, reason: "Redeem for gift card", date: "2026-11-12"},
     {id: 10, repId: 1, postId: -1, amount: -15, reason: "Redeem for merch", date: "2026-11-14"}
+];
+
+const socialAccounts = [
+    {id: 1, repId: 1, platform: "YouTube", handle: "@snootchiebootchies"},
+    {id: 2, repId: 1, platform: "TikTok", handle: "@jayandsilentbob"},
+    {id: 3, repId: 2, platform: "Instagram", handle: "@silentbob"},
+    {id: 4, repId: 2, platform: "Facebook", handle: "@bobsaysnothing"},
+    {id: 5, repId: 3, platform: "Instagram", handle: "@noteven"},
+    {id: 6, repId: 3, platform: "YouTube", handle: "@quickstopdante"},
+    {id: 7, repId: 3, platform: "TikTok", handle: "@shuttersclosed"},
+    {id: 8, repId: 3, platform: "Facebook", handle: "@dantehicks"},
+    {id: 9, repId: 4, platform: "YouTube", handle: "@videorentalrage"},
+    {id: 10, repId: 5, platform: "Instagram", handle: "@37andcounting"},
+    {id: 11, repId: 5, platform: "Substack", handle: "@lasagnadinner"},
+    {id: 12, repId: 6, platform: "Instagram", handle: "@caitlinbree"}
 ];
