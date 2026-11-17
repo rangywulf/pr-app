@@ -45,6 +45,8 @@ body {
     align-items: center;
     gap: var(--space-md);
     padding: var(--space-sm) var(--space-md);
+    height: var(--topbar-height);
+    box-sizing: border-box;
 }
 
 /* Caps the logo height so the image doesn't show at full size; width auto keeps its proportions */

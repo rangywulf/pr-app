@@ -70,16 +70,16 @@ const transactions = [
 ];
 
 const socialAccounts = [
-    {id: 1, repId: 1, platform: "YouTube", handle: "@snootchiebootchies"},
-    {id: 2, repId: 1, platform: "TikTok", handle: "@jayandsilentbob"},
-    {id: 3, repId: 2, platform: "Instagram", handle: "@silentbob"},
-    {id: 4, repId: 2, platform: "Facebook", handle: "@bobsaysnothing"},
-    {id: 5, repId: 3, platform: "Instagram", handle: "@noteven"},
-    {id: 6, repId: 3, platform: "YouTube", handle: "@quickstopdante"},
-    {id: 7, repId: 3, platform: "TikTok", handle: "@shuttersclosed"},
-    {id: 8, repId: 3, platform: "Facebook", handle: "@dantehicks"},
-    {id: 9, repId: 4, platform: "YouTube", handle: "@videorentalrage"},
-    {id: 10, repId: 5, platform: "Instagram", handle: "@37andcounting"},
-    {id: 11, repId: 5, platform: "Substack", handle: "@lasagnadinner"},
-    {id: 12, repId: 6, platform: "Instagram", handle: "@caitlinbree"}
+    {id: 1, repId: 1, platform: "YouTube", handle: "@snootchiebootchies", url: "https://youtube.example.com/@snootchiebootchies"},
+    {id: 2, repId: 1, platform: "TikTok", handle: "@jayandsilentbob", url: "https://tiktok.example.com/@jayandsilentbob"},
+    {id: 3, repId: 2, platform: "Instagram", handle: "@silentbob", url: "https://instagram.example.com/@silentbob"},
+    {id: 4, repId: 2, platform: "Facebook", handle: "@bobsaysnothing", url: "https://facebook.example.com/@bobsaysnothing"},
+    {id: 5, repId: 3, platform: "Instagram", handle: "@noteven", url: "https://instagram.example.com/@noteven"},
+    {id: 6, repId: 3, platform: "YouTube", handle: "@quickstopdante", url: "https://youtube.example.com/@quickstopdante"},
+    {id: 7, repId: 3, platform: "TikTok", handle: "@shuttersclosed", url: "https://tiktok.example.com/@shuttersclosed"},
+    {id: 8, repId: 3, platform: "Facebook", handle: "@dantehicks", url: "https://facebook.example.com/@dantehicks"},
+    {id: 9, repId: 4, platform: "YouTube", handle: "@videorentalrage", url: "https://youtube.example.com/@videorentalrage"},
+    {id: 10, repId: 5, platform: "Instagram", handle: "@37andcounting", url: "https://instagram.example.com/@37andcounting"},
+    {id: 11, repId: 5, platform: "Substack", handle: "@lasagnadinner", url: "https://substack.example.com/@lasagnadinner"},
+    {id: 12, repId: 6, platform: "Instagram", handle: "@caitlinbree", url: "https://instagram.example.com/@caitlinbree"}
 ];

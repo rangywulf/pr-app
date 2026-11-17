@@ -20,9 +20,85 @@ function fillRepsTable(repList) {
                         <td>${calculateBalance(rep.id)}</td>
                         <td>$0</td>
                         <td><span class="badge badge-${rep.status}">${rep.status}</span></td>`;
+        row.dataset.repId = rep.id;
+        row.addEventListener("click", function () {
+            openRepPanel(rep);
+        });
         tableBody.appendChild(row);
     }
 }
+
+// Side panel: name, status badge, email, and codes
+function fillPanelHeader(rep) {
+    const nameHeading = document.getElementById("panel-rep-name");
+    nameHeading.textContent = rep.name;
+    const emailLink = document.getElementById("panel-rep-email");
+    emailLink.href = `mailto:${rep.email}`;
+    emailLink.textContent = rep.email;
+    const statusBadge = document.getElementById("panel-rep-status");
+    statusBadge.className = `badge badge-${rep.status}`;
+    statusBadge.textContent = rep.status;
+    const discountCode = document.getElementById("panel-discount-code");
+    discountCode.textContent = rep.discountCode;
+    const prCode = document.getElementById("panel-pr-code");
+    prCode.textContent = rep.prCode;
+}
+
+// Side panel: one line per social account
+function fillPanelAccounts(rep) {
+    const accountsList = document.getElementById("panel-accounts");
+    accountsList.innerHTML = "";
+    for (const account of getAccounts(rep.id)) {
+        const item = document.createElement("li");
+        item.innerHTML = `<a href="${account.url}" aria-label="${account.platform}" title="${account.handle}"><i class="bi bi-${account.platform.toLowerCase()}"></i></a>`;
+        accountsList.appendChild(item);
+    }
+}
+
+// Side panel: balance, approved posts, and points redeemed
+function fillPanelStats(rep) {
+    const balanceStat = document.getElementById("panel-balance");
+    balanceStat.textContent = calculateBalance(rep.id);
+    const postsStat = document.getElementById("panel-posts");
+    postsStat.textContent = getPostsForRep(rep.id).filter(post => post.status === "approved").length;
+    const redeemedStat = document.getElementById("panel-redeemed");
+    redeemedStat.textContent = calculateEarned(rep.id) - calculateBalance(rep.id);
+}
+
+// Side panel: point history, earned and redeemed
+function fillPanelHistory(rep) {
+    const historyList = document.getElementById("panel-history");
+    historyList.innerHTML = "";
+    for (const t of getHistory(rep.id)) {
+        const shortDate = new Date(`${t.date}T00:00:00`).toLocaleDateString(undefined, {month: "short", day: "numeric", year: "numeric"});
+        const item = document.createElement("li");
+        if (t.amount > 0) {
+            item.className = "history-earned";
+            const post = getPosts().find(p => p.id === t.postId);
+            item.innerHTML = `<span class="history-date">${shortDate}</span> <a href="${post.url}">${post.platform} post</a> <span class="history-amount">+${t.amount}</span>`;
+        } else {
+            item.className = "history-redeemed";
+            item.innerHTML = `<span class="history-date">${shortDate}</span> <span>${t.reason}</span> <span class="history-amount">${t.amount}</span>`;
+        }
+        historyList.appendChild(item);
+    }
+}
+
+// Fill the whole side panel for one rep
+function fillRepHistory(rep) {
+    fillPanelHeader(rep);
+    fillPanelAccounts(rep);
+    fillPanelStats(rep);
+    fillPanelHistory(rep);
+}
+
+// Fill the side panel and show it
+function openRepPanel(rep) {
+    fillRepHistory(rep);
+    const panel = document.getElementById("rep-panel");
+    panel.classList.add("open");
+}
+
 
 // filter by status
 function filterRepsByStatus(status) {
@@ -77,9 +153,18 @@ function setUpSort() {
     });
 }
 
+// Make the close button hide the side panel             
+function setUpPanelClose() {                                
+    const closeButton = document.getElementById("panel-close");   
+    closeButton.addEventListener("click", function () {     
+        const panel = document.getElementById("rep-panel");  
+        panel.classList.remove("open");                      
+    });                                                      
+}          
+
 fillRepCount();
-fillRepsTable(getReps());
 setUpTabs();
 setUpSearch();
 setUpSort();
+setUpPanelClose();
 updateTable();

@@ -34,4 +34,7 @@
     --space-md: 24px;
     --space-lg: 32px;
     --space-xl: 48px;
+
+    /* Layout */
+    --topbar-height: 72px;
 }
