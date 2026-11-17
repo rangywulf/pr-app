@@ -1,0 +1,76 @@
+/* Components: cards, tables, badges, modal, toasts */
+
+/* Page header: title on the left, button on the right */
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--space-md);
+}
+
+/* Title and "Last 30 days" side by side, letters on the same line */
+.page-header-text {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-sm);
+}
+
+/* Primary button: deep teal box with white text */
+.button-link {
+    background-color: var(--color-primary);
+    color: var(--color-surface);
+    text-decoration: none;
+    padding: var(--space-xs) var(--space-sm);
+    border-radius: 10px;
+    font-weight: var(--weight-semibold);
+}
+
+/* Metric cards: 4 equal columns */
+.metric-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-sm);
+}
+
+/* white box with a thin mint border */
+.metric-card, .panel {
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-accent-soft);
+    border-radius: 10px;
+    padding: var(--space-sm);
+}
+
+/* Big number inside each metric card */
+.metric-value {
+    font-size: var(--text-number);
+    font-weight: var(--weight-semibold);
+}
+
+/* Chart and Needs review: chart gets 2/3, review list 1/3 */
+.overview-row {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: var(--space-sm);
+}
+
+/* Space below the card rows so they don't touch */
+.metric-grid, .overview-row {
+    margin-bottom: var(--space-sm);
+}
+
+/* Tables: full width, calls packed together */
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+/* Table cells: left-aligned with a little breathing room */
+.data-table th, .data-table td {
+    text-align: left;
+    padding: var(--space-xs);
+}
+
+/* Divider under the header row */
+.data-table th {
+    border-bottom: 1px solid var(--color-accent-soft);
+}

@@ -10,3 +10,16 @@ function calculateBalance(repId) {
 
     return total;
 }
+
+// Add up rep's total earned points (ignoring redemptions)
+function calculateEarned(repId) {
+    let total = 0;
+    const transactions = getHistory(repId);
+    for (const t of transactions) {
+        if (t.amount > 0) {
+            total = total + t.amount;
+        }
+    }
+
+    return total;
+}

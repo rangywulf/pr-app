@@ -5,32 +5,97 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Overview | Shiver</title>
 
-        <!-- Google Fonts-->
+        <!-- Google Fonts -->
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
         
-        <!--Site styles-->
+        <!--Site styles -->
         <link href="css/brand.css" rel="stylesheet" />
         <link href="css/layout.css" rel="stylesheet" />
         <link href="css/components.css" rel="stylesheet" />
         <script src="js/data.js" defer></script>
         <script src="js/data-access.js" defer></script>
         <script src="js/logic.js" defer></script>
+        <script src="js/overview.js" defer></script>
     </head>
     <body>
+        <!-- Top Bar: logo, search, shop name (same on every page) -->
         <header class="top-bar">
             <img src="images/Shiver_Main_Logo.png" alt="Shiver" class="logo" />
             <input type="search" placeholder="Search" aria-label="Search" class="search" />
             <span class="shop-name">Hippie Goth Stickers</span>
         </header>
+
+        <!-- Sidebar navigation (same on every page) -->
         <nav class="sidebar" aria-label="Main">
             <a href="index.html" class="nav-link active" aria-current="page">Overview</a>
             <a href="reps.html" class="nav-link">Reps</a>
             <a href="posts.html" class="nav-link">Posts</a>
         </nav>
-        <main class="page-content">
 
+        <!-- Page content: everything unique to Overview -->
+        <main class="page-content">
+            <header class="page-header">
+                <div class="page-header-text">
+                    <h1>Overview</h1>
+                    <p class="page-subtitle">Last 30 days</p>
+                </div>
+                <a href="posts.html" class="button-link">Review posts</a>
+            </header>
+
+            <!-- Metric cards: numbers filled in by overview.js using each id -->
+            <section class="metric-grid" aria-label="Key metrics">
+                <article class="metric-card">
+                    <p class="metric-label">Active reps</p>
+                    <p class="metric-value" id="metric-active-reps">0</p>
+                </article>
+                <article class="metric-card">
+                    <p class="metric-label">Approved posts</p>
+                    <p class="metric-value" id="metric-posts">0</p>
+                </article>
+                <article class="metric-card">
+                    <p class="metric-label">Sales from codes</p>
+                    <p class="metric-value" id="metric-sales">$0</p>
+                </article>
+                <article class="metric-card">
+                    <p class="metric-label">Posts to review</p>
+                    <p class="metric-value" id="metric-review">0</p>
+                </article>
+            </section>
+
+            <!-- Chart and Needs review, side by side -->
+            <section class="overview-row">
+                <section class="panel chart-panel">
+                    <h2 class="panel-title">Posts over time</h2>
+                    <!-- Chart placeholder -->    
+                    <div class="chart-placeholder" id="posts-chart">Chart coming soon</div>
+                </section>
+                <section class="panel review-panel">
+                    <h2 class="panel-title">Needs review</h2>
+                    <!-- Pending posts list, filled in by overview.js -->
+                    <ul id="review-list" class="review-list">
+
+                    </ul>
+                </section>
+            </section>
+            <!-- Top reps table: rows filled in by overview.js -->
+            <section class="panel top-reps-panel">
+                <h2 class="panel-title">Top reps</h2>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Rep</th>
+                            <th scope="col">Posts</th>
+                            <th scope="col">Points</th>
+                            <th scope="col">Sales</th>
+                        </tr>
+                    </thead>
+                    <tbody id="top-reps-body">
+                            
+                    </tbody>
+                </table>
+            </section>
         </main>
     </body>
 </html>
