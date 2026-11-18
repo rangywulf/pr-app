@@ -179,16 +179,6 @@ function setUpAddPostForm() {
     });
 }
 
-// show Toast message
-function showToast(message) {
-    const toast = document.getElementById('toast');
-    toast.textContent = message;
-    toast.classList.remove("hidden");
-    setTimeout(function () {
-        toast.classList.add("hidden");
-    }, 3000);
-}
-
 // Approval all with confirm message
 function setUpApproveAll() {
     const approveAllButton = document.getElementById("approve-all");

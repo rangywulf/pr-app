@@ -88,3 +88,18 @@ function addPost(repId, platform, url, status, date, source, points) {
     posts.push({id: newId, repId: repId, platform: platform, url: url, status: status, date: date, source: source, points: points});
     return newId;
 }
+
+// Adds a new rep and returns its id
+function addRep(name, email, status, discountCode, prCode) {
+    const newId = reps.length + 1;
+    reps.push({id: newId, name: name, email: email, status: status, discountCode: discountCode, prCode: prCode});
+    return newId;
+}
+
+// Adds a new invited rep with auto-made codes, returns the new id
+function addInvitedRep(name, email) {
+    const firstName = name.split(" ")[0].toUpperCase();
+    const prCode = `${firstName}10`;
+    const discountCode = `${firstName}30`;
+    return addRep(name, email, "invited", discountCode, prCode);
+}

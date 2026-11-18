@@ -160,11 +160,43 @@ function setUpPanelClose() {
         const panel = document.getElementById("rep-panel");  
         panel.classList.remove("open");                      
     });                                                      
-}          
+}        
+
+// Add rep modal: open and cancel
+function setUpAddRepModal() {
+    const modal = document.getElementById("add-rep-modal");
+    const addButton = document.getElementById("add-rep");
+    const cancelButton = document.getElementById("cancel-add-rep");
+    addButton.addEventListener("click", function () {
+        modal.showModal();
+    });
+    cancelButton.addEventListener("click", function () {
+        modal.close();
+    });
+}
+
+// Add rep save button
+function setUpAddRepForm() {
+    const form = document.getElementById("add-rep-form");
+    const modal = document.getElementById("add-rep-modal");
+    form.addEventListener("submit", function (event) {
+        event.preventDefault();
+        const name = document.getElementById("new-rep-name").value.trim();
+        const email = document.getElementById("new-rep-email").value.trim();
+        addInvitedRep(name, email);
+        form.reset();
+        modal.close();
+        fillRepCount();
+        updateTable();
+        showToast("Rep added");
+    });
+}
 
 fillRepCount();
 setUpTabs();
 setUpSearch();
 setUpSort();
 setUpPanelClose();
+setUpAddRepModal();
+setUpAddRepForm();
 updateTable();

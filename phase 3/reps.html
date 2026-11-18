@@ -22,6 +22,7 @@
         <script src="js/data.js" defer></script>
         <script src="js/data-access.js" defer></script>
         <script src="js/logic.js" defer></script>
+        <script src="js/ui.js" defer></script>
         <script src="js/reps.js" defer></script>
 
     </head>
@@ -42,7 +43,9 @@
                     <h1>Reps</h1>
                     <p class="page-subtitle" id="rep-count"></p>
                 </div>
-                <a href="#" class="button-link">Add rep</a>
+                <div class="page-header-actions">
+                    <button type="button" class="button-link" id="add-rep">Add rep</button>
+                </div>
             </header>
 
             <!-- Filter Tabs -->
@@ -124,6 +127,24 @@
                     </ul>
                 </section>                                           
             </aside>
+            <dialog id="add-rep-modal" class="modal">
+                <form id="add-rep-form">
+                    <h2>Add rep</h2>
+                    <div class="form-field">
+                        <label for="new-rep-name">Name</label>
+                        <input type="text" id="new-rep-name" required>
+                    </div>
+                    <div class="form-field">
+                        <label for="new-rep-email">Email</label>
+                        <input type="email" id="new-rep-email" required>
+                    </div>
+                    <div class="modal-actions">
+                        <button type="button" id="cancel-add-rep" class="button-link button-secondary">Cancel</button>
+                        <button type="submit" class="button-link">Save rep</button>
+                    </div>
+                </form>
+            </dialog>
+            <div id="toast" class="toast hidden" role="status"></div>
         </main>
     </body>
 </html>
