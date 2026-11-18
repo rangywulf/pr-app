@@ -23,3 +23,38 @@ function calculateEarned(repId) {
 
     return total;
 }
+
+// Turns "2026-11-14" into "Nov 14, 2026"
+function formatDate(dateString) {
+    const date = new Date(dateString + "T00:00:00");
+    return date.toLocaleDateString(undefined, {month: "short", day: "numeric", year: "numeric"});
+}
+
+// Turns a post's source code into the label shown on the card
+function getSourceLabel(source) {
+    if (source === "auto") {
+        return "Auto-detected";
+    } 
+    else if (source === "link") {
+        return "Link submitted";
+    }
+    else if (source === "owner") {
+        return "Added by shop owner";
+    }
+    return "";
+}
+
+// Approves a pending post and gives the rep 10 points
+function approvePost(postId) {
+    const post = getPosts().find(post => post.id === postId);
+    if (post === undefined || post.status !== "pending") {
+        return;
+    }
+    updatePostStatus(postId, "approved");
+    addTransaction(post.repId, postId, 10, "Post logged");
+}
+
+// Rejects a post (no points)
+function rejectPost(postId) {
+    updatePostStatus(postId, "rejected");
+}

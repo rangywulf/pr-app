@@ -19,6 +19,12 @@
     gap: var(--space-sm);
 }
 
+/* Header buttons side by side */
+.page-header-actions {
+    display: flex;
+    gap: var(--space-xs);
+}
+
 /* ---------- Buttons ---------- */
 
 /* Primary button: deep teal box with white text */
@@ -29,6 +35,16 @@
     padding: var(--space-xs) var(--space-sm);
     border-radius: 10px;
     font-weight: var(--weight-semibold);
+    border: 1px solid var(--color-primary);
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    cursor: pointer;
+}
+
+/* Secondary button */
+.button-secondary {
+    background-color: var(--color-surface);
+    color: var(--color-primary);
 }
 
 /* ---------- Tabs ---------- */
@@ -62,7 +78,7 @@
 /* ---------- Cards ---------- */
 
 /* White box with a thin mint border */
-.metric-card, .panel {
+.metric-card, .panel, .post-card {
     background-color: var(--color-surface);
     border: 1px solid var(--color-accent-soft);
     border-radius: 10px;
@@ -106,11 +122,11 @@
     text-transform: capitalize;
 }
 
-.badge-active {
+.badge-active, .badge-approved {
     background-color: var(--color-accent-soft);
 }
 
-.badge-paused {
+.badge-paused, .badge-rejected {
     background-color: var(--color-sidebar);
     border-color: var(--color-sand-dark);
 }
@@ -118,6 +134,11 @@
 .badge-invited {
     background-color: var(--color-surface);
     border-color: var(--color-chart-1);
+}
+
+.badge-pending {
+    background-color: var(--color-surface);
+    border-color: var(--color-attention);
 }
 
 /* ==================== OVERVIEW ==================== */
@@ -323,3 +344,91 @@
 }
 
 /* ==================== POSTS ==================== */
+/* Pending count: small orange pill inside the tab */
+.tab-count {
+    background-color: var(--color-attention);
+    color: var(--color-surface);
+    font-size: var(--text-small);
+    padding: 2px var(--space-xs);
+    border-radius: 999px;
+}
+
+/* Post cards */
+.post-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: var(--space-sm);
+}
+
+/* Thumbnail */
+.post-thumb {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 120px;
+    background-color: var(--color-accent-soft);
+    border-radius: 10px;
+    color: var(--color-primary);
+    font-size: 40px;
+    margin-bottom: var(--space-sm);
+}
+
+/* Card Text */
+.post-body {
+    margin-bottom: var(--space-sm);
+}
+
+.post-body p {
+    margin: 0;
+}
+
+/* Rep handle stands out */
+.post-rep {
+    font-weight: var(--weight-semibold);
+    color: var(--color-primary);
+}
+
+/* Platform, date, and source */
+.post-meta, .post-source {
+    font-size: var(--text-small);
+    color: var(--color-text-muted);
+}
+
+/* Footer */
+.post-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Points earned in green */
+.post-points {
+    font-weight: var(--weight-semibold);
+    color: var(--color-chart-2);
+}
+
+/* Approve and reject buttons */
+.post-action {
+    display: flex;
+    gap: var(--space-xs);
+}
+
+/* Review Bar */
+.review-bar {
+    display: flex;
+    gap: var(--space-sm);
+    align-items: center;
+    margin-bottom: var(--space-sm);
+}
+
+/* Review bar text */
+.review-text {
+    margin: 0;
+    color: var(--color-text-muted);
+}
+
+/* ==================== HELPERS ==================== */
+/* Hides anything it's added to (keep this at the bottom so it always wins) */
+.hidden {
+    display: none;
+}

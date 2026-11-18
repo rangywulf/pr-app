@@ -51,3 +51,33 @@ function getHistory(repId) {
 function getAccounts(repId) {
     return socialAccounts.filter(account => account.repId === repId);
 }
+
+// Returns the rep's handle on one platform, or an empty string if none
+function getHandle(repId, platform) {
+    const account = socialAccounts.find(account => account.repId === repId && account.platform === platform);
+    if (account === undefined) {
+        return "";
+    }
+    return account.handle;
+}
+
+// Returns every post with this status ("pending", "approved", or "rejected")
+function getPostsByStatus(status) {
+    return posts.filter(post => post.status === status);
+}
+
+// Changes one post's status ("approved" or "rejected")
+function updatePostStatus(postId, newStatus) {
+    const post = posts.find(post => post.id === postId);
+    if (post === undefined) {
+        return;
+    }
+    post.status = newStatus;
+}
+
+// Adds a new point transaction (earned or redeemed)
+function addTransaction(repId, postId, amount, reason) {
+    const newId = transactions.length + 1;
+    const today = new Date().toLocaleDateString("en-CA");
+    transactions.push({id: newId, repId: repId, postId: postId, amount: amount, reason: reason, date: today});
+}
