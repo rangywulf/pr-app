@@ -54,7 +54,42 @@ function approvePost(postId) {
     addTransaction(post.repId, postId, 10, "Post logged");
 }
 
-// Rejects a post (no points)
+// Rejects a pending post (no points)
 function rejectPost(postId) {
+    const post = getPosts().find(post => post.id === postId);
+    if (post === undefined || post.status !== "pending") {
+        return;
+    }
     updatePostStatus(postId, "rejected");
+}
+
+// Adds a post from the shop owner: approved right away, with points
+function addOwnerPost(repId, platform, url, date, points) {
+    const newId = addPost(repId, platform, url, "approved", date, "owner", points);
+    addTransaction(repId, newId, points, "Post logged");
+}
+
+// Counts posts per day for the last 30 days, oldest first
+function countPostsByDay(postList) {
+    const counts = new Array(30).fill(0);
+    const today = new Date();
+    for (const post of postList) {
+        const postDate = new Date(post.date + "T00:00:00");
+        const daysAgo = Math.floor((today - postDate) / 86400000);
+        if (daysAgo >= 0 && daysAgo < 30) {
+            counts[29 - daysAgo]++;
+        }
+    }
+    return counts;
+}
+
+// Each of the last 30 days, oldest first
+function getDayLabels() {
+    const labels = [];
+    for (let i = 29; i >= 0; i--) {
+        const day = new Date();
+        day.setDate(day.getDate() - i);
+        labels.push(day.toLocaleDateString(undefined, {month: "short", day: "numeric"}));
+    }
+    return labels;
 }

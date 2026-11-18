@@ -82,6 +82,47 @@
                     <tbody id="posts-table-body"></tbody>
                 </table>
             </div>
+            <dialog id="add-post-modal" class="modal">
+                <form id="add-post-form">
+                    <h2>Add post</h2>
+                    <div class="form-field">
+                        <label for="new-post-rep">Rep</label>
+                        <select id="new-post-rep" required>
+                            <option value="">Choose a rep</option>
+                        </select>
+                    </div>
+                    <div class="form-field">
+                        <label for="new-post-platform">Platform</label>
+                        <select id="new-post-platform" required>
+                            <option value="">Choose a platform</option>
+                            <option value="Instagram">Instagram</option>
+                            <option value="Facebook">Facebook</option>
+                            <option value="TikTok">TikTok</option>
+                            <option value="YouTube">YouTube</option>
+                            <option value="Substack">Substack</option>
+                        </select>
+                    </div>
+                    <div class="form-field">
+                        <label for="new-post-link">Post link</label>
+                        <input type="url" id="new-post-link" placeholder="https://" pattern="https://.*" title="Link must start with https://" required>
+                    </div>
+                    <div class="form-field">
+                        <label for="new-post-date">Date posted</label>
+                        <input type="date" id="new-post-date" required>
+                    </div>
+                    <div class="form-field">
+                        <label for="new-post-points">Points</label>
+                        <input type="number" id="new-post-points" value="10" min="1" required>
+                    </div>
+                    <div class="modal-actions">
+                        <button type="button" id="cancel-add-post" class="button-link button-secondary">Cancel</button>
+                        <button type="submit" class="button-link">Save post</button>
+                    </div>
+                </form>
+            </dialog>
+            <div id="toast" class="toast hidden" role="status">
+                
+            </div>
         </main>
     </body>
 </html>

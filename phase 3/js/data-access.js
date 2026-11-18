@@ -81,3 +81,10 @@ function addTransaction(repId, postId, amount, reason) {
     const today = new Date().toLocaleDateString("en-CA");
     transactions.push({id: newId, repId: repId, postId: postId, amount: amount, reason: reason, date: today});
 }
+
+// Adds a new post and returns its id
+function addPost(repId, platform, url, status, date, source, points) {
+    const newId = posts.length + 1;
+    posts.push({id: newId, repId: repId, platform: platform, url: url, status: status, date: date, source: source, points: points});
+    return newId;
+}

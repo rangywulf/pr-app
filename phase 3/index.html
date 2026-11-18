@@ -14,6 +14,7 @@
         <link href="css/brand.css" rel="stylesheet" />
         <link href="css/layout.css" rel="stylesheet" />
         <link href="css/components.css" rel="stylesheet" />
+        <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
         <script src="js/data.js" defer></script>
         <script src="js/data-access.js" defer></script>
         <script src="js/logic.js" defer></script>
@@ -67,9 +68,19 @@
             <!-- Chart and Needs review, side by side -->
             <section class="overview-row">
                 <section class="panel chart-panel">
-                    <h2 class="panel-title">Posts over time</h2>
-                    <!-- Chart placeholder -->    
-                    <div class="chart-placeholder" id="posts-chart">Chart coming soon</div>
+                    <h2 class="panel-title">Approved posts over time</h2>
+                    <p class="panel-subtitle">Last 30 days</p>
+                    <div class="tabs" id="chart-tabs">
+                        <button type="button" class="tab active" data-platform="all">All</button>
+                        <button type="button" class="tab" data-platform="Instagram">Instagram</button>
+                        <button type="button" class="tab" data-platform="Facebook">Facebook</button>
+                        <button type="button" class="tab" data-platform="TikTok">TikTok</button>
+                        <button type="button" class="tab" data-platform="YouTube">YouTube</button>
+                        <button type="button" class="tab" data-platform="Substack">Substack</button>
+                    </div>
+                    <div class="chart-box">
+                        <canvas id="posts-chart" role="img" aria-label="Posts over time chart"></canvas>
+                    </div>
                 </section>
                 <section class="panel review-panel">
                     <h2 class="panel-title">Needs review</h2>

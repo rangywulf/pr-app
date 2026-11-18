@@ -141,6 +141,17 @@
     border-color: var(--color-attention);
 }
 
+/* ---------- Toast ---------- */
+.toast {
+    position: fixed;
+    bottom: var(--space-md);
+    right: var(--space-md);
+    padding: var(--space-xs) var(--space-sm);
+    background-color: var(--color-primary);
+    color: var(--color-surface);
+    border-radius: 10px;
+}
+
 /* ==================== OVERVIEW ==================== */
 
 /* Metric cards: 4 equal columns */
@@ -168,6 +179,24 @@
     margin-bottom: var(--space-sm);
 }
 
+/* Chart title sits tight above it's subtitle */
+.chart-panel .panel-title {
+    margin-bottom: 0;
+}
+
+/* Small muted line under a card title */
+.panel-subtitle {
+    font-size: var(--text-small);
+    color: var(--color-text-muted);
+    margin-top: 0;
+    margin-bottom: var(--space-sm);
+}
+
+/* Chart Box: Chart.js fills this, so it needs a set height */
+.chart-box {
+    position: relative;
+    height: 240px;
+}
 
 /* ==================== REPS ==================== */
 
@@ -408,7 +437,7 @@
 }
 
 /* Approve and reject buttons */
-.post-action {
+.post-actions {
     display: flex;
     gap: var(--space-xs);
 }
@@ -425,6 +454,50 @@
 .review-text {
     margin: 0;
     color: var(--color-text-muted);
+}
+
+.post-card {
+    transition: opacity 0.3s;
+}
+
+.post-card.fading-out {
+    opacity: 0;
+}
+
+/* ----- Add post modal ----- */
+.modal {
+    width: 480px;
+    padding: var(--space-md);
+    background: var(--color-surface);
+    border: 1px solid var(--color-accent-soft);
+    border-radius: 10px;
+}
+
+.form-field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+    margin-bottom: var(--space-sm);
+}
+
+.form-field input, .form-field select {
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    padding: var(--space-xs);
+    border: 1px solid var(--color-text-muted);
+    border-radius: 6px;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--space-xs);
+    margin-top: var(--space-md);
+}
+
+.modal h2 {
+    margin-top: 0;
+    margin-bottom: var(--space-md);
 }
 
 /* ==================== HELPERS ==================== */

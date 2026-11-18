@@ -15,7 +15,7 @@ function buildPostCard(post) {
                 <p class="post-source">${source}</p>
             </div>
             <div class="post-footer">
-                <span class="post-points">+10 pts</span>
+                <span class="post-points">+${post.points} pts</span>
                 <div class="post-actions">
                     <button type="button" class="button-link approve-button">Approve</button>
                     <button type="button" class="button-link button-secondary reject-button">Reject</button>
@@ -44,7 +44,7 @@ function fillPostsTable(postList) {
                         <td>${post.platform}</td>
                         <td>${formatDate(post.date)}</td>
                         <td>${getSourceLabel(post.source)}</td>
-                        <td>+10</td>
+                        <td>+${post.points}</td>
                         <td class="status-col"><span class="badge badge-${post.status}">${post.status}</span></td>`;
         tableBody.appendChild(row);
     }
@@ -121,18 +121,108 @@ function setUpCardButtons() {
         const postId = Number(card.dataset.id);
         if (event.target.classList.contains("approve-button")) {
             approvePost(postId);
+            showToast("Post approved");
         }
         else if (event.target.classList.contains("reject-button")) {
             rejectPost(postId);
+            showToast("Post rejected");
         } else {
             return;
         }
+        card.classList.add("fading-out");
+        setTimeout(function () {
+            updateCards();
+            fillPendingCount();
+        }, 300);
+    });
+}
+
+// Add post modal
+function setUpAddPostModal() {
+    const modal = document.getElementById("add-post-modal");
+    const addButton = document.getElementById("add-post");
+    const cancelButton = document.getElementById("cancel-add-post");
+    addButton.addEventListener("click", function () {
+        modal.showModal();
+    });
+    cancelButton.addEventListener("click", function () {
+        modal.close();
+    });
+}
+
+// Fill in rep dropdown menu for post modal
+function fillRepOptions() {
+    const repSelect = document.getElementById("new-post-rep");
+    for (const rep of getReps()) {
+        if (rep.status !== "invited") {
+            repSelect.innerHTML += `<option value="${rep.id}">${rep.name}</option>`;
+        }
+    }
+}
+
+// Add post save button
+function setUpAddPostForm() {
+    const form = document.getElementById("add-post-form");
+    const modal = document.getElementById("add-post-modal");
+    form.addEventListener("submit", function (event) {
+        event.preventDefault();
+        const repId = Number(document.getElementById("new-post-rep").value);
+        const platform = document.getElementById("new-post-platform").value;
+        const url = document.getElementById("new-post-link").value;
+        const date = document.getElementById("new-post-date").value;
+        const points = Number(document.getElementById("new-post-points").value);
+        addOwnerPost(repId, platform, url, date, points);
+        form.reset();
+        modal.close();
+        updateCards();
+        showToast("Post added");
+    });
+}
+
+// show Toast message
+function showToast(message) {
+    const toast = document.getElementById('toast');
+    toast.textContent = message;
+    toast.classList.remove("hidden");
+    setTimeout(function () {
+        toast.classList.add("hidden");
+    }, 3000);
+}
+
+// Approval all with confirm message
+function setUpApproveAll() {
+    const approveAllButton = document.getElementById("approve-all");
+    approveAllButton.addEventListener("click", function () {
+        const pendingPosts = getPostsByStatus("pending");
+        if (pendingPosts.length === 0) {
+            return;
+        }
+        
+        let label = "posts";
+        if (pendingPosts.length === 1) {
+            label = "post";
+        }
+        
+        const confirmed = confirm(`Approve ${pendingPosts.length} ${label}?`);
+        if (confirmed === false) {
+            return;
+        }
+
+        for (const post of pendingPosts) {
+            approvePost(post.id);
+        }
+
         updateCards();
         fillPendingCount();
+        showToast(`${pendingPosts.length} ${label} approved`);
     });
 }
 
 setUpTabs();
 setUpCardButtons();
+setUpAddPostModal();
+fillRepOptions();
+setUpAddPostForm();
+setUpApproveAll();
 updateCards();
 fillPendingCount();
