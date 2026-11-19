@@ -183,32 +183,43 @@ function setUpAddPostForm() {
     });
 }
 
+// Picks "post" or "posts" to match the number of posts
+function getPostWord(count) {
+    if (count === 1) {
+        return "post";
+    }
+    return "posts";
+}
+
 // Approval all with confirm message
 function setUpApproveAll() {
     const approveAllButton = document.getElementById("approve-all");
+    const confirmModal = document.getElementById("confirm-modal");
+    const confirmTitle = document.getElementById("confirm-title");
+    const cancelButton = document.getElementById("confirm-cancel");
+    const approveButton = document.getElementById("confirm-approve");
     approveAllButton.addEventListener("click", function () {
-        const pendingPosts = getPostsByStatus("pending");
-        if (pendingPosts.length === 0) {
+        const count = getPostsByStatus("pending").length;
+        if (count === 0) {
             return;
         }
-        
-        let label = "posts";
-        if (pendingPosts.length === 1) {
-            label = "post";
-        }
-        
-        const confirmed = confirm(`Approve ${pendingPosts.length} ${label}?`);
-        if (confirmed === false) {
-            return;
-        }
+        confirmTitle.textContent = `Approve ${count} ${getPostWord(count)}?`;
+        confirmModal.showModal();
+    });
 
+    cancelButton.addEventListener("click", function () {
+        confirmModal.close();
+    });
+    
+    approveButton.addEventListener("click", function () {
+        const pendingPosts = getPostsByStatus("pending");
         for (const post of pendingPosts) {
             approvePost(post.id);
         }
-
+        confirmModal.close();
         updateCards();
         fillPendingCount();
-        showToast(`${pendingPosts.length} ${label} approved`);
+        showToast(`${pendingPosts.length} ${getPostWord(pendingPosts.length)} approved`);
     });
 }
 
