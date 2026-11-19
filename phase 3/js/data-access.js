@@ -73,6 +73,7 @@ function updatePostStatus(postId, newStatus) {
         return;
     }
     post.status = newStatus;
+    post.reviewedDate = new Date().toLocaleDateString("en-CA");
 }
 
 // Adds a new point transaction (earned or redeemed)

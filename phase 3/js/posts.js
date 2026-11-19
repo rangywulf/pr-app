@@ -40,9 +40,14 @@ function fillPostsTable(postList) {
     tableBody.innerHTML = "";
     for (const post of postList) {
         const row = document.createElement("tr");
+        let reviewed = "-";
+        if (post.reviewedDate) {
+            reviewed = formatDate(post.reviewedDate);
+        }
         row.innerHTML = `<td>${getRepById(post.repId).name}</td>
                         <td>${post.platform}</td>
                         <td>${formatDate(post.date)}</td>
+                        <td>${reviewed}</td>   
                         <td>${getSourceLabel(post.source)}</td>
                         <td>+${post.points}</td>
                         <td class="status-col"><span class="badge badge-${post.status}">${post.status}</span></td>`;
