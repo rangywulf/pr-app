@@ -11,6 +11,10 @@ function fillRepCount() {
 function fillRepsTable(repList) {
     const tableBody = document.getElementById("reps-table-body");
     tableBody.innerHTML = "";
+    if (repList.length === 0) {
+        tableBody.innerHTML = `<tr class="empty-row"><td colspan="6">No reps found</td></tr>`;
+        return;
+    }
     for (let i = 0; i < repList.length; i++) {
         const rep = repList[i];
         const row = document.createElement("tr");
@@ -47,8 +51,13 @@ function fillPanelHeader(rep) {
 // Side panel: one line per social account
 function fillPanelAccounts(rep) {
     const accountsList = document.getElementById("panel-accounts");
+    const accounts = getAccounts(rep.id);
     accountsList.innerHTML = "";
-    for (const account of getAccounts(rep.id)) {
+    if (accounts.length === 0) {
+        accountsList.innerHTML = `<li class="empty-state">No social accounts yet</li>`;
+        return;
+    }
+    for (const account of accounts) {
         const item = document.createElement("li");
         item.innerHTML = `<a href="${account.url}" aria-label="${account.platform}" title="${account.handle}"><i class="bi bi-${account.platform.toLowerCase()}"></i></a>`;
         accountsList.appendChild(item);
@@ -69,7 +78,12 @@ function fillPanelStats(rep) {
 function fillPanelHistory(rep) {
     const historyList = document.getElementById("panel-history");
     historyList.innerHTML = "";
-    for (const t of getHistory(rep.id)) {
+    const history = getHistory(rep.id);
+    if (history.length === 0) {
+        historyList.innerHTML = `<li class="empty-state">No history yet</li>`
+        return;
+    }
+    for (const t of history) {
         const shortDate = new Date(`${t.date}T00:00:00`).toLocaleDateString(undefined, {month: "short", day: "numeric", year: "numeric"});
         const item = document.createElement("li");
         if (t.amount > 0) {
