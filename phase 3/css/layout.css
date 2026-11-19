@@ -40,6 +40,7 @@ body {
 
 /* Put the top bar in the area named "header" (the whole top row) */
 .top-bar {
+    background-color: var(--color-primary);
     grid-area: header;
     display: flex;
     align-items: center;
@@ -47,7 +48,9 @@ body {
     padding: var(--space-xs) var(--space-lg);
     height: var(--topbar-height);
     box-sizing: border-box;
-    background-color: var(--color-primary);
+    box-shadow: 0 2px 6px rgba(18, 64, 73, 0.3);
+    position: relative;
+    z-index: 5;
 }
 
 /* Caps the logo height so the image doesn't show at full size; width auto keeps its proportions */
@@ -158,6 +161,11 @@ body {
 
     .page-content {
         padding: var(--page-pad);
+    }
+
+    /* Only the shop initials circle shows on phones */
+    .top-bar .shop-name {
+        display: none;
     }
 }
 

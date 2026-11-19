@@ -187,6 +187,10 @@ function setUpAddRepModal() {
     cancelButton.addEventListener("click", function () {
         modal.close();
     });
+    const form = document.getElementById("add-rep-form");
+    modal.addEventListener("close", function () {
+        form.reset();
+    }); 
 }
 
 // Add rep save button

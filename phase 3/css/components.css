@@ -14,11 +14,8 @@ h1, h2, h3 {
 .page-header {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    margin: calc(-1 * var(--page-pad)) calc(-1 * var(--page-pad)) var(--space-md);
-    padding: var(--space-md) var(--page-pad);
-    background-color: var(--color-bg);
-    border-bottom: 1px solid var(--color-sand-dark);
+    align-items: flex-end;
+    margin-bottom: var(--space-md);
 }
 
 /* Page titles without the browser's extra spacing */
@@ -189,10 +186,18 @@ h1, h2, h3 {
     gap: var(--space-sm);
 }
 
+/* label over the big number, with a small gap */
+.metric-label {
+    color: var(--color-primary);
+    font-weight: var(--weight-semibold);
+    margin-top: 0;
+    margin-bottom: var(--space-xs);
+}
 /* Big number inside each metric card */
 .metric-value {
     font-size: var(--text-number);
     font-weight: var(--weight-semibold);
+    margin: 0;
 }
 
 /* Chart and Needs review: chart gets 2/3, review list 1/3 */
@@ -639,6 +644,28 @@ h1, h2, h3 {
     .side-panel {
         width: 100%;
     }
+
+    /* Shorter post thumbnails */
+    .post-thumb {
+        height: 80px;
+    }
+
+    /* Table cells stay on one line; the table scrolls sideways */
+    .data-table th, .data-table td {
+        white-space: nowrap;
+    }
+
+    /* Header Button */
+    .page-header {
+        flex-wrap: wrap;
+        gap: var(--space-sm);
+    }
+
+    /* Button text */
+    .page-header .button-link {
+        white-space: nowrap;
+    }
+
 }
 
 /* ==================== HELPERS ==================== */

@@ -148,6 +148,10 @@ function setUpAddPostModal() {
     cancelButton.addEventListener("click", function () {
         modal.close();
     });
+    const form = document.getElementById("add-post-form");
+    modal.addEventListener("close", function () {
+        form.reset();
+    }); 
 }
 
 // Fill in rep dropdown menu for post modal
