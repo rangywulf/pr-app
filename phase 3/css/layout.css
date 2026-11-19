@@ -29,7 +29,7 @@ body {
     grid-template-rows: auto 1fr;
     grid-template-areas: "header header"
                          "nav main";
-    background: var(--color-bg);
+    background: var(--color-sidebar);
     font-family: var(--font-body);
     font-size: var(--text-body);
 }
@@ -44,20 +44,32 @@ body {
     display: flex;
     align-items: center;
     gap: var(--space-md);
-    padding: var(--space-sm) var(--space-md);
+    padding: var(--space-xs) var(--space-md);
     height: var(--topbar-height);
     box-sizing: border-box;
+    background-color: var(--color-primary);
 }
 
 /* Caps the logo height so the image doesn't show at full size; width auto keeps its proportions */
 .top-bar .logo {
-    height: 40px;
+    height: 56px;
     width: auto;
 }
 
 /* Push shop name to the right */
 .top-bar .shop-name {
     margin-left: auto;
+    color: var(--color-surface);
+}
+
+/* Menu button: hidden on desktop, shown on phones */
+.menu-button {
+    display: none;
+    background-color: transparent;
+    border: none;
+    color: var(--color-surface);
+    font-size: var(--text-title);
+    cursor: pointer;
 }
 
 /* ==========================================================
@@ -71,7 +83,7 @@ body {
     flex-direction: column;
     gap: var(--space-xs);
     padding: var(--space-md);
-    background: var(--color-sidebar);
+    background: var(--color-bg);
 }
 
 /* Turn plain links into menu items with a bigger click area */
@@ -98,3 +110,32 @@ body {
     padding: var(--space-lg);
     min-width: 0;
 }
+
+/* ==========================================================
+   5. Phones and Tablets
+   ========================================================== */
+@media screen and (max-width: 768px) {
+    body {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto 1fr;
+        grid-template-areas: "header" "nav" "main";
+    }
+
+    .menu-button {
+        display: block;
+    }
+
+    .sidebar {
+        display: none;
+    }
+
+    .sidebar.open {
+        display: flex;
+    }
+
+    .page-content {
+        padding: var(--space-sm);
+    }
+}
+
+

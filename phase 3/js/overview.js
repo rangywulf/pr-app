@@ -23,12 +23,12 @@ function fillMetricCards() {
     
 /* Needs review list */
 function fillReviewList() {
-    const pendingPosts = getPosts().filter(post => post.status === "pending");
+    const pendingPosts = getPostsByStatus("pending");
     const list = document.getElementById("review-list");
     for (const post of pendingPosts) {
         const rep = getRepById(post.repId);
-        const item = document.createElement("li");
-        item.textContent = `Post from ${rep.name}`;
+        const item = document.createElement("li");        
+        item.innerHTML = `<a href="posts.html" class="review-row"><span>${rep.name}</span><span class="review-date" title="${formatDate(post.date)}">Posted ${formatDaysAgo(post.date)} &rsaquo;</span>`;
         list.appendChild(item);
     }
 }
@@ -81,6 +81,9 @@ function drawPostsChart() {
                 legend: { display: false }
             },
             scales: {
+                x: {
+                    ticks: { maxRotation: 0, maxTicksLimit: 7 }
+                },
                 y: {
                     beginAtZero: true,
                     ticks: { precision: 0 }

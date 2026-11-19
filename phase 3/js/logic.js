@@ -30,6 +30,19 @@ function formatDate(dateString) {
     return date.toLocaleDateString(undefined, {month: "short", day: "numeric", year: "numeric"});
 }
 
+// "2026-11-12" -> "6 days ago"
+function formatDaysAgo(dateString) {
+    const postDate = new Date(dateString + "T00:00:00");
+    const daysAgo = Math.floor((new Date() - postDate) / 86400000);
+    if (daysAgo === 0) {
+        return "today";
+    }
+    if (daysAgo === 1) {
+        return "1 day ago";
+    }
+    return `${daysAgo} days ago`;
+}
+
 // Turns a post's source code into the label shown on the card
 function getSourceLabel(source) {
     if (source === "auto") {

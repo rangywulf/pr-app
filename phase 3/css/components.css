@@ -77,12 +77,17 @@
 
 /* ---------- Cards ---------- */
 
-/* White box with a thin mint border */
+/* White box with shadow */
 .metric-card, .panel, .post-card {
     background-color: var(--color-surface);
-    border: 1px solid var(--color-accent-soft);
+    box-shadow: 0 1px 3px rgba(18, 64, 73, 0.12);
     border-radius: 10px;
     padding: var(--space-sm);
+}
+
+/* Wide tables scroll left and right inside the card */
+.panel {
+    overflow-x: auto;
 }
 
 /* ---------- Tables ---------- */
@@ -198,6 +203,54 @@
     height: 240px;
 }
 
+/* Needs review list: no bullets, no browser spacing */
+.review-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+/* Mint line between rows */
+.review-list li {
+    border-bottom: 1px solid var(--color-accent-soft);
+}
+
+/* Needs review card: stack contents so the link can sit at the bottom */
+.review-panel {
+    display: flex;
+    flex-direction: column;
+}
+
+/* No line under the last row */
+.review-list li:last-child {
+    border-bottom: none;
+}
+
+/* Each row: name on the left, date on the right */
+.review-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: var(--space-xs) 0;
+    color: var(--color-primary);
+    text-decoration: none;
+}
+
+/* Date and arrow: small and muted */
+.review-date {
+    font-size: var(--text-small);
+    color: var(--color-text-muted);
+}
+
+/* Link to the posts page under the list */
+.review-all {
+    display: inline-block;
+    margin-top: auto;
+    color: var(--color-primary);
+    font-weight: var(--weight-semibold);
+    text-decoration: none;
+}
+
 /* ==================== REPS ==================== */
 
 /* ---------- Search and sort ---------- */
@@ -231,6 +284,11 @@
     color: var(--color-text-muted);
 }
 
+/* Rep rows open the side panel, so show a pointer */
+#reps-table-body tr {
+    cursor: pointer;
+}
+
 /* ---------- Side panel ---------- */
 
 /* Rep side panel */
@@ -241,17 +299,28 @@
     bottom: 0;
     width: 440px;
     z-index: 10;
-    background-color: var(--color-surface);
+    background-color: var(--color-accent-soft);
     border-left: 1px solid var(--color-accent-soft);
     padding: var(--space-md);
     box-sizing: border-box;
     overflow-y: auto;
     display: none;
+    box-shadow: -4px 0 16px rgba(18, 64, 73, 0.15);
 }
 
 /* Panel shows when JS adds the open class */
 .side-panel.open {
     display: block;
+}
+
+/* Side Panel text */
+.side-panel .panel-email, .side-panel .panel-stat-label, .side-panel .code-muted {
+    color: var(--color-primary);
+}
+
+/* change active badge in panel */
+.side-panel .badge-active {
+    background-color: var(--color-surface);
 }
 
 /* Panel header */
@@ -343,9 +412,14 @@
 
 /* History lines: earned in green, redeemed in grey */
 .history-earned {
-    color: var(--color-chart-2);
+    color: var(--color-earned);
 }
 
+/* Post links in history match the green line */
+.history-earned a {
+    color: inherit;
+
+}
 .history-redeemed {
     color: var(--color-text-muted);
 }
@@ -366,7 +440,7 @@
 
 /* Soft cards around panel sections */
 .panel-card {
-    background-color: var(--color-bg);
+    background-color: var(--color-surface);
     border-radius: 10px;
     padding: var(--space-sm);
     margin-bottom: var(--space-sm);
@@ -433,7 +507,7 @@
 /* Points earned in green */
 .post-points {
     font-weight: var(--weight-semibold);
-    color: var(--color-chart-2);
+    color: var(--color-earned);
 }
 
 /* Approve and reject buttons */
@@ -498,6 +572,46 @@
 .modal h2 {
     margin-top: 0;
     margin-bottom: var(--space-md);
+}
+
+/* ==================== PHONES ==================== */
+@media screen and (max-width: 768px) {
+    /* Two metric cards per row instead of four */
+    .metric-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    /* Chart on top, needs review underneath */
+    .overview-row {
+        grid-template-columns: 1fr;
+    }
+
+    /* Tabs drop to a second line if they don't fit */
+    .tabs {
+        flex-wrap: wrap;
+    }
+
+    /* Popup widths */
+    .modal {
+        width: 90%;
+        box-sizing: border-box;
+    }
+
+    /* Search and sort stack on top of each other */
+    .toolbar {
+        flex-wrap: wrap;
+    }
+
+    /* Search box width */
+    .search-input {
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    /* Side Panel width */
+    .side-panel {
+        width: 100%;
+    }
 }
 
 /* ==================== HELPERS ==================== */

@@ -18,18 +18,19 @@
         <script src="js/data.js" defer></script>
         <script src="js/data-access.js" defer></script>
         <script src="js/logic.js" defer></script>
+        <script src="js/ui.js" defer></script>
         <script src="js/overview.js" defer></script>
     </head>
     <body>
         <!-- Top Bar: logo, search, shop name (same on every page) -->
         <header class="top-bar">
-            <img src="images/Shiver_Main_Logo.png" alt="Shiver" class="logo" />
-            <input type="search" placeholder="Search" aria-label="Search" class="search" />
+            <button type="button" class="menu-button" id="menu-button" aria-label="Open menu" aria-controls="main-nav" aria-expanded="false">&#9776;</button>
+            <img src="images/Shiver_Main_Logo_White.png" alt="Shiver" class="logo" />
             <span class="shop-name">Hippie Goth Stickers</span>
         </header>
 
         <!-- Sidebar navigation (same on every page) -->
-        <nav class="sidebar" aria-label="Main">
+        <nav class="sidebar" id="main-nav" aria-label="Main">
             <a href="index.html" class="nav-link active" aria-current="page">Overview</a>
             <a href="reps.html" class="nav-link">Reps</a>
             <a href="posts.html" class="nav-link">Posts</a>
@@ -88,6 +89,7 @@
                     <ul id="review-list" class="review-list">
 
                     </ul>
+                    <a href="posts.html" class="review-all">Review all posts &rarr;</a>
                 </section>
             </section>
             <!-- Top reps table: rows filled in by overview.js -->
