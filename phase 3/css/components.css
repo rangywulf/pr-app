@@ -2,6 +2,12 @@
 
 /* ==================== ALL PAGES ==================== */
 
+/* ---------- Headings ---------- */
+/* All headings are deep teal */
+h1, h2, h3 {
+    color: var(--color-primary);
+}
+
 /* ---------- Page header ---------- */
 
 /* Page header: title on the left, button on the right */
@@ -299,13 +305,12 @@
     bottom: 0;
     width: 440px;
     z-index: 10;
-    background-color: var(--color-accent-soft);
-    border-left: 1px solid var(--color-accent-soft);
+    background-color: var(--color-bg);
     padding: var(--space-md);
     box-sizing: border-box;
     overflow-y: auto;
     display: none;
-    box-shadow: -4px 0 16px rgba(18, 64, 73, 0.15);
+    box-shadow: -4px 0 16px rgba(18, 64, 73, 0.15), 0 0 0 100vmax rgba(18, 64, 73, 0.15);
 }
 
 /* Panel shows when JS adds the open class */
@@ -314,7 +319,7 @@
 }
 
 /* Side Panel text */
-.side-panel .panel-email, .side-panel .panel-stat-label, .side-panel .code-muted {
+.side-panel .panel-email, .side-panel .panel-stat-label, .side-panel .code-muted, .side-panel .history-redeemed {
     color: var(--color-primary);
 }
 
@@ -430,7 +435,7 @@
     grid-template-columns: 90px 1fr auto;
     gap: var(--space-sm);
     padding: var(--space-xs);
-    border-bottom: 1px solid var(--color-accent-soft);
+    border-bottom: 1px solid var(--color-chart-1);
 }
 
 /* Amounts line up on the right edge */
@@ -440,7 +445,7 @@
 
 /* Soft cards around panel sections */
 .panel-card {
-    background-color: var(--color-surface);
+    background-color: var(--color-accent-soft);
     border-radius: 10px;
     padding: var(--space-sm);
     margin-bottom: var(--space-sm);
