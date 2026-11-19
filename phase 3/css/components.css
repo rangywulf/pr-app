@@ -286,10 +286,6 @@ h1, h2, h3 {
     font-family: var(--font-mono);
 }
 
-.code-muted {
-    color: var(--color-text-muted);
-}
-
 /* Rep rows open the side panel, so show a pointer */
 #reps-table-body tr {
     cursor: pointer;
@@ -319,13 +315,8 @@ h1, h2, h3 {
 }
 
 /* Side Panel text */
-.side-panel .panel-email, .side-panel .panel-stat-label, .side-panel .code-muted, .side-panel .history-redeemed {
+.side-panel .panel-email, .side-panel .panel-stat-label, .side-panel .history-redeemed {
     color: var(--color-primary);
-}
-
-/* change active badge in panel */
-.side-panel .badge-active {
-    background-color: var(--color-surface);
 }
 
 /* Panel header */
