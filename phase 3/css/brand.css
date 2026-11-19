@@ -1,4 +1,4 @@
-/* This file is for brand values only, no layout or component rules */
+/* Brand colors, fonts, text sizes, and spacing used by every page */
 :root {
     /* Colors */
     --color-bg: #f5f1ea;
@@ -13,12 +13,12 @@
     --color-attention: #da7f48;
     --color-text-muted: #557176;
 
-    /* Font Stacks */
+    /* Fonts */
     --font-heading: Fredoka, sans-serif;
     --font-body: Inter, sans-serif;
     --font-mono: monospace;
 
-    /* Type scale */
+    /* Text sizes */
     --text-title: 24px;
     --text-number: 28px;
     --text-card-title: 16px;

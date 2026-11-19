@@ -14,13 +14,15 @@
      2. Top bar
      3. Sidebar
      4. Main content
+     5. Footer
+     6. Phones and tablets
    ========================================================== */
 
 /* ==========================================================
-   1.  Page Grid
+   1. Page grid
    ========================================================== */
 
-/* Two-column, two-row grid that lays out the whole page */
+/* Page layout: top bar across the top, sidebar and page content below */
 body {
     margin: 0;
     min-height: 100vh;
@@ -28,17 +30,17 @@ body {
     grid-template-columns: 240px 1fr;
     grid-template-rows: auto 1fr;
     grid-template-areas: "header header"
-                         "nav main";
+        "nav main";
     background: var(--color-sidebar);
     font-family: var(--font-body);
     font-size: var(--text-body);
 }
 
 /* ==========================================================
-   2. Top Bar
+   2. Top bar
    ========================================================== */
 
-/* Put the top bar in the area named "header" (the whole top row) */
+/* Teal top bar across the top of every page */
 .top-bar {
     background-color: var(--color-primary);
     grid-area: header;
@@ -53,13 +55,13 @@ body {
     z-index: 5;
 }
 
-/* Caps the logo height so the image doesn't show at full size; width auto keeps its proportions */
+/* Logo size */
 .top-bar .logo {
     height: 56px;
     width: auto;
 }
 
-/* Push shop name to the right */
+/* Shop name in white */
 .top-bar .shop-name {
     color: var(--color-surface);
 }
@@ -100,7 +102,7 @@ body {
    3. Sidebar
    ========================================================== */
 
-/* Put the sidebar in the area named "nav" (bottom left) and stacks the nav links*/
+/* Sidebar with the page links stacked */
 .sidebar {
     grid-area: nav;
     display: flex;
@@ -111,7 +113,7 @@ body {
     border-right: 1px solid var(--color-sand-dark);
 }
 
-/* Turn plain links into menu items with a bigger click area */
+/* Sidebar links */
 .sidebar .nav-link {
     text-decoration: none;
     color: var(--color-primary);
@@ -119,17 +121,17 @@ body {
     border-radius: 6px;
 }
 
-/* show which page is active */
+/* Highlight for the current page */
 .sidebar .nav-link.active {
     background: var(--color-accent-soft);
     font-weight: var(--weight-semibold);
 }
 
 /* ==========================================================
-   4. Main Content
+   4. Main content
    ========================================================== */
 
-/* Put the main content in the area named "main" (bottom right) */
+/* Page content area */
 .page-content {
     grid-area: main;
     --page-pad: var(--space-lg);
@@ -138,19 +140,26 @@ body {
 }
 
 /* ==========================================================
-   5. Phones and Tablets
+   5. Footer
+   ========================================================== */
+
+/* ==========================================================
+   6. Phones and tablets
    ========================================================== */
 @media screen and (max-width: 768px) {
+    /* One column: top bar, sidebar, then page content */
     body {
         grid-template-columns: 1fr;
         grid-template-rows: auto auto 1fr;
         grid-template-areas: "header" "nav" "main";
     }
 
+    /* Show the menu button */
     .menu-button {
         display: block;
     }
 
+    /* Sidebar stays hidden until the menu button opens it */
     .sidebar {
         display: none;
     }
@@ -159,8 +168,9 @@ body {
         display: flex;
     }
 
+    /* Less padding around the page content */
     .page-content {
-        padding: var(--page-pad);
+        --page-pad: var(--space-sm);
     }
 
     /* Only the shop initials circle shows on phones */
@@ -168,5 +178,3 @@ body {
         display: none;
     }
 }
-
-

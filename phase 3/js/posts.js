@@ -1,4 +1,4 @@
-// Builds the HTML of one post card
+// Builds the HTML for one post card
 function buildPostCard(post) {
     const rep = getRepById(post.repId);
     const date = formatDate(post.date);
@@ -25,7 +25,7 @@ function buildPostCard(post) {
     `;
 }
 
-// Fills the grid with one card per post
+// Fills the card grid with one card per post
 function fillPostCards(postList) {
     const grid = document.getElementById("posts-list");
     grid.innerHTML = "";
@@ -34,20 +34,20 @@ function fillPostCards(postList) {
     }
 }
 
-// Builds one table row per post
+// Fills the posts table with one row per post
 function fillPostsTable(postList) {
     const tableBody = document.getElementById("posts-table-body");
     tableBody.innerHTML = "";
     for (const post of postList) {
         const row = document.createElement("tr");
-        let reviewed = "-";
+        let reviewed = "—";
         if (post.reviewedDate) {
             reviewed = formatDate(post.reviewedDate);
         }
         row.innerHTML = `<td>${getRepById(post.repId).name}</td>
                         <td>${post.platform}</td>
                         <td>${formatDate(post.date)}</td>
-                        <td>${reviewed}</td>   
+                        <td>${reviewed}</td>
                         <td>${getSourceLabel(post.source)}</td>
                         <td>+${post.points}</td>
                         <td class="status-col"><span class="badge badge-${post.status}">${post.status}</span></td>`;
@@ -55,7 +55,7 @@ function fillPostsTable(postList) {
     }
 }
 
-// Shows how many posts are waiting for review
+// Fills the orange Pending count and the review bar sentence
 function fillPendingCount() {
     const pendingTotal = getPostsByStatus("pending").length;
     const count = document.getElementById("pending-count");
@@ -68,7 +68,7 @@ function fillPendingCount() {
     }
 }
 
-// Return all posts, or only the ones with this status
+// Returns all posts, or only the ones with this status
 function filterPostsByStatus(status) {
     if (status === "all") {
         return getPosts();
@@ -76,7 +76,7 @@ function filterPostsByStatus(status) {
     return getPostsByStatus(status);
 }
 
-// Shows the cards for Pending, or a table for the other tabs
+// Shows the cards for Pending, or the table for the other tabs
 function updateCards() {
     const activeTab = document.querySelector(".tab.active");
     const status = activeTab.dataset.status;
@@ -101,7 +101,7 @@ function updateCards() {
     }
 }
 
-// Make tabs clickable
+// Makes the filter tabs clickable
 function setUpTabs() {
     const tabs = document.querySelectorAll(".tab");
     for (let i = 0; i < tabs.length; i++) {
@@ -115,7 +115,7 @@ function setUpTabs() {
     }
 }
 
-// One click listener for all the Approve and Reject buttons
+// One click listener for all the Approve and Reject buttons on the cards
 function setUpCardButtons() {
     const grid = document.getElementById("posts-list");
     grid.addEventListener("click", function (event) {
@@ -142,7 +142,7 @@ function setUpCardButtons() {
     });
 }
 
-// Add post modal
+// Add post popup: opens, closes, and clears the form when it closes
 function setUpAddPostModal() {
     const modal = document.getElementById("add-post-modal");
     const addButton = document.getElementById("add-post");
@@ -156,10 +156,10 @@ function setUpAddPostModal() {
     const form = document.getElementById("add-post-form");
     modal.addEventListener("close", function () {
         form.reset();
-    }); 
+    });
 }
 
-// Fill in rep dropdown menu for post modal
+// Fills the Rep dropdown in the Add post popup (no invited reps)
 function fillRepOptions() {
     const repSelect = document.getElementById("new-post-rep");
     for (const rep of getReps()) {
@@ -169,7 +169,7 @@ function fillRepOptions() {
     }
 }
 
-// Add post save button
+// Saves a new post from the Add post popup
 function setUpAddPostForm() {
     const form = document.getElementById("add-post-form");
     const modal = document.getElementById("add-post-modal");
@@ -181,7 +181,6 @@ function setUpAddPostForm() {
         const date = document.getElementById("new-post-date").value;
         const points = Number(document.getElementById("new-post-points").value);
         addOwnerPost(repId, platform, url, date, points);
-        form.reset();
         modal.close();
         updateCards();
         showToast("Post added");
@@ -196,7 +195,7 @@ function getPostWord(count) {
     return "posts";
 }
 
-// Approval all with confirm message
+// Approve all button with a confirm box
 function setUpApproveAll() {
     const approveAllButton = document.getElementById("approve-all");
     const confirmModal = document.getElementById("confirm-modal");
@@ -215,7 +214,7 @@ function setUpApproveAll() {
     cancelButton.addEventListener("click", function () {
         confirmModal.close();
     });
-    
+
     approveButton.addEventListener("click", function () {
         const pendingPosts = getPostsByStatus("pending");
         for (const post of pendingPosts) {

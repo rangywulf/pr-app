@@ -1,4 +1,4 @@
-// Get functions, the only code that reads the raw data arrays
+// Reads and saves the app's data (the only file that touches the data arrays)
 
 // Returns all reps
 function getReps() {
@@ -36,7 +36,7 @@ function getPostsForRep(repId) {
     return repPosts;
 }
 
-// returns every transaction for this rep
+// Returns every transaction for this rep
 function getHistory(repId) {
     const repHistory = [];
     for (let i = 0; i < transactions.length; i++) {
@@ -66,7 +66,7 @@ function getPostsByStatus(status) {
     return posts.filter(post => post.status === status);
 }
 
-// Changes one post's status ("approved" or "rejected")
+// Changes one post's status and saves today as its reviewed date
 function updatePostStatus(postId, newStatus) {
     const post = posts.find(post => post.id === postId);
     if (post === undefined) {
@@ -80,24 +80,28 @@ function updatePostStatus(postId, newStatus) {
 function addTransaction(repId, postId, amount, reason) {
     const newId = transactions.length + 1;
     const today = new Date().toLocaleDateString("en-CA");
-    transactions.push({id: newId, repId: repId, postId: postId, amount: amount, reason: reason, date: today});
+    transactions.push({ id: newId, repId: repId, postId: postId, amount: amount, reason: reason, date: today });
 }
 
-// Adds a new post and returns its id
+// Adds a new post and returns its id (gets today's reviewed date unless it's pending)
 function addPost(repId, platform, url, status, date, source, points) {
     const newId = posts.length + 1;
-    posts.push({id: newId, repId: repId, platform: platform, url: url, status: status, date: date, source: source, points: points});
+    let reviewedDate = null;
+    if (status !== "pending") {
+        reviewedDate = new Date().toLocaleDateString("en-CA");
+    }
+    posts.push({ id: newId, repId: repId, platform: platform, url: url, status: status, date: date, source: source, points: points, reviewedDate: reviewedDate });
     return newId;
 }
 
 // Adds a new rep and returns its id
 function addRep(name, email, status, discountCode, prCode) {
     const newId = reps.length + 1;
-    reps.push({id: newId, name: name, email: email, status: status, discountCode: discountCode, prCode: prCode});
+    reps.push({ id: newId, name: name, email: email, status: status, discountCode: discountCode, prCode: prCode });
     return newId;
 }
 
-// Adds a new invited rep with auto-made codes, returns the new id
+// Adds a new invited rep with codes made from their first name, and returns the new id
 function addInvitedRep(name, email) {
     const firstName = name.split(" ")[0].toUpperCase();
     const prCode = `${firstName}10`;

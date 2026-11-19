@@ -1,6 +1,6 @@
 // Shared on-screen helpers used by more than one page
 
-// show Toast message
+// Shows a message in the corner for 3 seconds
 function showToast(message) {
     const toast = document.getElementById("toast");
     toast.textContent = message;

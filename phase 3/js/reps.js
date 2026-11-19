@@ -7,7 +7,7 @@ function fillRepCount() {
     repCount.textContent = `${allReps.length} reps`;
 }
 
-// Builds one table row per rep
+// Fills the reps table with one row per rep, or "No reps found"
 function fillRepsTable(repList) {
     const tableBody = document.getElementById("reps-table-body");
     tableBody.innerHTML = "";
@@ -19,12 +19,11 @@ function fillRepsTable(repList) {
         const rep = repList[i];
         const row = document.createElement("tr");
         row.innerHTML = `<td>${rep.name}</td>
-                        <td class="code code-muted">${rep.discountCode}</td>
+                        <td class="code">${rep.discountCode}</td>
                         <td class="code">${rep.prCode}</td>
                         <td>${calculateBalance(rep.id)}</td>
                         <td>$0</td>
                         <td><span class="badge badge-${rep.status}">${rep.status}</span></td>`;
-        row.dataset.repId = rep.id;
         row.addEventListener("click", function () {
             openRepPanel(rep);
         });
@@ -48,7 +47,7 @@ function fillPanelHeader(rep) {
     prCode.textContent = rep.prCode;
 }
 
-// Side panel: one line per social account
+// Side panel: one icon per social account, or "No social accounts yet"
 function fillPanelAccounts(rep) {
     const accountsList = document.getElementById("panel-accounts");
     const accounts = getAccounts(rep.id);
@@ -74,17 +73,17 @@ function fillPanelStats(rep) {
     redeemedStat.textContent = calculateEarned(rep.id) - calculateBalance(rep.id);
 }
 
-// Side panel: point history, earned and redeemed
+// Side panel: point history (earned and redeemed), or "No history yet"
 function fillPanelHistory(rep) {
     const historyList = document.getElementById("panel-history");
     historyList.innerHTML = "";
     const history = getHistory(rep.id);
     if (history.length === 0) {
-        historyList.innerHTML = `<li class="empty-state">No history yet</li>`
+        historyList.innerHTML = `<li class="empty-state">No history yet</li>`;
         return;
     }
     for (const t of history) {
-        const shortDate = new Date(`${t.date}T00:00:00`).toLocaleDateString(undefined, {month: "short", day: "numeric", year: "numeric"});
+        const shortDate = new Date(`${t.date}T00:00:00`).toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" });
         const item = document.createElement("li");
         if (t.amount > 0) {
             item.className = "history-earned";
@@ -98,7 +97,7 @@ function fillPanelHistory(rep) {
     }
 }
 
-// Fill the whole side panel for one rep
+// Fills the whole side panel for one rep
 function fillRepHistory(rep) {
     fillPanelHeader(rep);
     fillPanelAccounts(rep);
@@ -106,15 +105,14 @@ function fillRepHistory(rep) {
     fillPanelHistory(rep);
 }
 
-// Fill the side panel and show it
+// Fills the side panel and opens it
 function openRepPanel(rep) {
     fillRepHistory(rep);
     const panel = document.getElementById("rep-panel");
     panel.classList.add("open");
 }
 
-
-// filter by status
+// Returns all reps, or only the ones with this status
 function filterRepsByStatus(status) {
     const allReps = getReps();
     if (status === "all") {
@@ -124,7 +122,7 @@ function filterRepsByStatus(status) {
     return allReps.filter(rep => rep.status === status);
 }
 
-// Make tabs clickable
+// Makes the filter tabs clickable
 function setUpTabs() {
     const tabs = document.querySelectorAll(".tab");
     for (let i = 0; i < tabs.length; i++) {
@@ -138,6 +136,7 @@ function setUpTabs() {
     }
 }
 
+// Redraws the table using the active tab, the search text, and the sort choice
 function updateTable() {
     const activeTab = document.querySelector(".tab.active");
     const status = activeTab.dataset.status;
@@ -153,6 +152,7 @@ function updateTable() {
     fillRepsTable(repList);
 }
 
+// Search box filters the table as you type
 function setUpSearch() {
     const searchBox = document.getElementById("rep-search");
     searchBox.addEventListener("input", function () {
@@ -160,6 +160,7 @@ function setUpSearch() {
     });
 }
 
+// Sort dropdown reorders the table
 function setUpSort() {
     const sortBox = document.getElementById("rep-sort");
     sortBox.addEventListener("change", function () {
@@ -167,16 +168,16 @@ function setUpSort() {
     });
 }
 
-// Make the close button hide the side panel             
-function setUpPanelClose() {                                
-    const closeButton = document.getElementById("panel-close");   
-    closeButton.addEventListener("click", function () {     
-        const panel = document.getElementById("rep-panel");  
-        panel.classList.remove("open");                      
-    });                                                      
-}        
+// Close button hides the side panel
+function setUpPanelClose() {
+    const closeButton = document.getElementById("panel-close");
+    closeButton.addEventListener("click", function () {
+        const panel = document.getElementById("rep-panel");
+        panel.classList.remove("open");
+    });
+}
 
-// Add rep modal: open and cancel
+// Add rep popup: opens, closes, and clears the form when it closes
 function setUpAddRepModal() {
     const modal = document.getElementById("add-rep-modal");
     const addButton = document.getElementById("add-rep");
@@ -190,10 +191,10 @@ function setUpAddRepModal() {
     const form = document.getElementById("add-rep-form");
     modal.addEventListener("close", function () {
         form.reset();
-    }); 
+    });
 }
 
-// Add rep save button
+// Saves a new rep from the Add rep popup
 function setUpAddRepForm() {
     const form = document.getElementById("add-rep-form");
     const modal = document.getElementById("add-rep-modal");
@@ -202,7 +203,6 @@ function setUpAddRepForm() {
         const name = document.getElementById("new-rep-name").value.trim();
         const email = document.getElementById("new-rep-email").value.trim();
         addInvitedRep(name, email);
-        form.reset();
         modal.close();
         fillRepCount();
         updateTable();

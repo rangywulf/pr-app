@@ -1,45 +1,45 @@
 // The Overview chart, kept so the tabs can update it
 let postsChart = null;
 
-/* Overview page with data */
+// Fills the 4 metric cards
 function fillMetricCards() {
-    /* Active reps card */
+    // Active reps card
     const reps = getReps();
     const activeReps = reps.filter(rep => rep.status === "active");
     const activeCard = document.getElementById("metric-active-reps");
     activeCard.textContent = activeReps.length;
 
-    /* Posts to review card */
+    // Posts to review card
     const posts = getPosts();
     const pendingPosts = posts.filter(post => post.status === "pending");
     const reviewCard = document.getElementById("metric-review");
     reviewCard.textContent = pendingPosts.length;
 
-    /* Posts card */
+    // Approved posts card
     const approvedPosts = posts.filter(post => post.status === "approved");
     const postsCard = document.getElementById("metric-posts");
     postsCard.textContent = approvedPosts.length;
 }
-    
-/* Needs review list */
+
+// Fills the Needs review list, oldest post first
 function fillReviewList() {
     const pendingPosts = getPostsByStatus("pending");
     const list = document.getElementById("review-list");
     for (const post of pendingPosts) {
         const rep = getRepById(post.repId);
-        const item = document.createElement("li");        
-        item.innerHTML = `<a href="posts.html" class="review-row"><span>${rep.name}</span><span class="review-date" title="${formatDate(post.date)}">Posted ${formatDaysAgo(post.date)} &rsaquo;</span>`;
+        const item = document.createElement("li");
+        item.innerHTML = `<a href="posts.html" class="review-row"><span>${rep.name}</span><span class="review-date" title="${formatDate(post.date)}">Posted ${formatDaysAgo(post.date)} &rsaquo;</span></a>`;
         list.appendChild(item);
     }
 }
 
-/* Display top 5 reps */
+// Fills the Top reps table with the 5 reps who earned the most points
 function fillTopReps() {
     const tbody = document.getElementById("top-reps-body");
-    const sortedReps = getReps().slice().sort((a,b) => calculateEarned(b.id) - calculateEarned(a.id));
-    const topReps = sortedReps.slice(0,5);
+    const sortedReps = getReps().slice().sort((a, b) => calculateEarned(b.id) - calculateEarned(a.id));
+    const topReps = sortedReps.slice(0, 5);
 
-    // Make one table row for each of the top 5 reps
+    // One table row for each of the top 5 reps
     for (const rep of topReps) {
         const approvedCount = getPosts().filter(post => post.repId === rep.id && post.status === "approved").length;
         const row = document.createElement("tr");
@@ -57,7 +57,7 @@ function filterPostsByPlatform(platform) {
     return approvedPosts.filter(post => post.platform === platform);
 }
 
-// Draws the Posts over time line chart
+// Draws the Approved posts over time chart
 function drawPostsChart() {
     const canvas = document.getElementById("posts-chart");
     const lineColor = getComputedStyle(document.documentElement).getPropertyValue("--color-chart-1").trim();

@@ -1,115 +1,126 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Overview | Shiver</title>
 
-        <!-- Google Fonts -->
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
-        
-        <!--Site styles -->
-        <link href="css/brand.css" rel="stylesheet" />
-        <link href="css/layout.css" rel="stylesheet" />
-        <link href="css/components.css" rel="stylesheet" />
-        <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
-        <script src="js/data.js" defer></script>
-        <script src="js/data-access.js" defer></script>
-        <script src="js/logic.js" defer></script>
-        <script src="js/ui.js" defer></script>
-        <script src="js/overview.js" defer></script>
-    </head>
-    <body>
-        <!-- Top Bar: logo, search, shop name (same on every page) -->
-        <header class="top-bar">
-            <button type="button" class="menu-button" id="menu-button" aria-label="Open menu" aria-controls="main-nav" aria-expanded="false">&#9776;</button>
-            <img src="images/Shiver_Main_Logo_White.png" alt="Shiver" class="logo" />
-            <div class="shop-account"><span class="shop-avatar" aria-hidden="true">HG</span><span class="shop-name">Hippie Goth Stickers</span></div>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Overview | Shiver</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+        rel="stylesheet">
+
+    <!-- Site styles -->
+    <link href="css/brand.css" rel="stylesheet" />
+    <link href="css/layout.css" rel="stylesheet" />
+    <link href="css/components.css" rel="stylesheet" />
+
+    <!-- Chart library and scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+    <script src="js/data.js" defer></script>
+    <script src="js/data-access.js" defer></script>
+    <script src="js/logic.js" defer></script>
+    <script src="js/ui.js" defer></script>
+    <script src="js/overview.js" defer></script>
+</head>
+
+<body>
+    <!-- Top bar: menu button, logo, and shop (same on every page) -->
+    <header class="top-bar">
+        <button type="button" class="menu-button" id="menu-button" aria-label="Open menu" aria-controls="main-nav"
+            aria-expanded="false">&#9776;</button>
+        <img src="images/Shiver_Main_Logo_White.png" alt="Shiver" class="logo" />
+        <div class="shop-account"><span class="shop-avatar" aria-hidden="true">HG</span><span class="shop-name">Hippie
+                Goth Stickers</span></div>
+    </header>
+
+    <!-- Sidebar navigation (same on every page) -->
+    <nav class="sidebar" id="main-nav" aria-label="Main">
+        <a href="index.html" class="nav-link active" aria-current="page">Overview</a>
+        <a href="reps.html" class="nav-link">Reps</a>
+        <a href="posts.html" class="nav-link">Posts</a>
+    </nav>
+
+    <!-- Page content: everything unique to Overview -->
+    <main class="page-content">
+        <!-- Page title, with the greeting filled in by overview.js -->
+        <header class="page-header">
+            <div class="page-header-text">
+                <p class="greeting" id="greeting"></p>
+                <h1>Overview</h1>
+                <p class="page-subtitle">Last 30 days</p>
+            </div>
+            <a href="posts.html" class="button-link">Review posts</a>
         </header>
 
-        <!-- Sidebar navigation (same on every page) -->
-        <nav class="sidebar" id="main-nav" aria-label="Main">
-            <a href="index.html" class="nav-link active" aria-current="page">Overview</a>
-            <a href="reps.html" class="nav-link">Reps</a>
-            <a href="posts.html" class="nav-link">Posts</a>
-        </nav>
+        <!-- Metric cards: numbers filled in by overview.js using each id -->
+        <section class="metric-grid" aria-label="Key metrics">
+            <article class="metric-card">
+                <p class="metric-label">Active reps</p>
+                <p class="metric-value" id="metric-active-reps">0</p>
+            </article>
+            <article class="metric-card">
+                <p class="metric-label">Approved posts</p>
+                <p class="metric-value" id="metric-posts">0</p>
+            </article>
+            <article class="metric-card">
+                <p class="metric-label">Sales from codes</p>
+                <p class="metric-value" id="metric-sales">$0</p>
+            </article>
+            <article class="metric-card">
+                <p class="metric-label">Posts to review</p>
+                <p class="metric-value" id="metric-review">0</p>
+            </article>
+        </section>
 
-        <!-- Page content: everything unique to Overview -->
-        <main class="page-content">
-            <header class="page-header">
-                <div class="page-header-text">
-                    <p class="greeting" id="greeting"></p>
-                    <h1>Overview</h1>
-                    <p class="page-subtitle">Last 30 days</p>
+        <!-- Chart and Needs review, side by side -->
+        <section class="overview-row">
+            <section class="panel chart-panel">
+                <h2 class="panel-title">Approved posts over time</h2>
+                <p class="panel-subtitle">Last 30 days</p>
+                <div class="tabs" id="chart-tabs">
+                    <button type="button" class="tab active" data-platform="all">All</button>
+                    <button type="button" class="tab" data-platform="Instagram">Instagram</button>
+                    <button type="button" class="tab" data-platform="Facebook">Facebook</button>
+                    <button type="button" class="tab" data-platform="TikTok">TikTok</button>
+                    <button type="button" class="tab" data-platform="YouTube">YouTube</button>
+                    <button type="button" class="tab" data-platform="Substack">Substack</button>
                 </div>
-                <a href="posts.html" class="button-link">Review posts</a>
-            </header>
-
-            <!-- Metric cards: numbers filled in by overview.js using each id -->
-            <section class="metric-grid" aria-label="Key metrics">
-                <article class="metric-card">
-                    <p class="metric-label">Active reps</p>
-                    <p class="metric-value" id="metric-active-reps">0</p>
-                </article>
-                <article class="metric-card">
-                    <p class="metric-label">Approved posts</p>
-                    <p class="metric-value" id="metric-posts">0</p>
-                </article>
-                <article class="metric-card">
-                    <p class="metric-label">Sales from codes</p>
-                    <p class="metric-value" id="metric-sales">$0</p>
-                </article>
-                <article class="metric-card">
-                    <p class="metric-label">Posts to review</p>
-                    <p class="metric-value" id="metric-review">0</p>
-                </article>
+                <div class="chart-box">
+                    <canvas id="posts-chart" role="img" aria-label="Approved posts over time chart"></canvas>
+                </div>
             </section>
+            <section class="panel review-panel">
+                <h2 class="panel-title">Needs review</h2>
+                <!-- Pending posts list, filled in by overview.js -->
+                <ul id="review-list" class="review-list">
 
-            <!-- Chart and Needs review, side by side -->
-            <section class="overview-row">
-                <section class="panel chart-panel">
-                    <h2 class="panel-title">Approved posts over time</h2>
-                    <p class="panel-subtitle">Last 30 days</p>
-                    <div class="tabs" id="chart-tabs">
-                        <button type="button" class="tab active" data-platform="all">All</button>
-                        <button type="button" class="tab" data-platform="Instagram">Instagram</button>
-                        <button type="button" class="tab" data-platform="Facebook">Facebook</button>
-                        <button type="button" class="tab" data-platform="TikTok">TikTok</button>
-                        <button type="button" class="tab" data-platform="YouTube">YouTube</button>
-                        <button type="button" class="tab" data-platform="Substack">Substack</button>
-                    </div>
-                    <div class="chart-box">
-                        <canvas id="posts-chart" role="img" aria-label="Posts over time chart"></canvas>
-                    </div>
-                </section>
-                <section class="panel review-panel">
-                    <h2 class="panel-title">Needs review</h2>
-                    <!-- Pending posts list, filled in by overview.js -->
-                    <ul id="review-list" class="review-list">
+                </ul>
+                <a href="posts.html" class="review-all">Review all posts &rarr;</a>
+            </section>
+        </section>
 
-                    </ul>
-                    <a href="posts.html" class="review-all">Review all posts &rarr;</a>
-                </section>
-            </section>
-            <!-- Top reps table: rows filled in by overview.js -->
-            <section class="panel top-reps-panel">
-                <h2 class="panel-title">Top reps</h2>
-                <table class="data-table">
-                    <thead>
-                        <tr>
-                            <th scope="col">Rep</th>
-                            <th scope="col">Posts</th>
-                            <th scope="col">Points</th>
-                            <th scope="col">Sales</th>
-                        </tr>
-                    </thead>
-                    <tbody id="top-reps-body">
-                            
-                    </tbody>
-                </table>
-            </section>
-        </main>
-    </body>
+        <!-- Top reps table: rows filled in by overview.js -->
+        <section class="panel top-reps-panel">
+            <h2 class="panel-title">Top reps</h2>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th scope="col">Rep</th>
+                        <th scope="col">Posts</th>
+                        <th scope="col">Points</th>
+                        <th scope="col">Sales</th>
+                    </tr>
+                </thead>
+                <tbody id="top-reps-body">
+
+                </tbody>
+            </table>
+        </section>
+    </main>
+</body>
+
 </html>

@@ -1,140 +1,156 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Posts | Shiver</title>
 
-        <!-- Google Fonts-->
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
-        
-        <!-- Bootstrap Social Media Icons -->
-         <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Posts | Shiver</title>
 
-        <!--Site styles-->
-        <link href="css/brand.css" rel="stylesheet" />
-        <link href="css/layout.css" rel="stylesheet" />
-        <link href="css/components.css" rel="stylesheet" />
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+        rel="stylesheet">
 
-        <!-- Scripts -->
-        <script src="js/data.js" defer></script>
-        <script src="js/data-access.js" defer></script>
-        <script src="js/logic.js" defer></script>
-        <script src="js/ui.js" defer></script>
-        <script src="js/posts.js" defer></script>
+    <!-- Bootstrap Icons (platform logos on the post cards) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
 
-    </head>
-    <body>
-        <header class="top-bar">
-            <button type="button" class="menu-button" id="menu-button" aria-label="Open menu" aria-controls="main-nav" aria-expanded="false">&#9776;</button>
-            <img src="images/Shiver_Main_Logo_White.png" alt="Shiver" class="logo" />
-            <div class="shop-account"><span class="shop-avatar" aria-hidden="true">HG</span><span class="shop-name">Hippie Goth Stickers</span></div>
+    <!-- Site styles -->
+    <link href="css/brand.css" rel="stylesheet" />
+    <link href="css/layout.css" rel="stylesheet" />
+    <link href="css/components.css" rel="stylesheet" />
+
+    <!-- Scripts -->
+    <script src="js/data.js" defer></script>
+    <script src="js/data-access.js" defer></script>
+    <script src="js/logic.js" defer></script>
+    <script src="js/ui.js" defer></script>
+    <script src="js/posts.js" defer></script>
+</head>
+
+<body>
+    <!-- Top bar: menu button, logo, and shop (same on every page) -->
+    <header class="top-bar">
+        <button type="button" class="menu-button" id="menu-button" aria-label="Open menu" aria-controls="main-nav"
+            aria-expanded="false">&#9776;</button>
+        <img src="images/Shiver_Main_Logo_White.png" alt="Shiver" class="logo" />
+        <div class="shop-account"><span class="shop-avatar" aria-hidden="true">HG</span><span class="shop-name">Hippie
+                Goth Stickers</span></div>
+    </header>
+
+    <!-- Sidebar navigation (same on every page) -->
+    <nav class="sidebar" id="main-nav" aria-label="Main">
+        <a href="index.html" class="nav-link">Overview</a>
+        <a href="reps.html" class="nav-link">Reps</a>
+        <a href="posts.html" class="nav-link active" aria-current="page">Posts</a>
+    </nav>
+
+    <!-- Page content: everything unique to Posts -->
+    <main class="page-content">
+        <!-- Page title and Add post button -->
+        <header class="page-header">
+            <div class="page-header-text">
+                <h1>Posts</h1>
+            </div>
+            <div class="page-header-actions">
+                <button type="button" class="button-link" id="add-post">Add post</button>
+            </div>
         </header>
 
-        <!-- Sidebar navigation (same on every page) -->
-        <nav class="sidebar" id="main-nav" aria-label="Main">
-            <a href="index.html" class="nav-link" aria-current="page">Overview</a>
-            <a href="reps.html" class="nav-link">Reps</a>
-            <a href="posts.html" class="nav-link active" aria-current="page">Posts</a>
-        </nav>
-        <main class="page-content">
-            <header class="page-header">
-                <div class="page-header-text">
-                    <h1>Posts</h1>
-                </div>
-                <div class="page-header-actions">
-                    <button type="button" class="button-link" id="add-post">Add post</button>
-                </div>
-            </header>
+        <!-- Filter tabs -->
+        <div class="tabs">
+            <button type="button" class="tab active" data-status="pending">Pending <span class="tab-count"
+                    id="pending-count"></span></button>
+            <button type="button" class="tab" data-status="approved">Approved</button>
+            <button type="button" class="tab" data-status="rejected">Rejected</button>
+            <button type="button" class="tab" data-status="all">All</button>
+        </div>
 
-            <!-- Filter Tabs -->
-            <div class="tabs">
-                <button class="tab active" data-status="pending">Pending <span class="tab-count" id="pending-count"></span></button>
-                <button class="tab" data-status="approved">Approved</button>
-                <button class="tab" data-status="rejected">Rejected</button>
-                <button class="tab" data-status="all">All</button>
+        <!-- Pending view: review bar and cards -->
+        <section id="pending-view">
+            <div class="review-bar">
+                <p class="review-text" id="review-text"></p>
+                <button type="button" class="button-link button-secondary" id="approve-all">Approve all</button>
             </div>
+            <!-- Post cards, filled in by posts.js -->
+            <div class="post-grid" id="posts-list">
 
-            <!-- Pending view: review bar and cards -->
-            <section id="pending-view">
-                <div class="review-bar">
-                    <p class="review-text" id="review-text"></p>
-                    <button type="button" class="button-link button-secondary" id="approve-all">Approve all</button>
-                </div>
-                <!-- Post cards -->
-                <div class="post-grid" id="posts-list">
-                    
-                </div>
-            </section>
-
-            <!-- Posts table (Approved, Rejected, All) -->
-            <div class="panel" id="posts-table-panel">
-                <table class="data-table" id="posts-table">
-                    <thead>
-                        <tr>
-                            <th>Rep</th>
-                            <th>Platform</th>
-                            <th>Posted</th>
-                            <th>Reviewed</th>
-                            <th>Source</th>
-                            <th>Points</th>
-                            <th class="status-col">Status</th>
-                        </tr>
-                    </thead>
-                    <tbody id="posts-table-body"></tbody>
-                </table>
             </div>
-            <dialog id="add-post-modal" class="modal">
-                <form id="add-post-form">
-                    <h2>Add post</h2>
-                    <div class="form-field">
-                        <label for="new-post-rep">Rep</label>
-                        <select id="new-post-rep" required>
-                            <option value="">Choose a rep</option>
-                        </select>
-                    </div>
-                    <div class="form-field">
-                        <label for="new-post-platform">Platform</label>
-                        <select id="new-post-platform" required>
-                            <option value="">Choose a platform</option>
-                            <option value="Instagram">Instagram</option>
-                            <option value="Facebook">Facebook</option>
-                            <option value="TikTok">TikTok</option>
-                            <option value="YouTube">YouTube</option>
-                            <option value="Substack">Substack</option>
-                        </select>
-                    </div>
-                    <div class="form-field">
-                        <label for="new-post-link">Post link</label>
-                        <input type="url" id="new-post-link" placeholder="https://" pattern="https://.*" title="Link must start with https://" required>
-                    </div>
-                    <div class="form-field">
-                        <label for="new-post-date">Date posted</label>
-                        <input type="date" id="new-post-date" required>
-                    </div>
-                    <div class="form-field">
-                        <label for="new-post-points">Points</label>
-                        <input type="number" id="new-post-points" value="10" min="1" required>
-                    </div>
-                    <div class="modal-actions">
-                        <button type="button" id="cancel-add-post" class="button-link button-secondary">Cancel</button>
-                        <button type="submit" class="button-link">Save post</button>
-                    </div>
-                </form>
-            </dialog>
-            <dialog id="confirm-modal" class="modal">
-                <h2 id="confirm-title"></h2>
-                <p>Each rep gets their points right away</p>
+        </section>
+
+        <!-- Posts table (Approved, Rejected, All), rows filled in by posts.js -->
+        <div class="panel" id="posts-table-panel">
+            <table class="data-table" id="posts-table">
+                <thead>
+                    <tr>
+                        <th>Rep</th>
+                        <th>Platform</th>
+                        <th>Posted</th>
+                        <th>Reviewed</th>
+                        <th>Source</th>
+                        <th>Points</th>
+                        <th class="status-col">Status</th>
+                    </tr>
+                </thead>
+                <tbody id="posts-table-body"></tbody>
+            </table>
+        </div>
+
+        <!-- Add post popup -->
+        <dialog id="add-post-modal" class="modal">
+            <form id="add-post-form">
+                <h2>Add post</h2>
+                <div class="form-field">
+                    <label for="new-post-rep">Rep</label>
+                    <select id="new-post-rep" required>
+                        <option value="">Choose a rep</option>
+                    </select>
+                </div>
+                <div class="form-field">
+                    <label for="new-post-platform">Platform</label>
+                    <select id="new-post-platform" required>
+                        <option value="">Choose a platform</option>
+                        <option value="Instagram">Instagram</option>
+                        <option value="Facebook">Facebook</option>
+                        <option value="TikTok">TikTok</option>
+                        <option value="YouTube">YouTube</option>
+                        <option value="Substack">Substack</option>
+                    </select>
+                </div>
+                <div class="form-field">
+                    <label for="new-post-link">Post link</label>
+                    <input type="url" id="new-post-link" placeholder="https://" pattern="https://.*"
+                        title="Link must start with https://" required>
+                </div>
+                <div class="form-field">
+                    <label for="new-post-date">Date posted</label>
+                    <input type="date" id="new-post-date" required>
+                </div>
+                <div class="form-field">
+                    <label for="new-post-points">Points</label>
+                    <input type="number" id="new-post-points" value="10" min="1" required>
+                </div>
                 <div class="modal-actions">
-                    <button type="button" id="confirm-cancel" class="button-link button-secondary">Cancel</button>
-                    <button type="button" id="confirm-approve" class="button-link">Approve</button>
+                    <button type="button" id="cancel-add-post" class="button-link button-secondary">Cancel</button>
+                    <button type="submit" class="button-link">Save post</button>
                 </div>
-            </dialog>
-            <div id="toast" class="toast hidden" role="status">
-                
+            </form>
+        </dialog>
+
+        <!-- Approve all confirm box (the title is filled in by posts.js) -->
+        <dialog id="confirm-modal" class="modal">
+            <h2 id="confirm-title"></h2>
+            <p>Each rep gets their points right away</p>
+            <div class="modal-actions">
+                <button type="button" id="confirm-cancel" class="button-link button-secondary">Cancel</button>
+                <button type="button" id="confirm-approve" class="button-link">Approve</button>
             </div>
-        </main>
-    </body>
+        </dialog>
+
+        <!-- Toast message in the corner -->
+        <div id="toast" class="toast hidden" role="status"></div>
+    </main>
+</body>
+
 </html>
