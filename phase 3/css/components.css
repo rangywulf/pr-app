@@ -15,7 +15,15 @@ h1, h2, h3 {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: var(--space-md);
+    margin: calc(-1 * var(--page-pad)) calc(-1 * var(--page-pad)) var(--space-md);
+    padding: var(--space-md) var(--page-pad);
+    background-color: var(--color-bg);
+    border-bottom: 1px solid var(--color-sand-dark);
+}
+
+/* Page titles without the browser's extra spacing */
+.page-header h1 {
+    margin: 0;
 }
 
 /* Title and subtitle side by side, letters on the same line */
@@ -23,6 +31,7 @@ h1, h2, h3 {
     display: flex;
     align-items: baseline;
     gap: var(--space-sm);
+    flex-wrap: wrap;
 }
 
 /* Header buttons side by side */
@@ -164,6 +173,14 @@ h1, h2, h3 {
 }
 
 /* ==================== OVERVIEW ==================== */
+/* Greeting above the Overview Title */
+.greeting {
+    font-size: var(--text-card-title);
+    color: var(--color-primary);
+    margin-top: 0;
+    margin-bottom: var(--space-xs);
+    flex-basis: 100%;
+}
 
 /* Metric cards: 4 equal columns */
 .metric-grid {

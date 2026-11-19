@@ -113,8 +113,23 @@ function setUpChartTabs() {
     }
 }
 
+// Greets the shop owner based on the time of day
+function fillGreeting() {
+    const hour = new Date().getHours();
+    const shopName = document.querySelector(".shop-name").textContent;
+    let greeting = "Good evening";
+    if (hour < 12) {
+        greeting = "Good morning";
+    }
+    else if (hour < 18) {
+        greeting = "Good afternoon";
+    }
+    document.getElementById("greeting").textContent = `${greeting}, ${shopName}`;
+}
+
 fillMetricCards();
 fillReviewList();
 fillTopReps();
 drawPostsChart();
 setUpChartTabs();
+fillGreeting();

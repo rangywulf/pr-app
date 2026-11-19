@@ -44,7 +44,7 @@ body {
     display: flex;
     align-items: center;
     gap: var(--space-md);
-    padding: var(--space-xs) var(--space-md);
+    padding: var(--space-xs) var(--space-lg);
     height: var(--topbar-height);
     box-sizing: border-box;
     background-color: var(--color-primary);
@@ -58,8 +58,29 @@ body {
 
 /* Push shop name to the right */
 .top-bar .shop-name {
-    margin-left: auto;
     color: var(--color-surface);
+}
+
+/* Shop circle and name sit together on the right */
+.shop-account {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+    margin-left: auto;
+}
+
+/* Shop initials in a mint circle */
+.shop-avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: var(--color-accent-soft);
+    color: var(--color-primary);
+    font-size: var(--text-small);
+    font-weight: var(--weight-semibold);
 }
 
 /* Menu button: hidden on desktop, shown on phones */
@@ -84,6 +105,7 @@ body {
     gap: var(--space-xs);
     padding: var(--space-md);
     background: var(--color-bg);
+    border-right: 1px solid var(--color-sand-dark);
 }
 
 /* Turn plain links into menu items with a bigger click area */
@@ -107,7 +129,8 @@ body {
 /* Put the main content in the area named "main" (bottom right) */
 .page-content {
     grid-area: main;
-    padding: var(--space-lg);
+    --page-pad: var(--space-lg);
+    padding: var(--page-pad);
     min-width: 0;
 }
 
@@ -134,7 +157,7 @@ body {
     }
 
     .page-content {
-        padding: var(--space-sm);
+        padding: var(--page-pad);
     }
 }
 
