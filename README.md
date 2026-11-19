@@ -1,145 +1,155 @@
-# Shiver: PR Representative Tracking App
+# Shiver Phase 3: Owner Dashboard Website
 
 *Shiver by Kelpkin | Your PR team, swimming in sync.*
 
 ## Overview
 
-Shiver is a Java desktop app that helps shop owners manage and track the social media activity of their public relations (PR) representatives.
+Shiver Phase 3 is a client-side website that shows what Shiver looks like for a shop owner. It has three pages: Overview, Reps, and Posts. From these pages, an owner can see how their PR team is doing, look up each rep's codes, points, and history, add reps and posts, and approve or reject the posts reps submit.
 
-The app gives a shop owner one place to add their PR reps, record each promotional post a rep makes, award points for those posts, and process point redemptions. It was built in two phases for my Software Development program: Phase 1 was a console prototype, and Phase 2 (this version) is a JavaFX window with saved data.
+This phase was built for TESD 1100 with HTML, CSS, and JavaScript. It runs entirely in the browser using sample data, so any changes last until the page is reloaded. It is styled to look and feel like a Shopify app, since a later phase will run Shiver inside the Shopify admin.
 
 ## Why I Built This
 
-Manually tracking PR rep posts and points is a real bottleneck for small shop owners running a PR program, something I saw firsthand through my own experience running a planner sticker shop. This project started as an assignment for my Software Development program, but the problem it solves is one I actually understand from direct experience, not just a theoretical exercise.
+Phase 2 proved that the core rules work: adding reps, logging posts, and calculating points from history. Phase 3 answers the next question: what should the shop owner actually see when they open the app?
 
-It is also the foundation for a larger application I will keep building on throughout the program, so the later phases (Shopify integration and so on) are features that map to real needs small shop owners have.
+I focused on the owner first because the owner is the one who installs the app and runs the PR program. Reps will get their own view, the PR Portal, in a later phase once login is added. I also built the code so that the database, Shopify, and the PR Portal can slot in later without a rewrite.
 
 ## Project Goals
 
-The goal of this project is to develop a practical application that addresses a real-world business need while demonstrating software development concepts and practices.
+The goal of this phase is to turn Shiver's core rules into a website a shop owner could actually use, while demonstrating client-side web development concepts and practices.
 
-The application focuses on:
+This phase focuses on:
 
-- Tracking PR representatives
-- Recording social media promotional activity
-- Tracking the activity used to determine compensation
-- Calculating each rep's points from their history
+- Giving the shop owner a quick read on how their PR team is doing
+- Making post review fast, with approve and reject on each post
+- Showing each rep's codes, social accounts, points, and history in one place
+- A professional, Shopify-style design that works on desktop and phone
+- Code organized so the database, Shopify, and the PR Portal can be added later
 
-## Implemented Features (Phase 2)
+## Implemented Features (Phase 3)
 
-Shiver currently supports:
+Shiver Phase 3 currently supports:
 
-- A JavaFX window with four tabs: Team, Add Rep, Log Post, and Redeem
-- Adding PR reps with a unique ID, a blank name check, and email format and duplicate checks
-- Logging posts for YouTube, TikTok, Instagram, Facebook, and Substack, with links that must start with `https://`
-- Earning 10 points for each logged post
-- Redeeming points for cash, product, or store credit, with a check that a rep cannot redeem more than their balance
-- A team table showing every rep's post count and point balance, which are calculated from the rep's history instead of stored
-- A View History window that shows each rep's dated point transactions, including the link for the post that earned the points
-- Deleting one or several reps at once, with a confirmation, which also deletes their posts and point history
-- Saving to a text file after every change, and loading it again when the app starts
-- Saved ID counters, so an ID is never reused, even after a rep is deleted and the app is restarted
-- Kelpkin and Shiver branding, with a dark teal banner, aqua accents, and a cream background
+- Three pages (Overview, Reps, and Posts) connected by a sidebar, with a ☰ menu on phones
+- **Overview:** a time-of-day greeting, four metric cards, a line chart of approved posts over the last 30 days with platform tabs (built with Chart.js), a Needs review list sorted oldest first, and a Top reps table
+- **Reps:** a table with filter tabs (All, Active, Paused, Invited), search by name, and sorting by name or points
+- A rep side panel with their email, codes, social media links, stats, and dated point history
+- Adding a rep, who starts as invited and gets a PR code and discount code made from their first name
+- **Posts:** pending posts shown as cards with Approve and Reject buttons, and approved, rejected, and all posts shown as a table with Posted and Reviewed dates
+- Approve all, with a styled confirmation box
+- Adding a post by hand, for posts the owner finds or a rep sends in
+- Form checks using the browser's built-in validation (required fields, email format, links that must start with `https://`)
+- Short pop-up messages (toasts) after each action, and a friendly message in place of any empty list or table
+- A mobile layout that switches at 768px wide
+- Kelpkin and Shiver branding, with colors checked for readability
 
 ## Planned Features
 
-Future phases will build on Phase 2 to add:
+Future phases will build on Phase 3 to add:
 
-- A CSS file for styling (Phase 3)
-- A Settings tab where the shop owner sets the points value for a post
-- PR Applications (a planned feature for a later phase)
-- Shopify integration and automated sales tracking
-- Automatic discount code generation
-- Automated Instagram and Facebook post detection, including hashtag and shop-tag verification
-- Additional social media platform integrations
-- Full web application functionality
+- A database, so changes are saved instead of lasting only until the page reloads (Phase 4)
+- Running Shiver inside the Shopify admin (Phase 5)
+- Sales tracking from each rep's PR code, filling in the Sales columns that show $0 for now
+- A Reports page with charts comparing sales and points (Phase 6)
+- The PR Portal, where reps log in to see their points, codes, and posts
+- Invite emails for new reps, and adding social accounts when adding a rep
+- Buttons to pause a rep, set them back to active, or mark them inactive
+- A Settings page, including an option to auto-approve detected Instagram and Facebook posts
+- Links from each post to the real post on social media
+- A dark mode
 
 ## How to Run
 
-1. Install a JDK and set up JavaFX for the project.
-2. Open the project in your IDE and run `Main.java`.
-3. Run the app from the folder that contains `pr-app`, because the data file is saved at `pr-app/src/shiver-data.txt`.
+1. Open the `phase3` folder.
+2. Open `index.html` in a web browser (Chrome, Edge, Firefox, or Safari). From there, use the sidebar to move between pages.
+3. Stay connected to the internet. The fonts, icons, and chart library load from online sources.
 
-The data file is created automatically the first time you add something. To start clean, close the app and delete `shiver-data.txt`.
+No install or setup is needed. All data is sample data, and any changes reset when the page is reloaded.
 
 ## Technology Choices
 
-- **Java and JavaFX:** Java is the language taught in my courses, and JavaFX is the GUI library covered in the TESD 1800 chapters.
-- **Classes and objects:** Phase 2 replaces the Phase 1 arrays with three data classes (`Rep`, `Post`, `PointTransaction`) and three manager classes. This is possible now because classes are covered in this course.
-- **A three-manager split:** `RepManager` handles reps, `PointsManager` handles posts and point transactions, and `FileHandler` handles saving and loading. The window code in `Main` stays thin, and the rules live in the managers.
-- **Calculated values:** a rep's post count and point balance are calculated from their posts and transactions instead of being stored as fields, so the numbers can never fall out of sync.
-- **A readable text file:** data is saved with `PrintWriter` and loaded with `Scanner`. It is a pipe-separated text file with labeled sections, so I can open it and read it. Because the pipe separates the fields, the app blocks the `|` character in any text field.
-- **No third-party libraries:** JavaFX is the only dependency.
+- **HTML, CSS, and JavaScript:** these are the languages taught in TESD 1100, and they run in any browser with nothing to install.
+- **A Shopify-style design:** the layout, tabs, and badges follow the look of Shopify's own admin (called Polaris), since Shiver will run inside Shopify in a later phase.
+- **Three CSS files:** `brand.css` holds the colors and fonts as variables, `layout.css` holds the page frame (top bar, sidebar, and the phone layout), and `components.css` holds everything else, grouped by page. Because every color lives in one place, the Shopify version or a dark mode only needs new values, not new rules.
+- **JavaScript split by job:**
+
+| File | Job |
+| --- | --- |
+| `data.js` | Sample data only |
+| `data-access.js` | Reading and saving data |
+| `logic.js` | Rules and math |
+| `ui.js` | Shared pieces used by more than one page (toasts, the ☰ menu) |
+| `overview.js`, `reps.js`, `posts.js` | Code for one page only |
+
+- **Pages never touch the data directly:** they ask for it through small "get" functions like `getReps()` and `getPosts()`. When the database is added, only the inside of these functions changes.
+- **Logic kept apart from display:** for example, `calculateBalance()` does the math, and the side panel only shows the result. The same math can be reused in the PR Portal and later replaced by a database query.
+- **Data shaped like a future database:** every object has an `id`, posts and transactions point to their rep with `repId`, and status, platform, and source values use fixed words. Dates use the `YYYY-MM-DD` format and `null` for "no date yet," which matches how databases store them.
+- **Calculated values:** like Phase 2, a rep's points are calculated from their history instead of stored, so the numbers can never fall out of sync.
+- **Chart.js for the chart:** a library draws the chart, but the counting and filtering are my own code. The counting step is written so it can become a database query later.
+- **Built-in browser features:** popups use the `<dialog>` element, and forms use the browser's own validation, so neither needed extra code.
+- **Bootstrap Icons:** one icon set for the whole site, chosen because it has logos for all five platforms, including Substack.
 
 ## Testing
 
-Unit testing is not covered in these chapters, so I used a written test plan instead. It has 53 cases that use characters from Jaws as the test reps. All 53 pass. One bug was found along the way (Add Rep accepted a blank name), and it is fixed and retested. The full log is in [docs/pr-app-phase2-test-cases.md](docs/pr-app-phase2-test-cases.md).
+Unit testing is not covered in this course, so I tested by hand in three ways:
+
+- **A full click-through on desktop and phone.** I used every page, tab, filter, search, sort, button, and popup, on a desktop browser and in Chrome's phone view (the device toolbar). Every page passed on both.
+- **Checks in the browser Console.** I called functions directly to test rules on their own. For example, running `approvePost(id)` and then `rejectPost(id)` on the same post confirmed that a post can only be reviewed once, and `addInvitedRep("Brodie Bruce", "brodie@example.com")` confirmed that a new rep is saved as invited with the codes `BRODIE10` and `BRODIE30`.
+- **Color contrast checks.** I checked text and background pairs with the WebAIM contrast formula, aiming for a score of at least 4.5. Several colors were darkened or swapped because of it.
 
 ## Problems Encountered & What I Learned
 
-### Phase 2
-
-- **Two handlers on one tab.** I gave the Redeem tab two `setOnSelectionChanged` calls, one for the tab color and one to refresh the points. A tab only keeps one handler, so the second silently replaced the first, and the tab color stopped changing. I merged both jobs into one handler.
-- **A hidden focus ring.** Setting `-fx-focus-color: transparent` to remove the default blue highlight also made the selected text field blend into the background. I learned to restyle the focus ring (aqua) instead of hiding it.
-- **Styling something that does not exist yet.** The strip behind the tabs can only be found with `tabPane.lookup(...)` after `show()` has been called, and the result needs a null check.
-- **A second constructor that sets the date.** To load saved data back in, each class needed a second constructor that accepts a saved ID. My first version of the `PointTransaction` one did not take a date parameter, so the date was never set. Adding the parameter fixed it.
-- **A pipe breaks the file.** Autosave would write a line with an extra `|` in it, and `load` would fail on the next launch. I chose to block the character in the form fields.
-- **IDs after a restart.** Rebuilding the next ID from the highest saved one would reuse an ID if the newest rep had been deleted. I fixed it by saving the three ID counters in the file.
-- **Data loss on a crash.** Saving only on window close would lose data if the app was stopped from the IDE. I changed it to save after every change.
-
-### Phase 1
-
-- **Pass-by-value bug in `redeemPoints()`.** I originally had `redeemPoints()` return a `boolean`, but a single call can log multiple redemptions, and `main()` needed the real, updated `pointHistoryCount` back afterward. Since Java passes `int` by value, changes made to the count inside the method were not reflected in `main()`. The fix was changing the return type to `int` and reassigning `pointHistoryCount = redeemPoints(...)` in `main()`.
-- **A broken early attempt at loop control.** I first tried a `redeeming = false; break;` pattern to exit early, but it did not skip the rest of the loop body the way I expected. I switched to a plain `return`, which exits the method immediately. This clarified the difference between exiting a loop and exiting a method.
-- **Duplicated logic between `logPost()` and `redeemPoints()`.** Both needed a rep-selection step, and `logPost()` also needed a platform-selection step. I extracted `repSelection()` and `platformSelection()` as shared helper methods.
-- **A misleading compiler error.** A correct `.repeat(94)` line threw a `String cannot be converted to char[]` error. It was a stale VS Code Java language server cache, not a real bug.
-- **Argument-order bug in `logPost()`.** `HISTORY_CAP` and `POST_CAP` were swapped at the call site. Java matches arguments to parameters by position, not by name, so the names looking right hid the mistake.
+- **A tab that "did nothing."** After saving a post by hand, the Approved tab stopped working. The Console showed a crash on `.name` while building the table. Tracing it back, the saved post had `repId: undefined`, because I had written `Number(element).value` instead of `Number(element.value)`. The visible problem was two steps away from the real cause, and the Console error is what led me back to it.
+- **A double click that gave 20 points.** Clicking Approve twice quickly could approve the same post twice and give the rep double points. I added a check so `approvePost` and `rejectPost` only work on pending posts, which also stops an approved post from being rejected while keeping its points.
+- **Points that didn't match.** `approvePost` always gave 10 points, even after posts got their own `points` field. I changed it to give `post.points`, so the number on the card always matches what the rep gets.
+- **A missing reviewed date.** When I added the Reviewed column, posts added by the owner were saved without a reviewed date, even though they are approved right away. I updated `addPost` to set today's date for any post that isn't pending.
+- **A form that reloaded the page.** Submitting a form makes the browser reload the page by default. Because the data lives in memory, the reload wiped the new rep, so it looked like nothing happened. Calling `event.preventDefault()` in the submit listener fixed it.
+- **A popup that looked off-center on phones.** The popup itself was fine. The search and sort row was wider than the screen, which stretched the whole page, and the popup centered itself on the stretched page. I learned that one element that's too wide can throw off everything else.
+- **One crash stops everything after it.** The error `Cannot read properties of null (reading 'addEventListener')` means `getElementById` found nothing, usually because an id in the HTML doesn't match the JavaScript. Since the setup calls run in order at the bottom of each file, one crash meant nothing after it ran, so whole sections of the page stayed blank.
+- **CSS can't color a chart.** Chart.js draws on a `<canvas>`, which is painted pixels, so CSS rules don't reach it. I used `getComputedStyle` to read the brand color variables in JavaScript, so `brand.css` stays the one home for colors.
+- **A shadow that got covered.** The top bar's shadow disappeared because the sidebar and page come after it in the HTML and were painted on top. Adding `position: relative` and `z-index` to the top bar brought the shadow back to the front.
+- **Old files in the browser.** Sometimes a fix seemed not to work because the browser was still using an old copy of a CSS or JS file. A hard refresh (`Ctrl` + `Shift` + `R`) loads the newest version.
 
 ## What I'd Do Differently
 
-Some parts of this project took a lot longer to work through than I expected, and there were stretches where progress felt slower than the effort I was putting in. Next time, I would break work into smaller sessions instead of pushing through long stretches on one gnarly method, and I would treat getting stuck as a normal part of the process.
+Phone layout was added near the end, once I confirmed the demo needed it. It went smoothly because the frame was already built with a grid, but next time I would check each page on a phone as I build it instead of saving it for last.
 
-The Phase 2 build went best when I worked in small steps and ran the app after each one. I also wrote the test plan against the design instead of waiting until the end, and that is how the blank-name bug got caught.
+I also copied some code between pages to get it working, like the tab setup in `reps.js` and `posts.js` and the popup open and close code. That was the right call before a demo, but the better habit is to move shared code into `ui.js` as soon as a second page needs it, the way I did with `showToast`. That cleanup is planned for right after the demo.
+
+What worked best was deciding the rules before writing code: terms, colors, comment style, and which file each kind of code belongs in. Having those written down meant I spent less time second-guessing and more time building.
 
 ## Documentation
 
 | Document | What it covers |
 | --- | --- |
-| [Phase 2 Design Document](docs/PR_App_Phase_2_Design_Document.md) | The as-built design, with classes, tabs, file format, and branding |
-| [Requirements](docs/requirements.md) | What the app must do |
-| [Architecture](docs/architecture.md) | How the classes fit together |
-| [Data Model](docs/data-model.md) | The classes, their fields, and the data file |
-| [Demo Walkthrough](docs/demo-walkthrough.md) | A guided run through every tab |
-| [Phase 2 Test Cases](docs/pr-app-phase2-test-cases.md) | The 53 test cases and their results |
-| [Phase 1 docs](docs/phase-1/) | The original console prototype docs |
+| [Phase 3 Design Document](docs/phase3-design-document.md) | The as-built design, with pages, layout, colors, fonts, and the phone layout |
+| [Requirements](docs/requirements.md) | What the site must do, including the TESD 1100 requirements |
+| [Architecture](docs/architecture.md) | How the pages, CSS files, and JavaScript files fit together |
+| [Data Model](docs/data-model.md) | The sample data arrays, their fields, and the fixed words they use |
+| [Demo Walkthrough](docs/demo-walkthrough.md) | A guided run through every page |
 
 ## Project Structure
 
 ```text
-project/
-├── pr-app/
-│   └── src/
-│       ├── Main.java
-│       ├── Rep.java
-│       ├── Post.java
-│       ├── PointTransaction.java
-│       ├── RepManager.java
-│       ├── PointsManager.java
-│       ├── FileHandler.java
-│       └── shiver-data.txt        (created when the app first saves)
+phase3-site/
+├── index.html          (Overview)
+├── reps.html
+├── posts.html
+├── css/
+│   ├── brand.css       (colors and fonts)
+│   ├── layout.css      (top bar, sidebar, page, and phone layout)
+│   └── components.css  (cards, tables, tabs, popups, grouped by page)
+├── js/
+│   ├── data.js         (sample data)
+│   ├── data-access.js  (reading and saving data)
+│   ├── logic.js        (rules and math)
+│   ├── ui.js           (shared toasts and ☰ menu)
+│   ├── overview.js
+│   ├── reps.js
+│   └── posts.js
+├── images/
+│   ├── Shiver_Main_Logo.png
+│   └── Shiver_Main_Logo_White.png
 ├── docs/
-│   ├── PR_App_Phase_2_Design_Document.md
-│   ├── requirements.md
-│   ├── architecture.md
-│   ├── data-model.md
-│   ├── demo-walkthrough.md
-│   ├── pr-app-phase2-test-cases.md
-│   └── phase-1/
-│       ├── requirements.md
-│       ├── architecture.md
-│       ├── data-model.md
-│       ├── demo-walkthrough.md
-│       └── pr-app-test-cases.md
-├── .gitignore
 └── README.md
 ```

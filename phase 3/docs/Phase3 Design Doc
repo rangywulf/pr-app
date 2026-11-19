@@ -1,0 +1,358 @@
+# Shiver Phase 3 Design Document
+
+*Phase 3 (TESD 1100) | Shiver by Kelpkin | Pages, layout, look and feel, and decisions, updated to match the finished build*
+
+## 1. Overview
+
+Phase 3 turns Shiver into a client-side website: the owner dashboard a shop owner would see when they open the app. It has three pages, Overview, Reps, and Posts, built with HTML, CSS, and JavaScript. It runs entirely in the browser with sample data, so changes last until the page is reloaded.
+
+This document records the page designs, the look and feel, the phone layout, and the decisions behind them. Where the build differs from the original plan, the difference is listed at the end of Section 2. How the files fit together is covered in `architecture.md`, and the data is covered in `data-model.md`.
+
+Phase 3 builds the owner side only. Shop owners are the main audience, because they install the app and run the PR program. Reps get their own view, the PR Portal, in a later phase once login is added. The design follows the look of Shopify's admin (Polaris), since Shiver will run inside Shopify in Phase 5.
+
+## 2. What Changes from Phase 2
+
+| Area | Phase 2 | Phase 3 |
+| --- | --- | --- |
+| Platform | JavaFX desktop app | Website that runs in any browser |
+| Languages | Java | HTML, CSS, and JavaScript |
+| Screens | One window with four tabs | Three pages linked by a sidebar |
+| Team list | Team tab | Reps page with filter tabs, search, and sort |
+| Logging posts | Log Post tab, every post counts right away | Posts page with a review step: pending posts are approved or rejected |
+| History | View History window | Rep side panel with codes, social accounts, stats, and history |
+| Summary view | None | Overview page with metric cards, a chart, a review list, and top reps |
+| Rep status | None | Active, paused, or invited |
+| Social accounts | None | Each rep can have one account per platform |
+| Post source | All typed in by the owner | Auto-detected, link submitted, or added by the owner |
+| Points per post | Fixed at 10 | 10 by default, and the owner can set points on posts they add |
+| Styling | Colors set in Java code | Three CSS files, with colors and fonts as variables |
+| Saving | Text file, saved after every change | Sample data in memory only. Changes reset on reload |
+| Phones | Not supported | Phone layout below 768px wide |
+
+### Changes made during the build
+
+| Area | Original plan | As built | Why |
+| --- | --- | --- | --- |
+| Overview metric cards | Included "Points awarded" | Dropped it | It was just approved posts times 10, so it repeated the Approved posts card |
+| Overview chart | Weekly bars, 5 weeks | Daily line, last 30 days | Matches the "Last 30 days" subtitle; weekly labels felt clunky |
+| Reps table | Included a Platforms column | Removed | Platforms and handles show in the side panel instead |
+| Discount code color | Muted, to set it apart from the PR code | Same color as the PR code | Both codes are equally important to the owner |
+| Approve all | In the page header | In a review bar above the pending cards | It only applies to Pending, and the header keeps one main button |
+| Approve all confirmation | Browser `confirm()` box | The app's own styled popup | The browser box couldn't be styled and said "localhost says" |
+| Top bar search | A search box in the top bar | Removed | It searched nothing, and each list page has its own search |
+| Top bar color | Light | Deep teal with a white logo and a soft shadow | Gives the page depth and a clear frame |
+| Page and sidebar colors | Cream page, sand sidebar | Sand page, cream sidebar | White cards stand out more on sand |
+| Posts table dates | One Date column | Posted and Reviewed columns | The owner can see when a post went up and when it was reviewed |
+| Shared JavaScript | Not planned | `ui.js` for toasts and the ☰ menu | A second page needed `showToast`, so it moved to one shared file |
+| Phone layout | Not planned | Added | Required for the TESD 1100 demo |
+
+## 3. Course Requirements
+
+| Requirement | Where it's met |
+| --- | --- |
+| 3 to 8 column layout | Overview metric cards (4), Reps table (6), Posts table (7), Posts card grid (3) |
+| At least 2 images or other media | Shiver logo, rep social media icons, post thumbnails, Overview chart |
+| Navigation between 3 pages | Sidebar links to Overview, Reps, and Posts (☰ menu on phones) |
+| JavaScript | Filter tabs, search, sort, side panel, Add rep and Add post popups, confirm box, approve and reject, toasts, Overview chart with platform tabs, ☰ menu, time-of-day greeting, empty states |
+| Works on phones | Phone layout below 768px wide (see Section 6) |
+
+## 4. Page Frame (All Pages)
+
+Every page shares the same frame: a top bar, a sidebar, and the page content.
+
+```text
+┌───────────────────────────────────────────────────────┐
+│ ☰ Shiver                     (HG) Hippie Goth Stickers │  deep teal top bar
+└───────────────────────────────────────────────────────┘
+│ Overview │  Good evening, Hippie Goth Stickers          │
+│ Reps     │  Overview  Last 30 days       [Review posts] │
+│ Posts    │  [card] [card] [card] [card]                 │
+│ (cream)  │  page content (sand)                         │
+```
+
+| Part | Design |
+| --- | --- |
+| Top bar | Deep teal, 72px tall, white Shiver logo on the left, shop initials circle and shop name on the right, soft shadow underneath |
+| Sidebar | Cream, with a mint highlight on the current page and a thin dark sand line on its right edge |
+| Page content | Sand background, with white cards that have a soft teal shadow |
+| Page header | Page title on the left, the page's one main button on the right |
+
+The frame is split into `<header>` (top bar), `<nav>` (sidebar), and `<main>` (page content). In Phase 5, Shopify supplies its own top bar and menu, so the header can be deleted, the nav becomes Shopify menu links, and `<main>` stays.
+
+## 5. Pages
+
+### Overview (index.html)
+
+```text
+Good evening, Hippie Goth Stickers
+Overview          Last 30 days                [Review posts]
+[Active reps] [Approved posts] [Sales from codes] [Posts to review]
+[Approved posts over time chart]  [Needs review list]
+[Top reps table: Rep | Posts | Points | Sales]
+```
+
+The page reads top to bottom: How am I doing? What's changing? What needs me? Who's driving it?
+
+| Part | Design |
+| --- | --- |
+| Greeting | "Good morning", "Good afternoon", or "Good evening", plus the shop name, based on the time of day |
+| Metric cards | Active reps, Approved posts, Sales from codes ($0 until sales data is added), Posts to review |
+| Chart | A line chart of approved posts per day for the last 30 days, with tabs for All and each of the five platforms |
+| Needs review | Pending posts, oldest first, each showing the rep and "Posted N days ago". Each row links to the Posts page, and a "Review all posts" link sits at the bottom of the card |
+| Top reps | The top 5 reps by total points ever earned, with their approved posts and sales |
+
+### Reps (reps.html)
+
+```text
+Reps  6 reps                                    [Add rep]
+(All) Active  Paused  Invited
+[Search reps.........]  [Sort: Name (A to Z) ▾]
+Rep | Discount code | PR code | Points | Sales | Status
+```
+
+| Part | Design |
+| --- | --- |
+| Filter tabs | All, Active, Paused, Invited |
+| Search | Filters by rep name, ignoring capital letters |
+| Sort | Name (A to Z) by default, or Most points |
+| Table | 6 columns. Points is the current balance. Codes use a monospace font. Status shows as a colored badge |
+| Empty state | "No reps found" when nothing matches |
+
+**Side panel.** Clicking a rep row opens a panel on the right that floats over the table and dims the rest of the page.
+
+```text
+Dante Hicks                                  ✕
+notevensupposedtobehere@example.com
+(Active)
+Discount code   PR code
+DANTE30         DANTE10
+┌ Social media ────────────────────┐
+│ [IG] [YT] [TT] [FB]              │
+└──────────────────────────────────┘
+┌──────────────────────────────────┐
+│ Balance      Posts      Redeemed │
+│ 5            3          25       │
+└──────────────────────────────────┘
+┌ History ─────────────────────────┐
+│ Nov 5, 2026   Instagram post +10 │
+│ Nov 12, 2026  Redeem...      -25 │
+└──────────────────────────────────┘
+```
+
+- The email is a link that opens a new email.
+- Social media icons link to each account, and the handle shows when hovering.
+- Earned history lines are green and link to the post. Redeemed lines are deep teal and show the reason.
+- Empty social media and history cards show "No social accounts yet" and "No history yet".
+
+**Add rep popup.** The owner enters a name and email. New reps start as invited, since they haven't joined yet, and get a PR code and a discount code made from their first name in capitals (for example, Brodie Bruce gets `BRODIE10` and `BRODIE30`).
+
+### Posts (posts.html)
+
+```text
+Posts                                            [Add post]
+(Pending 4)  Approved  Rejected  All
+
+Pending tab:
+4 posts waiting for your review  [Approve all]
+[post card] [post card] [post card]
+
+Approved, Rejected, and All tabs:
+Rep | Platform | Posted | Reviewed | Source | Points | Status (All tab only)
+```
+
+The rule for this page is **cards for decisions, tables for records**. Each pending post is its own approve or reject decision, so it gets a card. Reviewed posts are records to look back on, and hundreds of cards would be cluttered, so they go in a table.
+
+```text
+┌─────────────────────────────┐
+│     [platform icon]         │
+│ Jay                         │
+│ TikTok · Nov 14, 2026       │
+│ Link submitted              │
+│ +10 pts   [Approve][Reject] │
+└─────────────────────────────┘
+```
+
+| Part | Design |
+| --- | --- |
+| Pending count | A small orange pill on the Pending tab, matching the Posts to review card on Overview |
+| Approve and Reject | The card fades out, the count goes down, and a toast confirms the action. A post can only be reviewed once |
+| Approve all | Opens a confirmation popup ("Approve 4 posts?") before approving every pending post |
+| Source labels | "Auto-detected" (Instagram, Facebook), "Link submitted" (TikTok, YouTube, Substack), "Added by shop owner" |
+| Reviewed date | The day a post was approved or rejected, or "—" while pending |
+| Status column | Shown on the All tab only, since it would repeat the same word on Approved and Rejected |
+
+**Add post popup.** The owner adds a post by hand, for example when a rep sends a Substack link or the owner spots a post that auto-detect missed. Owner posts are approved right away, since the owner is the reviewer.
+
+| Field | Rule |
+| --- | --- |
+| Rep | Required. Active and paused reps only, since invited reps haven't joined yet |
+| Platform | Required. One of the five platforms |
+| Post link | Required. Must start with `https://` |
+| Date posted | Required |
+| Points | Required. 10 by default, at least 1 |
+
+### Shared pieces
+
+| Piece | Design |
+| --- | --- |
+| Popups | Built with `<dialog>`, which centers the popup, dims the page, and closes on Esc. The main button is on the right, with Cancel to its left. Forms clear every time a popup closes |
+| Toasts | A short message in the bottom right corner for 3 seconds ("Post approved", "Rep added") |
+| Empty states | Every list or table that can be empty shows a short message instead of a blank space |
+
+## 6. Phone Layout
+
+One switch point, at 768px wide, the usual cutoff between tablets and laptops.
+
+```text
+┌──────────────────────┐
+│ ☰  Shiver        (HG)│  top bar (shop name hidden)
+├──────────────────────┤
+│ Overview             │  sidebar, only when ☰ is tapped
+│ Reps                 │
+│ Posts                │
+├──────────────────────┤
+│ page content         │
+```
+
+| Change | What it does |
+| --- | --- |
+| ☰ menu | Shows and hides the sidebar |
+| One column | The sidebar moves above the page content |
+| Metric cards | 2 per row instead of 4 |
+| Overview row | Chart on top, Needs review underneath |
+| Tables | Each cell stays on one line, and the table scrolls sideways inside its card |
+| Search and sort | Stack on top of each other, with the search box full width |
+| Tabs | Wrap onto a second line if they don't fit |
+| Popups and side panel | Fill most or all of the screen width |
+| Page header | The main button moves below the title |
+| Post thumbnails | Shorter, so more cards fit on screen |
+
+## 7. Look and Feel
+
+### Colors
+
+Colors come from the Kelpkin and Shiver colorboard and live as variables in `brand.css`.
+
+| Color | Job |
+| --- | --- |
+| `#eee6d7` sand | Page background, Paused badge |
+| `#f5f1ea` cream | Sidebar, side panel, zebra stripe rows |
+| `#ffffff` white | Cards, secondary buttons, top bar text |
+| `#c9b994` dark sand | Paused badge border, sidebar edge line |
+| `#124049` deep teal | Top bar, headings, primary buttons, badge text, toasts |
+| `#557176` muted teal | Muted text such as dates and labels, form field borders |
+| `#ccded4` mint | Active nav item, Active badge, active tab, side panel cards |
+| `#64a29d` teal | Chart line, Invited badge border, side panel dividers |
+| `#336650` earned green | Earned points in history and on post cards |
+| `#da7f48` burnt orange | Only for "needs your attention", such as the pending count |
+
+Every text color was checked against its background with the WebAIM contrast formula, aiming for at least 4.5. White text is only used on deep teal.
+
+### Fonts
+
+| Font | Job |
+| --- | --- |
+| Fredoka | Logo and page titles |
+| Inter | Everything else, including chart text |
+
+| Role | Size |
+| --- | --- |
+| Page title | 24 to 26px |
+| Card title | 16px |
+| Body | 14px |
+| Small | 12px |
+| Big number | 28px |
+
+### Design rules
+
+- Spacing comes from an 8px scale: 8, 16, 24, 32, 48.
+- 60-30-10 color rule: 60% neutral, 30% structure, 10% accent.
+- One main button per page.
+- The same pill-style tabs on every page.
+- Sentence case for every label, heading, button, and message ("Review posts", not "Review Posts").
+- Zebra stripes on data tables.
+- One icon set: Bootstrap Icons, chosen because it has all five platform logos, including Substack.
+- Realistic sample data, using characters from Kevin Smith films instead of "Test User 1".
+
+## 8. Key Design Decisions
+
+| Decision | Choice | Reason |
+| --- | --- | --- |
+| Audience | Shop owners first | The owner installs the app and runs the PR program. Reps get the PR Portal later |
+| Site type | Inside-the-app dashboard, not a marketing site | Shows what using Shiver is actually like |
+| Style | Shopify Polaris look | Shiver will run inside the Shopify admin |
+| Post review | Pending posts are approved or rejected | TikTok, YouTube, and Substack links always need a human check |
+| Cards or tables | Cards for pending posts, tables for everything else | Cards for decisions, tables for records |
+| Rep details | Side panel that floats over the table | Keeps the table in place and avoids a fourth page |
+| Chart | Chart.js line chart, daily for 30 days | Axes, tooltips, and resizing come free, and future report charts are one word away |
+| Popups | `<dialog>` element | The browser handles centering, dimming, Esc, and keyboard focus |
+| Form checks | The browser's built-in validation | No extra code needed for required fields, email, and link format |
+| New rep status | Invited | They haven't joined yet, so they can't be credited for posts |
+| Points on owner posts | The owner can set them | Gives the owner a way to reward a bigger post |
+| Colors | CSS variables in one file | The Shopify version or a dark mode only needs new values |
+| Code layout | Data, rules, and display in separate files | The database and Shopify can replace one piece at a time |
+
+### Alternatives considered
+
+| Topic | Option not chosen | Why not |
+| --- | --- | --- |
+| Audience | Rep-facing PR Portal first | Reps need login, which comes in a later phase |
+| Chart | Drawn by hand with HTML and CSS | Much harder for the scatter and pie charts planned for Reports |
+| Chart | Bar chart | Line was preferred, and Chart.js can switch with one word |
+| Rep details | A separate detail page | More pages and clicks. Kept as a later upgrade |
+| Popups | A `<div>` shown and hidden with a class | Centering, dimming, Esc, and focus would all need extra code |
+| Confirm box | The browser's `confirm()` | Can't be styled and shows "localhost says" |
+| Phone menu | A row of links | A ☰ menu is what phone users expect and saves space |
+| Needs review dates | "Posted Nov 12" | A review list cares about how long a post has waited |
+| Side panel colors | White, sand, mint, or teal panels | Cream with mint cards matched the sidebar and passed the contrast checks |
+
+## 9. Future Notes (Not in the Phase 3 Build)
+
+| Item | Detail |
+| --- | --- |
+| Database (Phase 4) | Replaces `data.js`. Only the inside of the functions in `data-access.js` changes |
+| Shopify (Phase 5) | The top bar is removed, the sidebar becomes Shopify menu links, and colors follow Shopify's style |
+| Sales tracking | Fills in the Sales columns that show $0 for now |
+| Reports (Phase 6) | Sales vs. points and posts by source charts, reusing the Chart.js setup |
+| PR Portal | The rep-facing site, after login is added |
+| Rep status buttons | Pause, reactivate, or mark a rep inactive |
+| Settings page | Including auto-approve for detected Instagram and Facebook posts |
+| Dark mode | A second set of color variable values |
+| Real post links | Link each post card and table row to the real post |
+| Invite emails | Sent when a rep is added, once login exists |
+| Social accounts | Added when adding or editing a rep |
+| Footer | Planned for all 3 pages. `layout.css` has an empty section waiting for it |
+| Shared code cleanup | Move the copied tab and popup code into `ui.js` |
+
+## 10. Build Order
+
+The site was built from the outside in: the frame first, then one page at a time, then polish.
+
+| Step | Build | Reason |
+| --- | --- | --- |
+| 1 | Folders, files, and page skeletons | Every page needs the same structure |
+| 2 | `brand.css` | Colors and fonts are used everywhere |
+| 3 | `layout.css` | The frame is the same on every page |
+| 4 | Sample data and data access functions | Pages need data before they can show anything |
+| 5 | Overview page | The first page an owner sees |
+| 6 | Reps page and side panel | Builds on the data and rules |
+| 7 | Posts page, approve and reject, and Add post | The most interactive page |
+| 8 | Overview chart | Needed the posts data and review rules first |
+| 9 | Add rep, polish, and the phone layout | Finishing touches once everything worked |
+
+## 11. Testing
+
+Testing was done by hand: a full click-through of every page on desktop and in Chrome's phone view, checks in the browser Console for rules like `approvePost` and `addInvitedRep`, and color contrast checks. Every page passed on both desktop and phone on Nov 19, 2026. See the Testing section of the README for details.
+
+## 12. Known Limitations
+
+- All data is sample data in memory, so every change is lost when the page reloads.
+- Sales show $0 until sales data is added.
+- Add rep doesn't check for duplicates. Two reps with the same first name get the same codes, and the same email can be added twice.
+- Names with apostrophes or accents go into the codes as typed.
+- The chart and "Posted N days ago" count back from today, so the sample posts slowly fall off the chart as real days pass.
+- The Add post date field allows future dates.
+- After adding a post from the Pending tab, the new post doesn't show, since it's approved. The toast is the only sign it was saved.
+- Two toasts within 3 seconds share the screen badly, and the first one's timer hides the second early.
+- The shop name and initials are typed into each page instead of coming from data.
+- The fonts, icons, and Chart.js load from the internet, so the site needs a connection.
