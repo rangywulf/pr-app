@@ -1,7 +1,7 @@
 // The Overview chart, kept so the tabs can update it
 let postsChart = null;
 
-// Fills the 4 metric cards
+// Fills the 5 metric cards
 function fillMetricCards() {
     // Active reps card
     const reps = getReps();
@@ -19,6 +19,11 @@ function fillMetricCards() {
     const approvedPosts = posts.filter(post => post.status === "approved");
     const postsCard = document.getElementById("metric-posts");
     postsCard.textContent = approvedPosts.length;
+
+    // Redemptions to review card
+    const pendingRedemptions = getRedemptionsByStatus("pending");
+    const redemptionsCard = document.getElementById("metric-redemptions");
+    redemptionsCard.textContent = pendingRedemptions.length;
 }
 
 // Fills the Needs review list, oldest post first
@@ -29,6 +34,18 @@ function fillReviewList() {
         const rep = getRepById(post.repId);
         const item = document.createElement("li");
         item.innerHTML = `<a href="posts.html" class="review-row"><span>${rep.name}</span><span class="review-date" title="${formatDate(post.date)}">Posted ${formatDaysAgo(post.date)} &rsaquo;</span></a>`;
+        list.appendChild(item);
+    }
+}
+
+// Fills the redemption request list, oldest request first
+function fillRedemptionList() {
+    const pendingRedemptions = getRedemptionsByStatus("pending");
+    const list = document.getElementById("redemption-list");
+    for (const request of pendingRedemptions) {
+        const rep = getRepById(request.repId);
+        const item = document.createElement("li");
+        item.innerHTML = `<a href="redeem.html" class="review-row"><span>${rep.name} - ${request.points} pts</span><span class="review-date" title="${formatDate(request.date)}">Requested ${formatDaysAgo(request.date)} &rsaquo;</span></a>`;
         list.appendChild(item);
     }
 }
@@ -129,6 +146,7 @@ function fillGreeting() {
 
 fillMetricCards();
 fillReviewList();
+fillRedemptionList();
 fillTopReps();
 drawPostsChart();
 setUpChartTabs();

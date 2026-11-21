@@ -66,6 +66,16 @@ function getPostsByStatus(status) {
     return posts.filter(post => post.status === status);
 }
 
+// Returns all redemption requests
+function getRedemptionRequests() {
+    return redemptionRequests;
+}
+
+// Returns every redemption request with this status ("pending", "approved", "rejected")
+function getRedemptionsByStatus(status) {
+    return getRedemptionRequests().filter(request => request.status === status);
+}
+
 // Changes one post's status and saves today as its reviewed date
 function updatePostStatus(postId, newStatus) {
     const post = posts.find(post => post.id === postId);

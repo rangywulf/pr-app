@@ -1,4 +1,4 @@
-// Fake data for the owner dashboard: reps, posts, social media handles, and point transactions
+// Fake data for the owner dashboard: reps, posts, social media handles, point transactions, and redemption requests
 
 // Reps (status is "active", "paused", or "invited")
 const reps = [
@@ -97,4 +97,13 @@ const socialAccounts = [
     { id: 10, repId: 5, platform: "Instagram", handle: "@37andcounting", url: "https://instagram.example.com/@37andcounting" },
     { id: 11, repId: 5, platform: "Substack", handle: "@lasagnadinner", url: "https://substack.example.com/@lasagnadinner" },
     { id: 12, repId: 6, platform: "Instagram", handle: "@caitlinbree", url: "https://instagram.example.com/@caitlinbree" }
+];
+
+// Redemption requests from reps (status is "pending", "approved", or "rejected"; reviewedDate is null while pending)
+// reward is "Gift card", "Merch", "Store credit", or "Cash" (Shopify products replace this list later)
+const redemptionRequests = [
+    { id: 1, repId: 3, points: 25, reward: "Gift card", status: "approved", date: "2026-11-11", reviewedDate: "2026-11-12" },
+    { id: 2, repId: 1, points: 15, reward: "Merch", status: "approved", date: "2026-11-13", reviewedDate: "2026-11-14" },
+    { id: 3, repId: 2, points: 10, reward: "Store credit", status: "pending", date: "2026-11-16", reviewedDate: null },
+    { id: 4, repId: 5, points: 10, reward: "Cash", status: "pending", date: "2026-11-17", reviewedDate: null }
 ];

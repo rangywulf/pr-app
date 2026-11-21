@@ -74,6 +74,10 @@
                 <p class="metric-label">Posts to review</p>
                 <p class="metric-value" id="metric-review">0</p>
             </article>
+            <article class="metric-card">
+                <p class="metric-label">Redemptions to review</p>
+                <p class="metric-value" id="metric-redemptions">0</p>
+            </article>
         </section>
 
         <!-- Chart and Needs review, side by side -->
@@ -103,23 +107,35 @@
             </section>
         </section>
 
-        <!-- Top reps table: rows filled in by overview.js -->
-        <section class="panel top-reps-panel">
-            <h2 class="panel-title">Top reps</h2>
-            <table class="data-table">
-                <thead>
-                    <tr>
-                        <th scope="col">Rep</th>
-                        <th scope="col">Posts</th>
-                        <th scope="col">Points</th>
-                        <th scope="col">Sales</th>
-                    </tr>
-                </thead>
-                <tbody id="top-reps-body">
+        <!-- Top reps and Redemption Requests -->
+        <section class="overview-row">
+            <!-- Top reps table: rows filled in by overview.js -->
+            <section class="panel top-reps-panel">
+                <h2 class="panel-title">Top reps</h2>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Rep</th>
+                            <th scope="col">Posts</th>
+                            <th scope="col">Points</th>
+                            <th scope="col">Sales</th>
+                        </tr>
+                    </thead>
+                    <tbody id="top-reps-body">
 
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
+            </section>
+            <section class="panel review-panel">
+                <h2 class="panel-title">Redemption requests</h2>
+                <!-- Pending redemption requests, filled in by overview.js -->
+                <ul id="redemption-list" class="review-list">
+
+                </ul>
+                <a href="redeem.html" class="review-all">Review all requests &rarr;</a>
+            </section>
         </section>
+        
     </main>
 </body>
 
