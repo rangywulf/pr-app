@@ -1,4 +1,4 @@
-// Fake data for the owner dashboard: reps, posts, social media handles, point transactions, and redemption requests
+// Fake data for the owner dashboard: reps, posts, social media handles, point transactions, rewards, and redemption requests
 
 // Reps (status is "active", "paused", or "invited")
 const reps = [
@@ -79,8 +79,9 @@ const transactions = [
     { id: 6, repId: 3, postId: 6, amount: 10, reason: "Post logged", date: "2026-11-08" },
     { id: 7, repId: 4, postId: 7, amount: 10, reason: "Post logged", date: "2026-11-09" },
     { id: 8, repId: 5, postId: 8, amount: 10, reason: "Post logged", date: "2026-11-10" },
-    { id: 9, repId: 3, postId: -1, amount: -25, reason: "Redeem for gift card", date: "2026-11-12" },
-    { id: 10, repId: 1, postId: -1, amount: -15, reason: "Redeem for merch", date: "2026-11-14" }
+    { id: 9, repId: 3, postId: -1, amount: -25, reason: "Redeemed: $5 store credit", date: "2026-11-12" },
+    { id: 10, repId: 1, postId: -1, amount: -15, reason: "Redeemed: Sticker pack", date: "2026-11-14" },
+    { id: 11, repId: 3, postId: -1, amount: -5, reason: "Redeemed: Custom (free sticker added to order)", date: "2026-11-18" }
 ];
 
 // Social media accounts (one per platform for each rep)
@@ -99,11 +100,24 @@ const socialAccounts = [
     { id: 12, repId: 6, platform: "Instagram", handle: "@caitlinbree", url: "https://instagram.example.com/@caitlinbree" }
 ];
 
-// Redemption requests from reps (status is "pending", "approved", or "rejected"; reviewedDate is null while pending)
-// reward is "Gift card", "Merch", "Store credit", or "Cash" (Shopify products replace this list later)
+// Rewards the owner offers (type is "Product", "Bundle", or "Store credit")
+// shopifyProductId is null when the owner fulfills the reward by hand (standalone version)
+const rewards = [
+    { id: 1, name: "Sticker pack", type: "Product", pointCost: 15, shopifyProductId: null },
+    { id: 2, name: "Holiday sticker bundle", type: "Bundle", pointCost: 50, shopifyProductId: null },
+    { id: 3, name: "$5 store credit", type: "Store credit", pointCost: 25, shopifyProductId: null },
+    { id: 4, name: "$2 store credit", type: "Store credit", pointCost: 10, shopifyProductId: null },
+    { id: 5, name: "Mini sticker", type: "Product", pointCost: 10, shopifyProductId: null }
+];
+
+// Redemptions (status is "pending", "approved", "rejected", or "reversed"; reviewedDate is null while pending)
+// source is "request" (rep asked) or "manual" (owner redeemed by hand; date is null since there was no request)
+// rewardId is null for a custom redemption, and note explains it
+// points is saved on the record so later price changes don't rewrite history
 const redemptionRequests = [
-    { id: 1, repId: 3, points: 25, reward: "Gift card", status: "approved", date: "2026-11-11", reviewedDate: "2026-11-12" },
-    { id: 2, repId: 1, points: 15, reward: "Merch", status: "approved", date: "2026-11-13", reviewedDate: "2026-11-14" },
-    { id: 3, repId: 2, points: 10, reward: "Store credit", status: "pending", date: "2026-11-16", reviewedDate: null },
-    { id: 4, repId: 5, points: 10, reward: "Cash", status: "pending", date: "2026-11-17", reviewedDate: null }
+    { id: 1, repId: 3, rewardId: 3, points: 25, source: "request", note: null, status: "approved", date: "2026-11-11", reviewedDate: "2026-11-12" },
+    { id: 2, repId: 1, rewardId: 1, points: 15, source: "request", note: null, status: "approved", date: "2026-11-13", reviewedDate: "2026-11-14" },
+    { id: 3, repId: 2, rewardId: 4, points: 10, source: "request", note: null, status: "pending", date: "2026-11-16", reviewedDate: null },
+    { id: 4, repId: 5, rewardId: 5, points: 10, source: "request", note: null, status: "pending", date: "2026-11-17", reviewedDate: null },
+    { id: 5, repId: 3, rewardId: null, points: 5, source: "manual", note: "Free sticker added to order", status: "approved", date: null, reviewedDate: "2026-11-18" }
 ];

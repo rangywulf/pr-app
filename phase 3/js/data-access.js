@@ -76,6 +76,20 @@ function getRedemptionsByStatus(status) {
     return getRedemptionRequests().filter(request => request.status === status);
 }
 
+// Returns one reward by ID, or null if not found
+function getRewardById(id) {
+    const reward = rewards.find(reward => reward.id === id);
+    if (reward === undefined) {
+        return null;
+    }
+    return reward;
+}
+
+// Returns all rewards
+function getRewards() {
+    return rewards;
+}
+
 // Changes one post's status and saves today as its reviewed date
 function updatePostStatus(postId, newStatus) {
     const post = posts.find(post => post.id === postId);
@@ -86,11 +100,34 @@ function updatePostStatus(postId, newStatus) {
     post.reviewedDate = new Date().toLocaleDateString("en-CA");
 }
 
+// Changes one redemption's status and saves today as its reviewed date (except reversals, which keep the original date)
+function updateRedemptionStatus(redemptionId, newStatus) {
+    const redemption = redemptionRequests.find(redemption => redemption.id === redemptionId);
+    if (redemption === undefined) {
+        return;
+    }
+    redemption.status = newStatus;
+    if (newStatus !== "reversed") {
+        redemption.reviewedDate = new Date().toLocaleDateString("en-CA");
+    } 
+}
+
 // Adds a new point transaction (earned or redeemed)
 function addTransaction(repId, postId, amount, reason) {
     const newId = transactions.length + 1;
     const today = new Date().toLocaleDateString("en-CA");
     transactions.push({ id: newId, repId: repId, postId: postId, amount: amount, reason: reason, date: today });
+}
+
+// Adds a new redemption and returns its id (get's today's reviewed date unless it's pending)
+function addRedemption(repId, rewardId, points, source, note, status, date) {
+    const newId = redemptionRequests.length + 1;
+    let reviewedDate = null;
+    if (status !== "pending") {
+        reviewedDate = new Date().toLocaleDateString("en-CA");
+    }
+    redemptionRequests.push({id: newId, repId: repId, rewardId: rewardId, points: points, source: source, note: note, status: status, date: date, reviewedDate: reviewedDate});
+    return newId;
 }
 
 // Adds a new post and returns its id (gets today's reviewed date unless it's pending)

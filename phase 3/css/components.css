@@ -641,6 +641,18 @@ h3 {
     margin-bottom: var(--space-md);
 }
 
+/* Red error message inside a popup */
+.form-error {
+    color: var(--color-error);
+    font-size: var(--text-small);
+    margin: 0;
+}
+
+/* Available points and error stacked on teh left of the popup buttons */
+.form-messages {
+    margin-right: auto;
+}
+
 /* ==================== PHONES ==================== */
 @media screen and (max-width: 768px) {
 

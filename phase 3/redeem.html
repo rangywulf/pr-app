@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redeem | Shiver</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+        rel="stylesheet">
+
+    <!-- Site styles -->
+    <link href="css/brand.css" rel="stylesheet" />
+    <link href="css/layout.css" rel="stylesheet" />
+    <link href="css/components.css" rel="stylesheet" />
+
+    <!-- Scripts -->
+    <script src="js/data.js" defer></script>
+    <script src="js/data-access.js" defer></script>
+    <script src="js/logic.js" defer></script>
+    <script src="js/ui.js" defer></script>
+    <script src="js/redeem.js" defer></script>
+</head>
+
+<body>
+    <!-- Top bar: menu button, logo, and shop (same on every page) -->
+    <header class="top-bar">
+        <button type="button" class="menu-button" id="menu-button" aria-label="Open menu" aria-controls="main-nav"
+            aria-expanded="false">&#9776;</button>
+        <img src="images/Shiver_Main_Logo_White.png" alt="Shiver" class="logo" />
+        <div class="shop-account"><span class="shop-avatar" aria-hidden="true">HG</span><span class="shop-name">Hippie
+                Goth Stickers</span></div>
+    </header>
+
+    <!-- Sidebar navigation (same on every page) -->
+    <nav class="sidebar" id="main-nav" aria-label="Main">
+        <a href="index.html" class="nav-link">Overview</a>
+        <a href="reps.html" class="nav-link">Reps</a>
+        <a href="posts.html" class="nav-link">Posts</a>
+        <a href="redeem.html" class="nav-link active" aria-current="page">Redeem</a>
+    </nav>
+
+    <!-- Page content: Everything unique to Redeem -->
+    <main class="page-content">
+        <!-- Page title and Redeem points button -->
+        <header class="page-header">
+            <div class="page-header-text">
+                <h1>Redeem</h1>
+            </div>
+            <div class="page-header-actions">
+                <button type="button" class="button-link" id="redeem-points">Redeem points</button>
+            </div>
+         </header>
+        
+        <!-- Filter tabs -->
+        <div class="tabs">
+            <button type="button" class="tab active" data-status="pending">Pending <span class="tab-count" id="pending-count"></span></button>
+            <button type="button" class="tab" data-status="approved">Approved</button>
+            <button type="button" class="tab" data-status="rejected">Rejected</button>
+            <button type="button" class="tab" data-status="all">All</button>
+        </div>
+
+        <!-- Pending view: Review bar and request cards -->
+        <section id="pending-view">
+            <div class="review-bar">
+                <p class="review-text" id="review-text"></p>
+            </div>
+
+            <!-- Request cards, filled in by redeem.js -->
+            <div class="post-grid" id="redemption-cards"></div>
+        </section>
+
+        <!-- Redemptions table(Approved, Rejected, All), rows filled in by redeem.js -->
+        <div class="panel" id="redemption-table-panel">
+            <table class="data-table" id="redemption-table">
+                <thead>
+                    <tr>
+                        <th>Rep</th>
+                        <th>Reward</th>
+                        <th>Points</th>
+                        <th>Requested</th>
+                        <th>Reviewed</th>
+                        <th>Source</th>
+                        <th class="status-col">Status</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="redemption-table-body"></tbody>
+            </table>
+        </div>
+
+        <!-- Redeem points popup -->
+        <dialog id="redeem-modal" class="modal">
+            <form id="redeem-form">
+                <h2>Redeem points</h2>
+                <div class="form-field">
+                    <label for="redeem-rep">Rep</label>
+                    <select id="redeem-rep" required>
+                        <option value="">Choose a rep</option>
+                    </select>
+                </div>
+                <div class="form-field">
+                    <label for="redeem-reward">Reward</label>
+                    <select id="redeem-reward" required>
+                        <option value="">Choose a reward</option>
+                    </select>
+                </div>
+
+                <!-- Custom fields, only shown when Custom is picked -->
+                <div id="custom-fields" hidden>
+                    <div class="form-field">
+                        <label for="custom-points">Points</label>
+                        <input type="number" id="custom-points" min="1">
+                    </div>
+                    <div class="form-field">
+                        <label for="custom-note">Reward description</label>
+                        <input type="text" id="custom-note" placeholder="Free sticker added to order">
+                    </div>
+                </div>
+                <div class="modal-actions">
+                    <div class="form-messages">
+                        <p class="panel-stat-label" id="redeem-available"></p>
+                        <p class="form-error" id="redeem-error"></p>
+                    </div>
+                    
+                    <button type="button" id="cancel-redeem" class="button-link button-secondary">Cancel</button>
+                    <button type="submit" class="button-link">Redeem</button> 
+                </div>
+            </form>
+        </dialog>
+
+        <!-- Confirm popup for Approve, Reject, and Reverse (text filled in by redeem.js) -->
+        <dialog id="confirm-modal" class="modal">
+            <h2 id="confirm-title"></h2>
+            <p id="confirm-text"></p>
+            <div class="modal-actions">
+                <button type="button" id="confirm-cancel" class="button-link button-secondary">Cancel</button>
+                <button type="button" id="confirm-ok" class="button-link"></button>
+            </div>
+        </dialog>
+
+        <!-- Toast message in the corner -->
+        <div id="toast" class="toast hidden" role="status"></div>
+     </main>
+</body>
+
+</html>
